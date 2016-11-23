@@ -22,6 +22,12 @@ Tests I'd do:
  - Query all instances for that info
  - Kill master and query again for info
 
+# Known issues (TODO)
+ - Orion needs to wait for mongo1.
+    Currently there is no solution for this within docker-compose, so a script
+    will have to be added to deal with this. For now I'm just doing
+    docker-compose restart orion
+
 # Open Questions:
  - When going to distributed stage, how to configure IPS of the db instances?
  - How to automate steps executed within a container on the mongo console?
