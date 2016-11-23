@@ -21,17 +21,17 @@ mongo --host ${MONGODB1}:27017 <<EOF
             {
                 "_id": 0,
                 "host": "${MONGODB1}:27017",
-                "priority": 2
+                "priority": 3
             },
             {
                 "_id": 1,
                 "host": "${MONGODB2}:27017",
-                "priority": 0
+                "priority": 2
             },
             {
                 "_id": 2,
                 "host": "${MONGODB3}:27017",
-                "priority": 0
+                "priority": 1
             }
         ]
     };
