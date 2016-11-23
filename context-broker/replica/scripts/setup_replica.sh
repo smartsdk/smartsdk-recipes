@@ -38,8 +38,3 @@ mongo --host ${MONGODB1}:27017 <<EOF
     rs.initiate(cfg, { force: true });
     rs.reconfig(cfg, { force: true });
 EOF
-# Configure Replica Set
-# echo $(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ttnd1) "$h1"
-
-# finally run orion linked to the replica master
-# docker run -d --name $ORION_NAME --link ${DB_NAME_1}:${DB_NAME_1} -p 1026:1026 fiware/orion -dbhost ${DB_NAME_1}
