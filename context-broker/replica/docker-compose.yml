@@ -3,6 +3,8 @@ mongo3:
   container_name: mongo3
   image: mongo:3.2
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  volumes:
+    - ./data3/:/data/db
   ports:
     - "27019:27017"
     - "28019:28017"
@@ -13,6 +15,8 @@ mongo2:
   container_name: mongo2
   image: mongo:3.2
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  volumes:
+    - ./data2/:/data/db
   ports:
     - "27018:27017"
     - "28018:28017"  # for http info
@@ -23,6 +27,8 @@ mongo1:
   container_name: mongo1
   image: mongo:3.2
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  volumes:
+    - ./data1/:/data/db
   ports:
     - "27017:27017"
     - "28017:28017"
@@ -47,7 +53,7 @@ orion:
     hostname: orion
     container_name: orion
     links:
-        - mongo1
+        - mongosetup
     expose:
         - "1026"
     ports:
