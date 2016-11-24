@@ -53,9 +53,9 @@ orion:
     hostname: orion
     container_name: orion
     links:
-        - mongosetup
+        - mongo1
     expose:
         - "1026"
     ports:
         - "1026:1026"
-    command: -dbhost mongo1
+    command: -dbhost mongo1 -rplSet rs
