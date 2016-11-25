@@ -58,4 +58,7 @@ orion:
         - "1026"
     ports:
         - "1026:1026"
-    command: -dbhost mongo1 -rplSet rs
+    volumes:
+      - ./scripts/:/scripts
+      - ../../wait-for-it/:/wait-for-it
+    entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_orion.sh  # 10 seconds per replica member should be enough

@@ -25,12 +25,8 @@ Tests I'd do:
  - Restart containers and query data again (i.e, test persistence)
 
 # Known issues (TODO)
- - Orion needs to wait for mongo1.
-    Currently there is no solution for this within docker-compose, so a script
-    will have to be added to deal with this. For now I'm just doing
-    docker-compose restart orion.
-    # http://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
  - Is mongosetup failing?
+ - rest option in mongodb is not secure in production :(
 
 # Open Questions:
  - When going to distributed stage, how to configure IPS of the db instances?
