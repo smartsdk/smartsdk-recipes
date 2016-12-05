@@ -1,4 +1,5 @@
 #!/bin/bash
+# Simple script to insert something into Orion Context Broker
 curl localhost:1026/v2/entities -s -S --header 'Content-Type: application/json' -d @- <<EOF
 {
   "id": "Room1",
