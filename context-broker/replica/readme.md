@@ -36,7 +36,7 @@ A fourth container (mongosetup) will wait for _mongo1_ to be ready and then exec
 
 The fifth and last container will host Orion, who will be linked to the _mongo1_ container as its backend once its ready. It will execute *setup_orion.sh* to start Orion in the replicaset mode with enough timeout for the actual replica to be ready.
 
-![Orion with Replica Set Details](docs/replica_details.svg "Orion with replica set details")
+![Orion with Replica Set Details](docs/replica_details.png "Orion with replica set details")
 
 You can experiment different configurations, including timeouts, by editing the file _.env_ before calling docker-compose.
 
