@@ -4,7 +4,7 @@ mongo3:
   image: mongo:3.2
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
   volumes:
-    - ./data3/:/data/db
+    - ${DATA3_PATH}:/data/db
   ports:
     - "27019:27017"
   restart: always
@@ -15,7 +15,7 @@ mongo2:
   image: mongo:3.2
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
   volumes:
-    - ./data2/:/data/db
+    - ${DATA2_PATH}:/data/db
   ports:
     - "27018:27017"
   restart: always
@@ -26,7 +26,7 @@ mongo1:
   image: mongo:3.2
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
   volumes:
-    - ./data1/:/data/db
+    - ${DATA1_PATH}:/data/db
   ports:
     - "27017:27017"
   links:
@@ -43,6 +43,7 @@ mongosetup:
     - mongo3:mongo3
   volumes:
     - ./scripts/:/scripts
+    - ../../wait-for-it/:/wait-for-it
   entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_replica.sh
 
 orion:
@@ -58,4 +59,4 @@ orion:
     volumes:
       - ./scripts/:/scripts
       - ../../wait-for-it/:/wait-for-it
-    entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_orion.sh  # 10 seconds per replica member should be enough
+    entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_orion.sh

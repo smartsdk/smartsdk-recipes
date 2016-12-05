@@ -10,6 +10,6 @@ All elements will be running in docker containers, defined in a docker-compose f
 
     $ cd context-broker/simple
 
-Modify _.env_ file (or even _docker-compose.py_) according to your needs.
+Optionally, modify _.env_ file (or even _docker-compose.py_) according to your needs.
 
     $ docker-compose up -d

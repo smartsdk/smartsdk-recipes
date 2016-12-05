@@ -5,8 +5,7 @@ MONGODB1=`ping -c 1 mongo1 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
 MONGODB2=`ping -c 1 mongo2 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
 MONGODB3=`ping -c 1 mongo3 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
 
-echo "Starting configuration of replicaset..."
-echo SETUP.sh time now: `date +"%T" `
+echo "Starting configuration of replica set..."
 mongo --host ${MONGODB1}:27017 <<EOF
    var cfg = {
         "_id": "rs",
