@@ -1,46 +1,40 @@
-# Steps
-1) [x] Run orion with mongo using docker containers locally
-2) [x] Same as before but guarantee data persistence after containers reset.
-3) [x] Introduce mongo replica set to the previous scenario
-4) [x] Test all cases
-5) Now distribute the containers in different hosts (docker-machine?)
-6) Add authentication for the db? (shouldn't orion take care of that?)
-7) Parametrize all ad-hoc strings
-8) Run automated tests
-9) Update docs
+# Orion With Replica Set
 
-# Testing
+This recipe aims to allow developers to instantiate an Orion Context Broker instance backed with a [replica set](https://docs.mongodb.com/v3.2/replication/) of MongoDB instances. All elements will be running in docker containers, defined in a docker-compose file.
 
-## Testing within mongo
-Enter the mongo console from the mongo container like this:
-    $ docker exec -it mongo1 bash
-    $ mongo
-    $ user orion
-    $ db.entities.find({})
+[ADD PATTERN IMAGE HERE]()
 
-Tests I'd do:
- - Setup replica3. And insert something in orion.
- - Query all instances for that info
- - Kill master and query again for info
- - Restart containers and query data again (i.e, test persistence)
+The recipe's configuration as of now is more suitable for a __development environment__. It has some default values which you might be able to edit with ease.
 
-# Known issues (TODO)
- - Is mongosetup failing?
- - rest option in mongodb is not secure in production :(
+The replicas will all be launched in the local environment, but nothing prohibits deploying replicas in different hosts, in fact, that would be more likely in a production deployment scenario.
 
-# Open Questions:
- - When going to distributed stage, how to configure IPS of the db instances?
-    - script can query ip based on container name
- - How to automate steps executed within a container on the mongo console?
-    - can use a mongo config file to be loaded
- - How to manage authentication to the dbs?
- - Will orion loose connection to mongo when the primary is changed?
-    - Yes, if using -rplSet param
+If you are planning to use it in a __production environment__, further considerations need to be taken into account as show in the corresponding section.
 
-# Resources
- - [mongoDB replicas](https://docs.mongodb.com/manual/replication/)
- - https://medium.com/@gargar454/deploy-a-mongodb-cluster-in-steps-9-using-docker-49205e231319#.mcu0vzbse
- - http://www.sohamkamani.com/blog/2016/06/30/docker-mongo-replica-set/
- - http://www.emergingafrican.com/2016/02/deploying-mongodb-replica-sets-with.html
- - http://stackoverflow.com/questions/27187591/deploy-mongodb-replicaset-servers-with-docker-on-different-physical-servers
- - https://www.mongodb.com/blog/post/running-mongodb-as-a-microservice-with-docker-and-kubernetes
+
+## Using locally
+
+#### How to use
+
+    $ git clone --recursive https://github.com/?
+
+    $ cd context-broker/replica
+
+    $ docker-compose up -d
+
+#### How it works
+
+#### Troubleshooting
+- If Orion fails to conect to the database try a restart
+        $ docker restart orion
+
+## Using distributed
+
+#### How to use
+- define your cluster?
+
+#### How it works
+
+## Important considerations
+
+ - All nodes must be in the same network, in other words, reachable among them.
+ - If you are running behind a firewall, make sure to keep traffic open for TCP at ports 1026 (orion default) and 27017 (mongo default)
