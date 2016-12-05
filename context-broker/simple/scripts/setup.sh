@@ -1,3 +1,3 @@
 #!/bin/bash
-echo "hi hack"
+echo "Running setup.sh..."
 /usr/bin/contextBroker -fg -multiservice -dbhost mongo

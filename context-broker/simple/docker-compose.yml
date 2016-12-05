@@ -1,16 +1,16 @@
-# Note that mongo container is started before Orion, as Orion needs it
-# as dependency and reserve the order has been found problematic in some
-# low resource hosts
+# Note that mongo container should be started before Orion.
 mongo:
-  image: mongo:3.2
+  image: mongo:${MONGO_VERSION}
   command: --nojournal
+  volumes:
+      - ${DATA_PATH}:/data/db  # To give persistence for the db.
 
 orion:
-  image: fiware/orion
+  image: fiware/orion:${ORION_VERSION}
   links:
     - mongo
   ports:
     - "1026:1026"
   volumes:
       - ./scripts/:/scripts
-  entrypoint: /scripts/setup.sh
+  entrypoint: /scripts/setup.sh  # to test an alternative entrypoint.
