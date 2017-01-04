@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+
+  haproxy:
+      build: ./haproxy/
+      ports:
+        - "1026:1026"
+      depends_on:
+        - orion
+      networks:
+        - mynetwork
+
+  mongo:
+    image: mongo:${MONGO_VERSION}
+    command: --nojournal
+    volumes:
+      - ${DATA_PATH}:/data/db
+    networks:
+      - mynetwork
+
+  orion:
+    image: fiware/orion:${ORION_VERSION}
+    command: -dbhost mongo
+    networks:
+      - mynetwork
+    links:
+      - mongo
+
+networks:
+  mynetwork:
+    driver: bridge
