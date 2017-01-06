@@ -7,7 +7,9 @@ services:
       ports:
         - "1026:1026"
       depends_on:
-        - orion
+        - orion1
+        - orion2
+        - orion3
       networks:
         - mynetwork
 
@@ -19,7 +21,23 @@ services:
     networks:
       - mynetwork
 
-  orion:
+  orion1:
+    image: fiware/orion:${ORION_VERSION}
+    command: -dbhost mongo
+    networks:
+      - mynetwork
+    links:
+      - mongo
+
+  orion2:
+    image: fiware/orion:${ORION_VERSION}
+    command: -dbhost mongo
+    networks:
+      - mynetwork
+    links:
+      - mongo
+
+  orion3:
     image: fiware/orion:${ORION_VERSION}
     command: -dbhost mongo
     networks:
