@@ -7,7 +7,7 @@
  2. [x] Place a HAProxy in front of 3 instances of CB.
  3. [] Experiment moving the scenario to a docker-swarm
  4. [] Use, per swarm node, 2 instances of HAProxy and 2 of CB.
- 5. [] Use multiple instances of the db (but in replicaset)
+ 5. [] Use multiple instances of the db (but with the same data, e.g using replicaset)
 
 ### Known issues
 - If we wanted to dynamically add more backend servers in HAProxy‘s farm we still need to restart HAProxy‘s container (and update configuration accordingly) -> checkout docker-flow-proxy
