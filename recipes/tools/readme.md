@@ -1,13 +1,12 @@
 # Tools
 
-This folder contains useful (and sometimes temporary) scripts and references.
+This section contains useful (and sometimes temporary) scripts as well as references.
 
-### Docker Swarm
+### For Docs
+- [diagramr](http://diagramr.inventage.com): To create diagrams from docker-compose.yml.
 
-To quickly get up and running a Docker Swarm cluster to test the recipes:
 
-    $ sh create-swarm.sh
-
-When you are ready, remove it with:
-
-    $ sh remove-swarm.sh
+### For Env
+- [wait-for-it](https://github.com/vishnubob/wait-for-it): To wait for a service.
+- [create-swarm.sh](create-swarm.sh): To launch a simple Docker Swarm
+- [remove-swarm.sh](remove-swarm.sh): To remove the Swarm.

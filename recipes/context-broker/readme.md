@@ -90,7 +90,7 @@ This recipe aims to allow developers to instantiate an [Orion Context Broker](ht
 
 All elements will be running in docker containers, defined in a docker-compose file.
 
-![Orion with Replica Set Overview](docs/replica_overview.png "Orion with replica set overview")
+![Orion with Replica Set Overview](replica/docs/replica_overview.png "Orion with replica set overview")
 
 The recipe's configuration as of now is more suitable for a __development environment__. It has some default values which you might be able to edit with ease.
 
@@ -118,12 +118,13 @@ A fourth container (mongosetup) will wait for _mongo1_ to be ready and then exec
 
 The fifth and last container will host Orion, who will be linked to the _mongo1_ container as its backend once its ready. It will execute *setup_orion.sh* to start Orion in the replicaset mode with enough timeout for the actual replica to be ready.
 
-![Orion with Replica Set Details](docs/replica_details.png "Orion with replica set details")
+![Orion with Replica Set Details](replica/docs/replica_details.png "Orion with replica set details")
 
 You can experiment different configurations, including timeouts, by editing the file _.env_ before calling docker-compose.
 
 ##### Troubleshooting
 - If Orion fails to connect to the database try to restart it.
+
         $ docker restart orion
 
 ##### Important considerations

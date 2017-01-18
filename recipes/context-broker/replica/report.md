@@ -46,10 +46,6 @@ Before querying secondary you need to execute
   - Which security issues are opened with such a replica?
     - [x] Avoid "rest" option in MongoDB because it is not secure for production.
 
-### Tools
- - [diagramr](http://diagramr.inventage.com): To create diagrams from docker-compose.yml.
- - [wait-for-it](https://github.com/vishnubob/wait-for-it): To wait for a service.
-
 ### Resources
    - [mongoDB replicas](https://docs.mongodb.com/manual/replication/)
    - [elastic-mongo](https://github.com/soldotno/elastic-mongo)
