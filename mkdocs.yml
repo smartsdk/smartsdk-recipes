@@ -1,1 +1,13 @@
 site_name: SmartSDK Recipes
+site_description: Docker recipes for FIWARE Generic Enablers
+docs_dir: 'recipes'
+pages:
+  - Home: index.md
+  - 'Recipes':
+    - 'Orion': 'context-broker/readme.md'
+  - 'Tools': 'tools/readme.md'
+theme: readthedocs
+markdown_extensions: [toc,fenced_code]
+extra_css: ["https://fiware.org/style/fiware_readthedocs.css"]
+repo_url: https://github.com/martel-innovate/smartsdk-recipes
+edit_uri: edit/master/recipes/
