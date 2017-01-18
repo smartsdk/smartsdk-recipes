@@ -213,7 +213,7 @@ fiware/orion -dbhost mongo
 <h1 id="db-in-replica-set">DB in replica-set</h1>
 <p>This recipe aims to allow developers to instantiate an <a href="https://github.com/telefonicaid/fiware-orion/blob/master/README.md">Orion Context Broker</a> instance backed with a <a href="https://docs.mongodb.com/v3.2/replication/">replica set</a> of MongoDB instances.</p>
 <p>All elements will be running in docker containers, defined in a docker-compose file.</p>
-<p><img alt="Orion with Replica Set Overview" src="../docs/replica_overview.png" title="Orion with replica set overview" /></p>
+<p><img alt="Orion with Replica Set Overview" src="../replica/docs/replica_overview.png" title="Orion with replica set overview" /></p>
 <p>The recipe's configuration as of now is more suitable for a <strong>development environment</strong>. It has some default values which you might be able to edit with ease.</p>
 <p>The replicas will all be launched in the local environment, but nothing prohibits deploying replicas in different hosts, in fact, that would be more likely in a production deployment scenario.</p>
 <p>If you are planning to use it in a <strong>production environment</strong>, further considerations need to be taken into account as show in the corresponding section.</p>
@@ -230,12 +230,13 @@ $ docker-compose up -d
 that will be triggered (mongo1, mongo2, mongo3).</p>
 <p>A fourth container (mongosetup) will wait for <em>mongo1</em> to be ready and then execute the <em>setup_replica.sh</em> script to configure the replica set with the 3 mongo instances.</p>
 <p>The fifth and last container will host Orion, who will be linked to the <em>mongo1</em> container as its backend once its ready. It will execute <em>setup_orion.sh</em> to start Orion in the replicaset mode with enough timeout for the actual replica to be ready.</p>
-<p><img alt="Orion with Replica Set Details" src="../docs/replica_details.png" title="Orion with replica set details" /></p>
+<p><img alt="Orion with Replica Set Details" src="../replica/docs/replica_details.png" title="Orion with replica set details" /></p>
 <p>You can experiment different configurations, including timeouts, by editing the file <em>.env</em> before calling docker-compose.</p>
 <h5 id="troubleshooting">Troubleshooting</h5>
 <ul>
-<li>If Orion fails to connect to the database try to restart it.
-        $ docker restart orion</li>
+<li>If Orion fails to connect to the database try to restart it.<pre><code>$ docker restart orion
+</code></pre>
+</li>
 </ul>
 <h5 id="important-considerations">Important considerations</h5>
 <ul>
