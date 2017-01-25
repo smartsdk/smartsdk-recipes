@@ -1,16 +1,19 @@
 # Note that mongo container should be started before Orion.
-mongo:
-  image: mongo:${MONGO_VERSION}
-  command: --nojournal
-  volumes:
-      - ${DATA_PATH}:/data/db  # To give persistence for the db.
+version: '2'
 
-orion:
-  image: fiware/orion:${ORION_VERSION}
-  links:
-    - mongo
-  ports:
-    - "1026:1026"
-  volumes:
-      - ./scripts/:/scripts
-  entrypoint: /scripts/setup.sh  # to test an alternative entrypoint.
+services:
+    mongo:
+      image: mongo:${MONGO_VERSION}
+      command: --nojournal
+      volumes:
+          - ${DATA_PATH}:/data/db  # To give persistence for the db.
+
+    orion:
+      image: fiware/orion:${ORION_VERSION}
+      links:
+        - mongo
+      ports:
+        - "1026:1026"
+      volumes:
+          - ./scripts:/scripts
+      entrypoint: /scripts/setup.sh  # To allow customized entrypoint.

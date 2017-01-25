@@ -1,16 +1,25 @@
 # Simple Scenario
 
+##### Introduction
 This simple recipe triggers an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) instance backed with a [MongoDB](https://docs.mongodb.com) instance.
 
-All elements will be running in docker containers, defined in a docker-compose file.
+Both services will be running in docker containers, defined in the *simple/docker-compose.yml* file.
+
+Data will be persisted, by default, in a local folder called data. However, this can changed by editing the value of *DATA_PATH* variable in the _.env_ file.
+
+![Orion with Replica Set Overview](simple/docs/compose.png "Simple compose overview")
 
 ##### How to use
 
-    $ cd simple
+Optionally, you can modify *.env* file (or even _docker-compose.yml_) according to your needs. Then simply run:
 
-    # Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.
-
+    $ cd simple/
     $ docker-compose up -d
+
+##### How to check
+Simply run the following command and it should return info about orion.
+
+    $ curl localhost:1026/version
 
 
 # Orion in HA
