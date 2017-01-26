@@ -16,6 +16,19 @@ Optionally, you can modify *.env* file (or even _docker-compose.yml_) according 
     $ docker-compose up -d
 
 ##### How to validate
-Simply run the following command and it should return info about orion.
+Simply run the following command:
 
     $ curl localhost:1026/version
+
+It should return something like:
+
+    {
+    "orion" : {
+      "version" : "1.6.0-next",
+      "uptime" : "0 d, 0 h, 5 m, 24 s",
+      "git_hash" : "61be6c26c59469621a664d7aeb1490d6363cad38",
+      "compile_time" : "Tue Jan 24 10:52:30 UTC 2017",
+      "compiled_by" : "root",
+      "compiled_in" : "b99744612d0b"
+    }
+    }
