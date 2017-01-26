@@ -4,7 +4,12 @@ docs_dir: 'recipes'
 pages:
   - Home: index.md
   - 'Recipes':
-    - 'Orion': 'context-broker/readme.md'
+    - 'Context Broker':
+        - 'Simple': 'context-broker/simple/readme.md'
+        - 'HA': 'context-broker/ha/readme.md'
+        - 'Replica Set': 'context-broker/replica/readme.md'
+    - 'Mongodb':
+        - 'Replica Set': 'mongodb/replica/readme.md'
   - 'Tools': 'tools/readme.md'
 theme: readthedocs
 markdown_extensions: [toc,fenced_code]
