@@ -1,0 +1,47 @@
+mongo3:
+  hostname: mongo3
+  container_name: mongo3
+  image: mongo:3.2
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
+  volumes:
+    - ${DATA3_PATH}:/data/db
+  ports:
+    - "27019:27017"
+  restart: always
+
+mongo2:
+  hostname: mongo2
+  container_name: mongo2
+  image: mongo:3.2
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
+  volumes:
+    - ${DATA2_PATH}:/data/db
+  ports:
+    - "27018:27017"
+  restart: always
+
+mongo1:
+  hostname: mongo1
+  container_name: mongo1
+  image: mongo:3.2
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
+  volumes:
+    - ${DATA1_PATH}:/data/db
+  ports:
+    - "27017:27017"
+  links:
+    - mongo2:mongo2
+    - mongo3:mongo3
+  restart: always
+
+# Temp container just to configure the MongoDB replicaset
+mongosetup:
+  image: mongo:3.2
+  links:
+    - mongo1:mongo1
+    - mongo2:mongo2
+    - mongo3:mongo3
+  volumes:
+    - ./scripts/:/scripts
+    - ../../../wait-for-it/:/wait-for-it
+  entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_replica.sh
