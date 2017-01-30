@@ -14,4 +14,6 @@ All recipes should have an introduction with a high-level overview of what the r
 
         $ dot compose.dot -Tpng -o compose.png
 
+- [draw.io](https://www.draw.io): Being evaluated as alternative/replacement of the previous two.
+
 - [color names](http://www.graphviz.org/doc/info/colors.html#brewer): The reference for color names used in .dot files.

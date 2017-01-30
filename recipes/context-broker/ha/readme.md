@@ -2,6 +2,25 @@
 
 The goal of this recipe is to allow developers instantiate N replicas of an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) in a docker swarm cluster.
 
+<img src='http://g.gravizo.com/g?
+digraph Cluster {
+  rankdir=LR;
+  node [shape="rect" style="filled"];
+  Client [fillcolor="aliceblue"];
+  subgraph cluster1 {
+    label = "Docker Swarm";
+    MongoDB [fillcolor="aliceblue"];
+    Orion1 [fillcolor="aliceblue"];
+    Orion2 [fillcolor="aliceblue"];
+    Orion3 [fillcolor="aliceblue"];
+  };
+  Client -> Orion2 [label="1026"];
+  Orion1 -> MongoDB;
+  Orion2 -> MongoDB;
+  Orion3-> MongoDB;
+}  
+'>
+
 ##### How to run it
 
 First you need to have a Docker Swarm already setup. Checkout the [tools](../../tools/readme.md) section for a quick alternative for local tests.
