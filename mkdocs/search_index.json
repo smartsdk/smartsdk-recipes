@@ -2,98 +2,138 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Welcome\n\n\nThis site is dedicated to the documentation of the recipes brought by\n\nSmartSDK\n to launch, test and experiment different\n\nFIWARE Generic Enablers\n.\n\n\nRequirements\n\n\nIn order to use these recipes you need to have \nDocker\n version \n=\n1.12. Docker installation instructions can be found\n\nhere\n.", 
+            "text": "Welcome\n\n\nThis site is dedicated to the documentation of the recipes brought by\n\nSmartSDK\n to launch, test and experiment different\n\nFIWARE Generic Enablers\n and combinations of them, usually defined as common use cases.\n\n\nRecipes will be based on \nDocker\n, \ndocker-compose\n and maybe some complementary scripts. For simple cases, they will be aimed to run on a single Docker host. For more complex scenarios, they will be aimed to run in a \nDocker Swarm\n.\n\n\nRequirements\n\n\n\n\nDocker\n version \n= 1.13. Installation instructions \nhere", 
             "title": "Home"
         }, 
         {
             "location": "/#welcome", 
-            "text": "This site is dedicated to the documentation of the recipes brought by SmartSDK  to launch, test and experiment different FIWARE Generic Enablers .", 
+            "text": "This site is dedicated to the documentation of the recipes brought by SmartSDK  to launch, test and experiment different FIWARE Generic Enablers  and combinations of them, usually defined as common use cases.  Recipes will be based on  Docker ,  docker-compose  and maybe some complementary scripts. For simple cases, they will be aimed to run on a single Docker host. For more complex scenarios, they will be aimed to run in a  Docker Swarm .", 
             "title": "Welcome"
         }, 
         {
             "location": "/#requirements", 
-            "text": "In order to use these recipes you need to have  Docker  version  =\n1.12. Docker installation instructions can be found here .", 
+            "text": "Docker  version  = 1.13. Installation instructions  here", 
             "title": "Requirements"
         }, 
         {
-            "location": "/context-broker/readme/", 
-            "text": "Simple Scenario\n\n\nThis simple recipe triggers an \nOrion Context Broker\n instance backed with a \nMongoDB\n instance.\n\n\nAll elements will be running in docker containers, defined in a docker-compose file.\n\n\nHow to use\n\n\n$ cd simple\n\n# Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.\n\n$ docker-compose up -d\n\n\n\nOrion in HA\n\n\nThe goal of this recipe is to allow developers instantiate N replicas of an \nOrion Context Broker\n in a docker swarm cluster.\n\n\nHow to run it locally (no cluster)\n\n\n$ cd ha\n\n# Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.\n\n$ docker-compose up -d\n\n\n\nHow to run in cluster\n\n\nTODO: Turn this into a docker-compose file once the compose-swarm integration is ready.\n\n\nTo simplify, the following instructions will be using a simple docker swarm created with the scripts provided in the swarm folder. But of course, in practice, your swarm deployment will be different, depending on your chosen infrastructure.\n\n\n$ sh ../tools/create-swarm.sh\n\n\n\nNow, from the swarm-master node, create the networks:\n\n\n$ eval $(docker-machine env node-1)\n$ docker network create --driver overlay proxy\n$ docker network create --driver overlay hacb\n\n\n\nNow it's time to create a swarm listener service, which will notify the proxy when new services\nare created/removed so as to dynamically update the proxy configuration.\n\n\n$ docker service create --name swarm-listener \\\n    --network proxy \\\n    --mount \"type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock\" \\\n    -e DF_NOTIF_CREATE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/reconfigure \\\n    -e DF_NOTIF_REMOVE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/remove \\\n    --constraint 'node.role==manager' \\\n    vfarcic/docker-flow-swarm-listener\n\n\n\nNote that services might take some time until fully deployed. So, please wait until all the requested replicas are ready before creating new services. This can be done running:\n\n\n$ docker service ls\n\n\n\nNow create the proxy service.\n\n\n$ docker service create --name proxy \\\n    -p 80:80 \\\n    -p 443:443 \\\n    -p 1026:1026 \\\n    --network proxy \\\n    -e MODE=swarm \\\n    -e LISTENER_ADDRESS=swarm-listener \\\n    vfarcic/docker-flow-proxy\n\n\n\nThen the database (be patient until it's ready).\n\n\n$ docker service create --name mongo --network hacb mongo:3.2 --nojournal\n\n\n\nAnd finally Orion, linking to mongo as usual.\n\n\n$ docker service create --name orion \\\n--network hacb \\\n--network proxy \\\n--label com.df.notify=true \\\n--label com.df.distribute=true \\\n--label com.df.servicePath=/version \\\n--label com.df.port=1026 \\\nfiware/orion -dbhost mongo\n\n\n\nNow let's query Orion from the proxy to check it's up and running:\n\n\n$ curl -i $(docker-machine ip node-1):1026/version\n\n\n\nDB in replica-set\n\n\nThis recipe aims to allow developers to instantiate an \nOrion Context Broker\n instance backed with a \nreplica set\n of MongoDB instances.\n\n\nAll elements will be running in docker containers, defined in a docker-compose file.\n\n\n\n\nThe recipe's configuration as of now is more suitable for a \ndevelopment environment\n. It has some default values which you might be able to edit with ease.\n\n\nThe replicas will all be launched in the local environment, but nothing prohibits deploying replicas in different hosts, in fact, that would be more likely in a production deployment scenario.\n\n\nIf you are planning to use it in a \nproduction environment\n, further considerations need to be taken into account as show in the corresponding section.\n\n\nHow to use\n\n\n$ cd replica\n\n# Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.\n\n$ docker-compose up -d\n\n\n\nAllow some time until things get connected before querying for content.\n\n\nHow it works\n\n\nThe way this work is pretty straightforward. To begin with, there are three mongo containers\nthat will be triggered (mongo1, mongo2, mongo3).\n\n\nA fourth container (mongosetup) will wait for \nmongo1\n to be ready and then execute the \nsetup_replica.sh\n script to configure the replica set with the 3 mongo instances.\n\n\nThe fifth and last container will host Orion, who will be linked to the \nmongo1\n container as its backend once its ready. It will execute \nsetup_orion.sh\n to start Orion in the replicaset mode with enough timeout for the actual replica to be ready.\n\n\n\n\nYou can experiment different configurations, including timeouts, by editing the file \n.env\n before calling docker-compose.\n\n\nTroubleshooting\n\n\n\n\nIf Orion fails to connect to the database try to restart it.\n$ docker restart orion\n\n\n\n\n\n\n\nImportant considerations\n\n\n\n\nAll nodes must be in the same network, in other words, reachable among them.\n\n\nIf you are running behind a firewall, make sure to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default)", 
-            "title": "Orion"
+            "location": "/context-broker/simple/readme/", 
+            "text": "Simple Scenario\n\n\nIntroduction\n\n\nThis simple recipe triggers an \nOrion Context Broker\n instance backed with a \nMongoDB\n instance.\n\n\nBoth services will be running in docker containers, defined in the \nsimple/docker-compose.yml\n file.\n\n\nData will be persisted, by default, in a local folder called data. However, this can changed by editing the value of \nDATA_PATH\n variable in the \n.env\n file.\n\n\n\n\nHow to use\n\n\nOptionally, you can modify \n.env\n file (or even \ndocker-compose.yml\n) according to your needs. Then simply run:\n\n\n$ docker-compose up -d\n\n\n\nHow to validate\n\n\nSimply run the following command:\n\n\n$ curl localhost:1026/version\n\n\n\nIt should return something like:\n\n\n{\n\"orion\" : {\n  \"version\" : \"1.6.0-next\",\n  \"uptime\" : \"0 d, 0 h, 5 m, 24 s\",\n  \"git_hash\" : \"61be6c26c59469621a664d7aeb1490d6363cad38\",\n  \"compile_time\" : \"Tue Jan 24 10:52:30 UTC 2017\",\n  \"compiled_by\" : \"root\",\n  \"compiled_in\" : \"b99744612d0b\"\n}\n}", 
+            "title": "Simple"
         }, 
         {
-            "location": "/context-broker/readme/#simple-scenario", 
-            "text": "This simple recipe triggers an  Orion Context Broker  instance backed with a  MongoDB  instance.  All elements will be running in docker containers, defined in a docker-compose file.", 
+            "location": "/context-broker/simple/readme/#simple-scenario", 
+            "text": "", 
             "title": "Simple Scenario"
         }, 
         {
-            "location": "/context-broker/readme/#how-to-use", 
-            "text": "$ cd simple\n\n# Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.\n\n$ docker-compose up -d", 
+            "location": "/context-broker/simple/readme/#introduction", 
+            "text": "This simple recipe triggers an  Orion Context Broker  instance backed with a  MongoDB  instance.  Both services will be running in docker containers, defined in the  simple/docker-compose.yml  file.  Data will be persisted, by default, in a local folder called data. However, this can changed by editing the value of  DATA_PATH  variable in the  .env  file.", 
+            "title": "Introduction"
+        }, 
+        {
+            "location": "/context-broker/simple/readme/#how-to-use", 
+            "text": "Optionally, you can modify  .env  file (or even  docker-compose.yml ) according to your needs. Then simply run:  $ docker-compose up -d", 
             "title": "How to use"
         }, 
         {
-            "location": "/context-broker/readme/#orion-in-ha", 
+            "location": "/context-broker/simple/readme/#how-to-validate", 
+            "text": "Simply run the following command:  $ curl localhost:1026/version  It should return something like:  {\n\"orion\" : {\n  \"version\" : \"1.6.0-next\",\n  \"uptime\" : \"0 d, 0 h, 5 m, 24 s\",\n  \"git_hash\" : \"61be6c26c59469621a664d7aeb1490d6363cad38\",\n  \"compile_time\" : \"Tue Jan 24 10:52:30 UTC 2017\",\n  \"compiled_by\" : \"root\",\n  \"compiled_in\" : \"b99744612d0b\"\n}\n}", 
+            "title": "How to validate"
+        }, 
+        {
+            "location": "/context-broker/ha/readme/", 
+            "text": "Orion in HA\n\n\nThe goal of this recipe is to allow developers instantiate N replicas of an \nOrion Context Broker\n in a docker swarm cluster.\n\n\n\n\nHow to run it\n\n\nFirst you need to have a Docker Swarm already setup. Checkout the \ntools\n section for a quick alternative for local tests.\n\n\nThen you can optionally adjust \ndocker-compose.yml\n file according to your needs. If you do so, checkout the \ndocker-compose documentation\n to avoid conflicting options (e.g, giving container name to orion and then trying to scale it).\n\n\nFinally, run:\n\n\n$ docker stack deploy --compose-file=docker-compose.yml context-broker\n\n\n\nHow to validate it\n\n\nNote that services might take some time until fully deployed. So, please wait until all the requested replicas are ready before creating new services. This can be done running:\n\n\n$ docker service ls\n\n\n\nYou can check the distribution of your containers among the swarm node running:\n\n\n$ docker service ps context-broker_orion\n\n\n\nNow let's query Orion to check it's up and running:\n\n\n$ curl -i $(docker-machine ip ms-manager0):1026/version\n\n\n\nThanks to the docker swarm internal meshing you can actually perform the previous query to any node of the swarm, it will be redirected to a node where the request on port 1026 can be attended (any node running Orion).", 
+            "title": "HA"
+        }, 
+        {
+            "location": "/context-broker/ha/readme/#orion-in-ha", 
             "text": "The goal of this recipe is to allow developers instantiate N replicas of an  Orion Context Broker  in a docker swarm cluster.", 
             "title": "Orion in HA"
         }, 
         {
-            "location": "/context-broker/readme/#how-to-run-it-locally-no-cluster", 
-            "text": "$ cd ha\n\n# Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.\n\n$ docker-compose up -d", 
-            "title": "How to run it locally (no cluster)"
+            "location": "/context-broker/ha/readme/#how-to-run-it", 
+            "text": "First you need to have a Docker Swarm already setup. Checkout the  tools  section for a quick alternative for local tests.  Then you can optionally adjust  docker-compose.yml  file according to your needs. If you do so, checkout the  docker-compose documentation  to avoid conflicting options (e.g, giving container name to orion and then trying to scale it).  Finally, run:  $ docker stack deploy --compose-file=docker-compose.yml context-broker", 
+            "title": "How to run it"
         }, 
         {
-            "location": "/context-broker/readme/#how-to-run-in-cluster", 
-            "text": "", 
-            "title": "How to run in cluster"
+            "location": "/context-broker/ha/readme/#how-to-validate-it", 
+            "text": "Note that services might take some time until fully deployed. So, please wait until all the requested replicas are ready before creating new services. This can be done running:  $ docker service ls  You can check the distribution of your containers among the swarm node running:  $ docker service ps context-broker_orion  Now let's query Orion to check it's up and running:  $ curl -i $(docker-machine ip ms-manager0):1026/version  Thanks to the docker swarm internal meshing you can actually perform the previous query to any node of the swarm, it will be redirected to a node where the request on port 1026 can be attended (any node running Orion).", 
+            "title": "How to validate it"
         }, 
         {
-            "location": "/context-broker/readme/#todo-turn-this-into-a-docker-compose-file-once-the-compose-swarm-integration-is-ready", 
-            "text": "To simplify, the following instructions will be using a simple docker swarm created with the scripts provided in the swarm folder. But of course, in practice, your swarm deployment will be different, depending on your chosen infrastructure.  $ sh ../tools/create-swarm.sh  Now, from the swarm-master node, create the networks:  $ eval $(docker-machine env node-1)\n$ docker network create --driver overlay proxy\n$ docker network create --driver overlay hacb  Now it's time to create a swarm listener service, which will notify the proxy when new services\nare created/removed so as to dynamically update the proxy configuration.  $ docker service create --name swarm-listener \\\n    --network proxy \\\n    --mount \"type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock\" \\\n    -e DF_NOTIF_CREATE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/reconfigure \\\n    -e DF_NOTIF_REMOVE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/remove \\\n    --constraint 'node.role==manager' \\\n    vfarcic/docker-flow-swarm-listener  Note that services might take some time until fully deployed. So, please wait until all the requested replicas are ready before creating new services. This can be done running:  $ docker service ls  Now create the proxy service.  $ docker service create --name proxy \\\n    -p 80:80 \\\n    -p 443:443 \\\n    -p 1026:1026 \\\n    --network proxy \\\n    -e MODE=swarm \\\n    -e LISTENER_ADDRESS=swarm-listener \\\n    vfarcic/docker-flow-proxy  Then the database (be patient until it's ready).  $ docker service create --name mongo --network hacb mongo:3.2 --nojournal  And finally Orion, linking to mongo as usual.  $ docker service create --name orion \\\n--network hacb \\\n--network proxy \\\n--label com.df.notify=true \\\n--label com.df.distribute=true \\\n--label com.df.servicePath=/version \\\n--label com.df.port=1026 \\\nfiware/orion -dbhost mongo  Now let's query Orion from the proxy to check it's up and running:  $ curl -i $(docker-machine ip node-1):1026/version", 
-            "title": "TODO: Turn this into a docker-compose file once the compose-swarm integration is ready."
+            "location": "/context-broker/replica/readme/", 
+            "text": "Orion with DB in replica-set\n\n\nThis recipe offers an \nOrion Context Broker\n instance backed with a \nreplica set\n of MongoDB instances.\n\n\nAll elements will be running in docker containers, defined in docker-compose files.\n\n\nIt reuses the \nmongodb replica recipe\n.\n\n\n\n\nThe recipe's configuration as of now is more suitable for a \ndevelopment environment\n. It has some default values which you might be able to edit with ease.\n\n\nHow to use\n\n\nFirst run the \nmongodb replica recipe\n. Then...\n\n\n# Optionally, modify _docker-compose.yml_ according to your needs.\n\n$ docker-compose up -d\n\n\n\nAllow some time until things get connected before querying for content.\n\n\nHow it works\n\n\nFor the MongoDB replicaset part refer to \nHow it works\n of the MongoDB replicaset recipe.\n\n\nThen, with enough timeout for the actual replica to be ready, a container is launched using the script \nsetup_orion.sh\n as entrypoint to start Orion in the \nreplicaset\n mode.\n\n\n\n\nImportant considerations\n\n\n\n\nAll containers must be in the same network, in other words, reachable among them.\n\n\nIf you are running containers behind a firewall, make sure to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default)\n\n\n\n\nTroubleshooting\n\n\n\n\nIf Orion fails to connect to the database, try to restart it.\n $ docker restart orion", 
+            "title": "Replica Set"
         }, 
         {
-            "location": "/context-broker/readme/#db-in-replica-set", 
-            "text": "This recipe aims to allow developers to instantiate an  Orion Context Broker  instance backed with a  replica set  of MongoDB instances.  All elements will be running in docker containers, defined in a docker-compose file.   The recipe's configuration as of now is more suitable for a  development environment . It has some default values which you might be able to edit with ease.  The replicas will all be launched in the local environment, but nothing prohibits deploying replicas in different hosts, in fact, that would be more likely in a production deployment scenario.  If you are planning to use it in a  production environment , further considerations need to be taken into account as show in the corresponding section.", 
-            "title": "DB in replica-set"
+            "location": "/context-broker/replica/readme/#orion-with-db-in-replica-set", 
+            "text": "This recipe offers an  Orion Context Broker  instance backed with a  replica set  of MongoDB instances.  All elements will be running in docker containers, defined in docker-compose files.  It reuses the  mongodb replica recipe .   The recipe's configuration as of now is more suitable for a  development environment . It has some default values which you might be able to edit with ease.", 
+            "title": "Orion with DB in replica-set"
         }, 
         {
-            "location": "/context-broker/readme/#how-to-use_1", 
-            "text": "$ cd replica\n\n# Optionally, modify _.env_ file (or even _docker-compose.yml_) according to your needs.\n\n$ docker-compose up -d  Allow some time until things get connected before querying for content.", 
+            "location": "/context-broker/replica/readme/#how-to-use", 
+            "text": "First run the  mongodb replica recipe . Then...  # Optionally, modify _docker-compose.yml_ according to your needs.\n\n$ docker-compose up -d  Allow some time until things get connected before querying for content.", 
             "title": "How to use"
         }, 
         {
-            "location": "/context-broker/readme/#how-it-works", 
-            "text": "The way this work is pretty straightforward. To begin with, there are three mongo containers\nthat will be triggered (mongo1, mongo2, mongo3).  A fourth container (mongosetup) will wait for  mongo1  to be ready and then execute the  setup_replica.sh  script to configure the replica set with the 3 mongo instances.  The fifth and last container will host Orion, who will be linked to the  mongo1  container as its backend once its ready. It will execute  setup_orion.sh  to start Orion in the replicaset mode with enough timeout for the actual replica to be ready.   You can experiment different configurations, including timeouts, by editing the file  .env  before calling docker-compose.", 
+            "location": "/context-broker/replica/readme/#how-it-works", 
+            "text": "For the MongoDB replicaset part refer to  How it works  of the MongoDB replicaset recipe.  Then, with enough timeout for the actual replica to be ready, a container is launched using the script  setup_orion.sh  as entrypoint to start Orion in the  replicaset  mode.", 
             "title": "How it works"
         }, 
         {
-            "location": "/context-broker/readme/#troubleshooting", 
-            "text": "If Orion fails to connect to the database try to restart it. $ docker restart orion", 
-            "title": "Troubleshooting"
-        }, 
-        {
-            "location": "/context-broker/readme/#important-considerations", 
-            "text": "All nodes must be in the same network, in other words, reachable among them.  If you are running behind a firewall, make sure to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default)", 
+            "location": "/context-broker/replica/readme/#important-considerations", 
+            "text": "All containers must be in the same network, in other words, reachable among them.  If you are running containers behind a firewall, make sure to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default)", 
             "title": "Important considerations"
         }, 
         {
+            "location": "/context-broker/replica/readme/#troubleshooting", 
+            "text": "If Orion fails to connect to the database, try to restart it.  $ docker restart orion", 
+            "title": "Troubleshooting"
+        }, 
+        {
+            "location": "/mongodb/replica/readme/", 
+            "text": "MongoDB replica-set\n\n\nThis recipe will automate the creation of a \nreplica set\n of 3 MongoDB instances.\n\n\nIt was written for a single docker host for testing purposes. Of course, in production you don't want all the replica-set instances running in the same host.\n\n\nHow to use\n\n\n# Optionally, modify _.env_ file according to your needs.\n\n$ docker-compose up -d\n\n\n\nHow it works\n\n\nThere are three mongo deamons that will be triggered in their containers (mongo1, mongo2, mongo3).\n\n\nA fourth container (mongosetup) will wait for \nmongo1\n to be ready and then execute the \nsetup_replica.sh\n script to configure the replica set with the 3 mongo instances.\n\n\nFor testing purposes, each mongo instance has its data mapped to a local directory, but this is not a strong requirement.\n\n\nFurther improvements\n\n\n\n\nProvide a more dynamic way to scale this recipe to N nodes.\n\n\nPrepare this recipe to run in a Docker Swarm.", 
+            "title": "Replica Set"
+        }, 
+        {
+            "location": "/mongodb/replica/readme/#mongodb-replica-set", 
+            "text": "This recipe will automate the creation of a  replica set  of 3 MongoDB instances.  It was written for a single docker host for testing purposes. Of course, in production you don't want all the replica-set instances running in the same host.", 
+            "title": "MongoDB replica-set"
+        }, 
+        {
+            "location": "/mongodb/replica/readme/#how-to-use", 
+            "text": "# Optionally, modify _.env_ file according to your needs.\n\n$ docker-compose up -d", 
+            "title": "How to use"
+        }, 
+        {
+            "location": "/mongodb/replica/readme/#how-it-works", 
+            "text": "There are three mongo deamons that will be triggered in their containers (mongo1, mongo2, mongo3).  A fourth container (mongosetup) will wait for  mongo1  to be ready and then execute the  setup_replica.sh  script to configure the replica set with the 3 mongo instances.  For testing purposes, each mongo instance has its data mapped to a local directory, but this is not a strong requirement.", 
+            "title": "How it works"
+        }, 
+        {
+            "location": "/mongodb/replica/readme/#further-improvements", 
+            "text": "Provide a more dynamic way to scale this recipe to N nodes.  Prepare this recipe to run in a Docker Swarm.", 
+            "title": "Further improvements"
+        }, 
+        {
             "location": "/tools/readme/", 
-            "text": "Tools\n\n\nThis section contains useful (and sometimes temporary) scripts as well as references.\n\n\nFor Docs\n\n\n\n\ndiagramr\n: To create diagrams from docker-compose.yml.\n\n\n\n\nFor Env\n\n\n\n\nwait-for-it\n: To wait for a service.\n\n\ncreate-swarm.sh\n: To launch a simple Docker Swarm\n\n\nremove-swarm.sh\n: To remove the Swarm.", 
+            "text": "Tools\n\n\nThis section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.\n\n\nFor Env\n\n\n\n\nminiswarm\n: To manage a local Docker Swarm for testing purposes.\n\n\nwait-for-it\n: To wait for a service. Note: It might no longer be needed with the introduction of the \"healthcheck\" feature in docker-compose.\n\n\n\n\nFor Docs\n\n\n\n\n\n\ngravizo\n: To create diagrams for documenting recipes.\nAll recipes should have an introduction with a high-level overview of what the recipe is used for. We use this tool to create such diagrams.\n\n\n\n\n\n\ndiagramr\n: To give more docker-related details we use this tool to create diagrams from docker-compose files. The tools gives also the .dot file, which is eventually customized and then turned into a png file using \ngraphviz\n.\n\n\n$ dot compose.dot -Tpng -o compose.png\n\n\n\n\n\n\n\ndraw.io\n: Being evaluated as alternative/replacement of the previous two.\n\n\n\n\n\n\ncolor names\n: The reference for color names used in .dot files.", 
             "title": "Tools"
         }, 
         {
             "location": "/tools/readme/#tools", 
-            "text": "This section contains useful (and sometimes temporary) scripts as well as references.", 
+            "text": "This section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.", 
             "title": "Tools"
         }, 
         {
-            "location": "/tools/readme/#for-docs", 
-            "text": "diagramr : To create diagrams from docker-compose.yml.", 
-            "title": "For Docs"
+            "location": "/tools/readme/#for-env", 
+            "text": "miniswarm : To manage a local Docker Swarm for testing purposes.  wait-for-it : To wait for a service. Note: It might no longer be needed with the introduction of the \"healthcheck\" feature in docker-compose.", 
+            "title": "For Env"
         }, 
         {
-            "location": "/tools/readme/#for-env", 
-            "text": "wait-for-it : To wait for a service.  create-swarm.sh : To launch a simple Docker Swarm  remove-swarm.sh : To remove the Swarm.", 
-            "title": "For Env"
+            "location": "/tools/readme/#for-docs", 
+            "text": "gravizo : To create diagrams for documenting recipes.\nAll recipes should have an introduction with a high-level overview of what the recipe is used for. We use this tool to create such diagrams.    diagramr : To give more docker-related details we use this tool to create diagrams from docker-compose files. The tools gives also the .dot file, which is eventually customized and then turned into a png file using  graphviz .  $ dot compose.dot -Tpng -o compose.png    draw.io : Being evaluated as alternative/replacement of the previous two.    color names : The reference for color names used in .dot files.", 
+            "title": "For Docs"
         }
     ]
 }

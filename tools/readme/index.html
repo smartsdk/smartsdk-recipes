@@ -60,10 +60,47 @@
 
         
             
+    <ul class="subnav">
+    <li><span>Context Broker</span></li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../../context-broker/readme/">Orion</a>
+        <a class="" href="../../context-broker/simple/readme/">Simple</a>
         
     </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../context-broker/ha/readme/">HA</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../context-broker/replica/readme/">Replica Set</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Mongodb</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../mongodb/replica/readme/">Replica Set</a>
+        
+    </li>
+
+        
+    </ul>
 
         
     </ul>
@@ -77,9 +114,9 @@
             
                 <li class="toctree-l3"><a href="#tools">Tools</a></li>
                 
-                    <li><a class="toctree-l4" href="#for-docs">For Docs</a></li>
-                
                     <li><a class="toctree-l4" href="#for-env">For Env</a></li>
+                
+                    <li><a class="toctree-l4" href="#for-docs">For Docs</a></li>
                 
             
             </ul>
@@ -123,16 +160,29 @@
             <div class="section">
               
                 <h1 id="tools">Tools</h1>
-<p>This section contains useful (and sometimes temporary) scripts as well as references.</p>
-<h3 id="for-docs">For Docs</h3>
-<ul>
-<li><a href="http://diagramr.inventage.com">diagramr</a>: To create diagrams from docker-compose.yml.</li>
-</ul>
+<p>This section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.</p>
 <h3 id="for-env">For Env</h3>
 <ul>
-<li><a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a>: To wait for a service.</li>
-<li><a href="../create-swarm.sh">create-swarm.sh</a>: To launch a simple Docker Swarm</li>
-<li><a href="../remove-swarm.sh">remove-swarm.sh</a>: To remove the Swarm.</li>
+<li><a href="https://github.com/aelsabbahy/miniswarm">miniswarm</a>: To manage a local Docker Swarm for testing purposes.</li>
+<li><a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a>: To wait for a service. Note: It might no longer be needed with the introduction of the "healthcheck" feature in docker-compose.</li>
+</ul>
+<h3 id="for-docs">For Docs</h3>
+<ul>
+<li>
+<p><a href="http://www.gravizo.com">gravizo</a>: To create diagrams for documenting recipes.
+All recipes should have an introduction with a high-level overview of what the recipe is used for. We use this tool to create such diagrams.</p>
+</li>
+<li>
+<p><a href="http://diagramr.inventage.com">diagramr</a>: To give more docker-related details we use this tool to create diagrams from docker-compose files. The tools gives also the .dot file, which is eventually customized and then turned into a png file using <a href="http://www.graphviz.org">graphviz</a>.</p>
+<pre><code>$ dot compose.dot -Tpng -o compose.png
+</code></pre>
+</li>
+<li>
+<p><a href="https://www.draw.io">draw.io</a>: Being evaluated as alternative/replacement of the previous two.</p>
+</li>
+<li>
+<p><a href="http://www.graphviz.org/doc/info/colors.html#brewer">color names</a>: The reference for color names used in .dot files.</p>
+</li>
 </ul>
               
             </div>
@@ -142,7 +192,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../../context-broker/readme/" class="btn btn-neutral" title="Orion"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../mongodb/replica/readme/" class="btn btn-neutral" title="Replica Set"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -170,7 +220,7 @@
           <a href="https://github.com/martel-innovate/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../context-broker/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../mongodb/replica/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>

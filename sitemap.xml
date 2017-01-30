@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2017-01-18</lastmod>
+     <lastmod>2017-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,8 +12,14 @@
     
         
     <url>
-     <loc>/context-broker/readme/</loc>
-     <lastmod>2017-01-18</lastmod>
+     <loc></loc>
+     <lastmod></lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc></loc>
+     <lastmod></lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -22,7 +28,7 @@
     
     <url>
      <loc>/tools/readme/</loc>
-     <lastmod>2017-01-18</lastmod>
+     <lastmod>2017-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
