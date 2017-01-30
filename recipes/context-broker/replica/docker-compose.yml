@@ -2,7 +2,7 @@ orion:
     image: fiware/orion:latest
     hostname: orion
     container_name: orion
-    links:
+    external_links:
         - mongo1
     expose:
         - "1026"
