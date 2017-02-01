@@ -2,7 +2,7 @@
 
 The goal of this recipe is to allow developers instantiate N replicas of an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) in a docker swarm cluster.
 
-<img src='http://g.gravizo.com/g?
+![Alt text](http://g.gravizo.com/g?
 digraph Cluster {
   rankdir=LR;
   node [shape="rect" style="filled"];
@@ -19,7 +19,7 @@ digraph Cluster {
   Orion2 -> MongoDB;
   Orion3-> MongoDB;
 }  
-'>
+)
 
 ##### How to run it
 
