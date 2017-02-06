@@ -1,47 +1,37 @@
-mongo3:
-  hostname: mongo3
-  container_name: mongo3
-  image: mongo:3.2
-  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
-  volumes:
-    - ${DATA3_PATH}:/data/db
-  ports:
-    - "27019:27017"
-  restart: always
+version: '3'
 
-mongo2:
-  hostname: mongo2
-  container_name: mongo2
-  image: mongo:3.2
-  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
-  volumes:
-    - ${DATA2_PATH}:/data/db
-  ports:
-    - "27018:27017"
-  restart: always
+services:
 
-mongo1:
-  hostname: mongo1
-  container_name: mongo1
-  image: mongo:3.2
-  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
-  volumes:
-    - ${DATA1_PATH}:/data/db
-  ports:
-    - "27017:27017"
-  links:
-    - mongo2:mongo2
-    - mongo3:mongo3
-  restart: always
+    mongo:
+      image: mongo
+      entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
+      ports:
+        - "27017:27017"
+      networks:
+        - replica
+      deploy:
+        mode: global
 
-# Temp container just to configure the MongoDB replicaset
-mongosetup:
-  image: mongo:3.2
-  links:
-    - mongo1:mongo1
-    - mongo2:mongo2
-    - mongo3:mongo3
-  volumes:
-    - ./scripts/:/scripts
-    - ../../../wait-for-it/:/wait-for-it
-  entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_replica.sh
+    mongo-controller:
+      # According to https://docs.docker.com/compose/compose-file/
+      # "build" configuration is ignored in v3. Images must be pre-built.
+      # TODO: remember to push this image to a public registry
+      image: mongo-replica-ctrl
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        # When ready remove this mount and embed the .py in the image
+        - ./scripts/replica_ctrl.py:/src/replica_ctrl_tmp.py
+      entrypoint: python /src/replica_ctrl_tmp.py
+      networks:
+          - replica
+      depends_on:
+          - "mongo"
+      deploy:
+        placement:
+          constraints: [node.role == manager]  # TODO: Make sure it's only one.
+        restart_policy:
+          condition: none
+
+networks:
+    replica:
+        driver: overlay
