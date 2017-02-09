@@ -1,44 +1,41 @@
 # MongoDB replica-set
 
-This recipe will automate the creation of a [replica set](https://docs.mongodb.com/manual/replication/) of 3 MongoDB instances.
+This recipe aims to deploy and control a [replica set](https://docs.mongodb.com/manual/replication/) of MongoDB instances in a Docker Swarm.
 
-It was written for a single docker host for testing purposes. Of course, in production you don't want all the replica-set instances running in the same host.
+ATTENTION: This recipe is not yet ready for production environments. See further improvements section for more details
 
 ##### How to use
 
-    # Optionally, modify _.env_ file according to your needs.
+    $ docker stack deploy -c docker-compose.yml mongo-replica
 
-    $ docker-compose up -d
+Allow some time while images are pulled in the nodes. After a couple of minutes, all services should be up and running. You can check if all replicas were deployed by running...
+
+    $ docker service ls
+
+You can check for error messages inspecting the logs of the mongo-replica_mongo-controller service. This can be done with either
+
+    $ docker service logs mongo-replica_mongo-controller
+
+or, running docker log container_id on the host running the mongo-controller.
 
 ##### How it works
 
-There are three mongo deamons that will be triggered in their containers (mongo1, mongo2, mongo3).
+The recipe consists of basically two services, namely, one for mongo instances and one for controlling the replica-set.
 
-A fourth container (mongosetup) will wait for _mongo1_ to be ready and then execute the *setup_replica.sh* script to configure the replica set with the 3 mongo instances.
+The mongo service is deployed in "global" mode, meaning that it will run one instance of mongod per swarm node in the cluster.
 
-For testing purposes, each mongo instance has its data mapped to a local directory, but this is not a strong requirement.
+At the master node, a python-based controller script will be deployed to configure and maintain the replica-set.
 
-##### Further improvements
-- Provide a more dynamic way to scale this recipe to N nodes.
+For further details, refer to the *docker-compose.yml* file or *scripts/replica_ctrl.py*
 
-docker stack deploy --compose-file=docker-compose.yml mongo-replica
+##### Challenges and Further improvements
 
-- Prepare this recipe to run in a Docker Swarm.
-- Use authentication: mongodb-keyfile and maybe swarm secrets.
+The main challenge for this script was to know at runtime where each mongod instance was running so as to configure the replica-set properly. The idea of the new orchestration features in swarm is that you really shouldn't care where they run as long as swarm keeps them up and running. But mongo needs to know that. The same problem applies for containers running services exposed to the outer world (see for instance [this issue](https://github.com/docker/swarm/issues/1106)).
 
-- Deploy mongo as a "global" service (one per node)
+So the first approach is to find out this information from the docker api. Also, since the recipe is expected to be self-contained and work without dependencies on things running outside the swarm, we need to get this information from a container running in the swarm. My understanding is that such an introspective api to safely retrieve this kind of information is yet to come (e.g [this issue](https://github.com/docker/docker/issues/8427) and related ones such as [this one](https://github.com/docker/docker/issues/1143#issuecomment-233152700)). So for now this is depending on access to the host's docker socket **(terribly insecure workaround)**.
 
-- Problem1: How to connect to host to retrieve api info?. See [this](https://github.com/docker/docker/issues/8427), [this issue](https://github.com/docker/docker/issues/1143#issuecomment-233152700) and its derived.
+Further things to keep in mind:
 
-  - At the host level: where would this run actually? In a rancher environment?
-  - If at the containers level...:
+- At the moment this recipe does not include a data persistence solution, so if a cluster node fails for some reason, data will be lost. Of course, solving data-persistence related issues is in the roadmap of all recipes.
 
-      - Add an alias ip in the host?
-
-      - Expose the docker socket (Dangerous)
-
-          docker run -ti -v /var/run/docker.sock:/var/run/docker.sock joffrey/docker-py /bin/sh
-
-      - Parse network commands to get ip of host (OS-dependent fragile solution)
-
-- Problem2: https://github.com/docker/swarm/issues/1106
+- Consider using authentication in the replica-set.
