@@ -20,11 +20,10 @@ in the code.
 rescheduled to a different node. Instead of setting up a new replicaset it should
 recognize the one already running.
 
-# TODO: Use logging module
-
 # TODO: Add tests
 """
 import docker
+import logging
 import pymongo as pm
 import time
 
@@ -59,18 +58,25 @@ def create_mongo_config(tasks_ips):
 
 
 def configure_replica(dc):
+    logger = logging.getLogger(__name__)
+
     # TODO: add healthcheck in docker-compose and remove this sleep
+    logger.info('Waiting some time before starting')
     time.sleep(42)
 
     # Get mongo tasks
     services = {s.name:s for s in dc.services.list()}
     if SERVICE_NAME_MONGO not in services:
-        raise RuntimeError("Could not find mongo service. Did you correctly deploy the stack with both services?.")
+        msg = "Error: Could not find mongo service. Did you correctly deploy the stack with both services?."
+        logger.error(msg, exc_info=True)
+        return
 
     mongo_service = services[SERVICE_NAME_MONGO]
     mongo_tasks = mongo_service.tasks()
     if len(mongo_tasks) == 0:
-        raise RuntimeError("Error: No task found for Mongo service. Missing a 'wait' time maybe?.")
+        msg = "Error: No task found for Mongo service. Missing a 'wait' time or healthcheck maybe?."
+        logger.error(msg, exc_info=True)
+        return
 
     # Get overlay network IPS of running mongo daemons.
     mongo_tasks_ips = get_tasks_ips(mongo_tasks)
@@ -78,13 +84,13 @@ def configure_replica(dc):
     # Prepare mongo config
     config = create_mongo_config(mongo_tasks_ips)
     config['version'] = 1
-    print("Using config: {}".format(config), flush=True)
+    logger.info("Initial config: {}".format(config))
 
     # Choose a primary and configure replicaset
     primary_ip = str(mongo_tasks_ips[0])
     primary = pm.MongoClient(primary_ip, MONGO_PORT)
     res = primary.admin.command("replSetInitiate", config)
-    print(res, flush=True)
+    logger.info("replSetInitiate: {}".format(res))
 
     # Respond to changes
     current_ips = set(mongo_tasks_ips)
@@ -95,24 +101,25 @@ def configure_replica(dc):
 
         new_ips = set(get_tasks_ips(mongo_service.tasks()))
         if not new_ips.difference(current_ips):
-            print("Everything stays the same", flush=True)
-
+            pass
         else:
             to_remove = set(current_ips) - set(new_ips)
             to_add = set(new_ips) - set(current_ips)
             assert to_remove or to_add
 
             # Reconfigure mongo replicaset
-            # Actually not too different from what mongo does: https://github.com/mongodb/mongo/blob/master/src/mongo/shell/utils.js
-            print("Changing configuration...", flush=True)
-
+            # Actually not too different from what mongo does:
+            # https://github.com/mongodb/mongo/blob/master/src/mongo/shell/utils.js
             if to_remove:
-                print("To remove: {}".format(to_remove), flush=True)
+                # Note: As of writing, when a node goes down with a task running
+                # a global service, Swarm is not tearing down that task and hence
+                # this removal part has not been fully tested.
+                logger.info("To remove: {}".format(to_remove))
                 new_members = [m for m in config['members'] if m['host'].split(":")[0] in to_remove]
                 config['members'] = new_members
 
             if to_add:
-                print("To add: {}".format(to_add), flush=True)
+                logger.info("To add: {}".format(to_add))
                 offset = max([m['_id'] for m in config['members']]) + 1
                 for i, ip in enumerate(to_add):
                     config['members'].append({
@@ -128,13 +135,14 @@ def configure_replica(dc):
                 raise NotImplementedError("TODO: Primary failure recovery")
 
             config['version'] += 1
+            logger.info("New config: {}".format(config))
             res = primary.admin.command("replSetReconfig", config)
-            print(res, flush=True)
+            logger.info("replSetReconfig: {}".format(res))
 
             current_ips = new_ips
 
 
 if __name__ == '__main__':
-    print("Starting...", flush=True)
+    logging.basicConfig(level=logging.INFO)
     dc = docker.from_env()
     configure_replica(dc)
