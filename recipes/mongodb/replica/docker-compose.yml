@@ -22,6 +22,12 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
         # TODO: When ready, remove this mount and embed the .py in the image
         - ./scripts/replica_ctrl.py:/src/replica_ctrl_tmp.py
+      environment:
+        # TODO: Dynamically populate these using common env variables with this compose file
+        - OVERLAY_NETWORK_NAME=mongo-replica_replica
+        - MONGO_SERVICE_NAME=mongo-replica_mongo
+        - REPLICASET_NAME=rs
+        - MONGO_PORT=27017
       entrypoint: python /src/replica_ctrl_tmp.py
       # entrypoint: python /src/replica_ctrl.py
       networks:
