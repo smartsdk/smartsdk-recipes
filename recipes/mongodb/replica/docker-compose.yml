@@ -18,17 +18,20 @@ services:
       # TODO: remember to push this image to a public registry
       image: mongo-replica-ctrl
       volumes:
+        # TODO: Avoid exposing the docker socket (security issue)
         - /var/run/docker.sock:/var/run/docker.sock
-        # When ready remove this mount and embed the .py in the image
+        # TODO: When ready, remove this mount and embed the .py in the image
         - ./scripts/replica_ctrl.py:/src/replica_ctrl_tmp.py
       entrypoint: python /src/replica_ctrl_tmp.py
+      # entrypoint: python /src/replica_ctrl.py
       networks:
           - replica
       depends_on:
           - "mongo"
       deploy:
         placement:
-          constraints: [node.role == manager]  # TODO: Make sure it's only one.
+          # TODO: Make sure it's only one instance in swarms with multiple managers.
+          constraints: [node.role == manager]
         restart_policy:
           condition: none
 
