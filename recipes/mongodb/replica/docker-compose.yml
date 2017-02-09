@@ -30,7 +30,7 @@ services:
           - "mongo"
       deploy:
         placement:
-          # TODO: Make sure it's only one instance in swarms with multiple managers.
+          # Even with multiple managers, swarm deploys a single instance :)
           constraints: [node.role == manager]
         restart_policy:
           condition: none
