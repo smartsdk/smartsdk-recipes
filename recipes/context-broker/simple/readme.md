@@ -1,22 +1,76 @@
-# Simple Scenario
+# Single Host Scenario
 
 ##### Introduction
-This simple recipe triggers an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) instance backed with a [MongoDB](https://docs.mongodb.com) instance.
+This simple recipe triggers an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) instance backed with a [MongoDB](https://docs.mongodb.com) instance everything running **on an single host**.
 
-Both services will be running in docker containers, defined in the *simple/docker-compose.yml* file.
+<img src='http://g.gravizo.com/g?
+    digraph G {
+      compound=true;
+      rankdir=LR;
+      ranksep=1.2;
+      [fontname="times-bold",shape=plaintext];
+      graph [style="filled,rounded", nodesep=0.3];
+      graph [fillcolor=aliceblue];
+      Client [shape=record];
+      subgraph cluster_localhost {
+          label="localhost"
+          graph [fillcolor=aliceblue]
+          subgraph cluster_mongo_container {
+              label="mongo container"
+              graph [fillcolor=white] {
+                  node "mongod";
+              }
+              {
+                  node [shape=tab];
+                  "mongo_/data/db" [label="/data/db"];
+              }
+          }
+          subgraph cluster_orion {
+              label="orion container"
+              {
+                  node [shape=tab];
+                  "orion_/scripts" [label="/scripts"];
+              }
+              graph [fillcolor=white] {
+                  node "orion";
+              }
+          }
+          subgraph cluster_hostvolumes {
+              [fillcolor=white];
+              label="local filesystem"
+              node [shape=tab];
+              "host_DATA_PATH" [label="\$DATA_PATH"];
+              "host_./scripts" [label="./scripts"];
+          }
+      }
+      "Client" -> "orion" [label="1026", lhead=cluster_orion];
+      "orion" -> "mongod";
+      "mongo_/data/db" -> "host_DATA_PATH";
+      "orion_/scripts" -> "host_./scripts";
+    }
+'>
 
-Data will be persisted, by default, in a local folder called data. However, this can changed by editing the value of *DATA_PATH* variable in the _.env_ file.
+Both services will be running in docker containers, defined in the _[./docker-compose.yml](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/context-broker/simple/docker-compose.yml) file._
 
-![Orion with Replica Set Overview](docs/compose.png "Simple compose overview")
+Data will be persisted in a local folder defined by the value of *DATA_PATH* variable in the _[.env](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/context-broker/simple/.env)_ file.
 
 ##### How to use
 
-Optionally, you can modify *.env* file (or even _docker-compose.yml_) according to your needs. Then simply run:
+This recipes has some default values, but optionally you can explore different configurations by modifying the *.env* file, the _docker-compose.yml_ or even the *scripts/setup.sh*.
+
+Then, from this folder simply run:
 
     $ docker-compose up -d
 
 ##### How to validate
-Simply run the following command:
+
+Before testing make sure docker finished downloading the images and spinning-off the containers. You can check that by running:
+
+    $ docker ps
+
+You should see the two containers listed and with status "up".
+
+Then, to test if orion is truly up and running run:
 
     $ curl localhost:1026/version
 
