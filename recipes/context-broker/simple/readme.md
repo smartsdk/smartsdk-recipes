@@ -72,7 +72,7 @@ You should see the two containers listed and with status "up".
 
 Then, to test if orion is truly up and running run:
 
-    $ curl localhost:1026/version
+    $ sh ../query.sh
 
 It should return something like:
 
@@ -86,3 +86,4 @@ It should return something like:
       "compiled_in" : "b99744612d0b"
     }
     }
+    []

@@ -1,6 +1,18 @@
 #!/bin/bash
 # Simple script to insert something into Orion Context Broker
-curl localhost:1026/v2/entities -s -S --header 'Content-Type: application/json' -d @- <<EOF
+if [[ "$1" != "" ]]; then
+    host=$1
+else
+    host="localhost"
+fi
+
+if [[ "$2" != "" ]]; then
+    port=$2
+else
+    port=1026
+fi
+
+curl $host:$port/v2/entities -s -S --header 'Content-Type: application/json' -d @- <<EOF
 {
   "id": "Room1",
   "type": "Room",
@@ -10,21 +22,6 @@ curl localhost:1026/v2/entities -s -S --header 'Content-Type: application/json' 
   },
   "pressure": {
     "value": 720,
-    "type": "Integer"
-  }
-}
-EOF
-
-curl localhost:1026/v2/entities -s -S --header 'Content-Type: application/json' -d @- <<EOF
-{
-  "id": "Room2",
-  "type": "Room",
-  "temperature": {
-    "value": 21,
-    "type": "Float"
-  },
-  "pressure": {
-    "value": 711,
     "type": "Integer"
   }
 }
