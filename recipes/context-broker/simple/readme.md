@@ -9,7 +9,7 @@ This simple recipe triggers an [Orion Context Broker](https://github.com/telefon
       rankdir=LR;
       ranksep=1.2;
       [fontname="times-bold",shape=plaintext];
-      graph [style="filled,rounded", nodesep=0.3];
+      graph [style="filled", nodesep=0.3];
       graph [fillcolor=aliceblue];
       Client [shape=record];
       subgraph cluster_localhost {
