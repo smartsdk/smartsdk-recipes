@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Tools - SmartSDK Recipes</title>
+  <title>IoT Broker - SmartSDK Recipes</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Tools";
-    var mkdocs_page_input_path = "tools/readme.md";
-    var mkdocs_page_url = "/tools/readme/";
+    var mkdocs_page_name = "IoT Broker";
+    var mkdocs_page_input_path = "iot-services/readme.md";
+    var mkdocs_page_url = "/iot-services/readme/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -102,8 +102,12 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../iot-services/readme/">IoT Broker</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">IoT Broker</a>
+        
+            <ul>
+            
+            </ul>
         
     </li>
 
@@ -138,21 +142,8 @@
 <li>
           
             <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Tools</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#tools">Tools</a></li>
-                
-                    <li><a class="toctree-l4" href="#env-related">Env-related</a></li>
-                
-                    <li><a class="toctree-l4" href="#docs-related">Docs-related</a></li>
-                
-                    <li><a class="toctree-l4" href="#experimental">Experimental</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../tools/readme/">Tools</a>
         
     </li>
 <li>
@@ -178,11 +169,19 @@
     <li><a href="../..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Recipes &raquo;</li>
+        
+      
+        
+          <li>IoT Services Enablement &raquo;</li>
+        
+      
     
-    <li>Tools</li>
+    <li>IoT Broker</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/tools/readme.md"
+        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/iot-services/readme.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -192,54 +191,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="tools">Tools</h1>
-<p>This section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.</p>
-<p>The basic environment setup is explained in landing page of the repository: <a href="https://github.com/martel-innovate/smartsdk-recipes">https://github.com/martel-innovate/smartsdk-recipes</a>.</p>
-<h2 id="env-related">Env-related</h2>
-<ul>
-<li>
-<h5 id="miniswarm"><a href="https://github.com/aelsabbahy/miniswarm">miniswarm</a></h5>
-<p>To quickly test deployments on a local swarm. Refer to the <a href="https://github.com/aelsabbahy/miniswarm">repo</a> for further details, but getting started is as simple as:</p>
-<pre><code># First-time only to install miniswarm
-$ curl -sSL https://raw.githubusercontent.com/aelsabbahy/miniswarm/master/miniswarm -o /usr/local/bin/miniswarm
-$ chmod +rx /usr/local/bin/miniswarm
-
-# Every time you create/destroy a swarm
-$ miniswarm start 3
-$ miniswarm delete
-</code></pre>
-</li>
-<li>
-<h5 id="wait-for-it"><a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a></h5>
-<p>Useful shell script used when you need to wait for a service to be started.</p>
-<p>Note: This might no longer be needed since docker introduced the <a href="https://docs.docker.com/engine/reference/builder/#/healthcheck">healthchecks</a> feature.</p>
-</li>
-</ul>
-<h2 id="docs-related">Docs-related</h2>
-<ul>
-<li>
-<h5 id="gravizo"><a href="http://www.gravizo.com">gravizo</a></h5>
-<p>We use this tool in the docs for <strong>simple diagrams</strong>. Problems with formatting? try the <a href="http://www.gravizo.com/#converter">converter</a>.</p>
-</li>
-<li>
-<h5 id="drawio"><a href="https://www.draw.io">draw.io</a></h5>
-<p>Use this tool when the diagrams start getting too complex of when you foresee the diagram will be complex from the scratch.</p>
-<p>Complex in the sense that making a simple change takes more time understanding the <em>.dot</em> than making a manual gui-based change.</p>
-<p>When using draw.io, keep the source file in the repository under a /doc subfolder of the corresponding recipe.</p>
-</li>
-<li>
-<h5 id="color-names"><a href="http://www.graphviz.org/doc/info/colors.html#brewer">color names</a></h5>
-<p>The reference for color names used in <em>.dot</em> files.</p>
-</li>
-</ul>
-<h2 id="experimental">Experimental</h2>
-<ul>
-<li>
-<h5 id="diagramr"><a href="http://diagramr.inventage.com">diagramr</a></h5>
-To give more docker-related details we could use this tool to create diagrams from docker-compose files. The tools gives also the .dot file, which would be eventually customized and then turned into a png file using <a href="http://www.graphviz.org">graphviz</a>.<pre><code>$ dot compose.dot -Tpng -o compose.png
-</code></pre>
-</li>
-</ul>
+                <p>Comming soon...</p>
               
             </div>
           </div>
@@ -247,8 +199,10 @@ To give more docker-related details we could use this tool to create diagrams fr
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../../utils/mongodb/replica/readme/" class="btn btn-neutral float-right" title="Replica Set">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../../utils/mongodb/replica/readme/" class="btn btn-neutral" title="Replica Set"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href="../../data-management/context-broker/replica/readme/" class="btn btn-neutral" title="HA"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -276,8 +230,10 @@ To give more docker-related details we could use this tool to create diagrams fr
           <a href="https://github.com/martel-innovate/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../utils/mongodb/replica/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../data-management/context-broker/replica/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../../utils/mongodb/replica/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../../../img/favicon.ico">
+  <title>Replica Set - SmartSDK Recipes</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../css/highlight.css">
+  <link href="https://fiware.org/style/fiware_readthedocs.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Replica Set";
+    var mkdocs_page_input_path = "utils/mongodb/replica/readme.md";
+    var mkdocs_page_url = "/utils/mongodb/replica/readme/";
+  </script>
+  
+  <script src="../../../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../../.." class="icon icon-home"> SmartSDK Recipes</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../../..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Recipes</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Data/Context Management</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Context Broker</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../data-management/context-broker/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../data-management/context-broker/simple/readme/">Simple</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../data-management/context-broker/replica/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>IoT Services Enablement</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../iot-services/readme/">IoT Broker</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Utils</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Mongodb</span></li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Replica Set</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#mongodb-replica-set">MongoDB Replica Set</a></li>
+                
+                    <li><a class="toctree-l4" href="#how-to-use">How to use</a></li>
+                
+                    <li><a class="toctree-l4" href="#a-walkthrough">A Walkthrough</a></li>
+                
+                    <li><a class="toctree-l4" href="#rescaling-the-replica-set">Rescaling the replica-set</a></li>
+                
+                    <li><a class="toctree-l4" href="#challenges-and-further-improvements">Challenges and Further improvements</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../tools/readme/">Tools</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../..">SmartSDK Recipes</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Utils &raquo;</li>
+        
+      
+        
+          <li>Mongodb &raquo;</li>
+        
+      
+    
+    <li>Replica Set</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/utils/mongodb/replica/readme.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="mongodb-replica-set">MongoDB Replica Set</h1>
+<p>This recipe aims to deploy and control a <a href="https://docs.mongodb.com/manual/replication/">replica set</a> of MongoDB instances in a Docker Swarm.</p>
+<p><img src='http://g.gravizo.com/g?
+digraph Cluster {
+    rankdir=LR;
+       compound=true;
+       node [shape="record" style="filled"];
+       splines=line;
+       subgraph cluster {
+               label="Docker Swarm";
+        style=filled;
+               color=aliceblue;
+        subgraph cluster_1 {
+            label="ms-worker0";
+            color=white;
+            Mongo2 [fillcolor="aliceblue"];
+        }
+        subgraph cluster_0 {
+            label="ms-manager0";
+            color=white;
+            Controller [fillcolor="aliceblue"];
+            Mongo1 [fillcolor="aliceblue"];
+        }
+        subgraph cluster_2 {
+            label="ms-worker1";
+            color=white;
+            Mongo3 [fillcolor="aliceblue"];
+        }
+       }
+    Mongo1 -> Mongo2 [dir="both"];
+    Mongo2 -&gt; Mongo3 [dir="both"];
+    Mongo3 -&gt; Mongo1 [dir="both"];
+    Controller -&gt; Mongo1;
+}
+'&gt;</p>
+<p><strong>IMPORTANT:</strong> This recipe is not yet ready for production environments. See <em>further improvements</em> section for more details.</p>
+<h2 id="how-to-use">How to use</h2>
+<p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you don't have one, checkout the <a href="../../../../tools/readme/">tools</a> section for a quick way to setup a local swarm.</p>
+<pre><code>$ miniswarm start 3
+$ eval $(docker-machine env ms-manager0)
+</code></pre>
+<p>Then, simply run...</p>
+<pre><code>$ docker stack deploy -c docker-compose.yml mongo-replica
+</code></pre>
+<p>Allow some time while images are pulled in the nodes and services are deployed. After a couple of minutes, you can check if all services are up, as usual, running...</p>
+<pre><code>$ docker service ls
+ID            NAME                            MODE        REPLICAS  IMAGE
+fjxof1n5ce58  mongo-replica_mongo             global      3/3       mongo:latest
+yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
+</code></pre>
+<h2 id="a-walkthrough">A Walkthrough</h2>
+<p>As shown before, the recipe consists of basically two services, namely, one for mongo instances and one for controlling the replica-set.</p>
+<p>The mongo service is deployed in "global" mode, meaning that docker will run one instance of mongod per swarm node in the cluster.</p>
+<p>At the swarm's master node, a python-based controller script will be deployed to configure and maintain the mongodb replica-set.</p>
+<p>Let's now check that the controller worked fine inspecting the logs of the mongo-replica_mongo-controller service. This can be done with either...</p>
+<pre><code>$ docker service logs mongo-replica_mongo-controller
+</code></pre>
+<p>or running the following...</p>
+<pre><code>$  docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
+INFO:__main__:Waiting some time before starting
+INFO:__main__:Initial config: {'version': 1, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}]}
+INFO:__main__:replSetInitiate: {'ok': 1.0}
+</code></pre>
+<p>As you can see, the replica-set was configured with 3 replicas represented by containers running in the same overlay network. You can also run a mongo command in any of the mongo containers and execute <em>rs.status()</em> to see the same results.</p>
+<pre><code>$ docker exec -ti d56d17c40f8f mongo
+rs:SECONDARY&gt; rs.status()
+</code></pre>
+<h2 id="rescaling-the-replica-set">Rescaling the replica-set</h2>
+<p>Let's add a new node to the swarm to see how docker deploys a new task of the mongo service and the controller automatically adds it to the replica-set.</p>
+<pre><code># First get the token to join the swarm
+$ docker swarm join-token worker
+
+# Create the new node
+$ docker-machine create -d virtualbox ms-worker2
+$ docker-machine ssh ms-worker2
+
+docker@ms-worker2:~$ docker swarm join \
+--token INSERT_TOKEN_HERE \
+192.168.99.100:2377
+
+docker@ms-worker2:~$ exit
+</code></pre>
+<p>Back to the host, some minutes later...</p>
+<pre><code>$ docker service ls
+ID            NAME                            MODE        REPLICAS  IMAGE
+fjxof1n5ce58  mongo-replica_mongo             global      4/4       mongo:latest
+yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
+
+$ docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
+...
+INFO:__main__:To add: {'10.0.0.8'}
+INFO:__main__:New config: {'version': 2, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}, {'_id': 3, 'host': '10.0.0.8:27017'}]}
+INFO:__main__:replSetReconfig: {'ok': 1.0}
+</code></pre>
+<p>If a node goes down, the replica-set will be automatically reconfigured at the application level by mongo. Docker, on the other hand, will not reschedule the replica because it's expected to run one only one per node.</p>
+<p><em>NOTE</em>: If you don't want to have a replica in every node of the swarm, the solution for now is using a combination of constraints and node tags. You can read more about this in <a href="https://github.com/docker/docker/issues/26259">this Github issue</a>.</p>
+<p>For further details, refer to the <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/docker-compose.yml">docker-compose.yml</a></em> file or <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/scripts/replica_ctrl.py">replica_ctrl.py</a></em>.</p>
+<h2 id="challenges-and-further-improvements">Challenges and Further improvements</h2>
+<p>The main challenge for this script was to know at runtime where each mongod instance was running so as to configure the replica-set properly. The idea of the new orchestration features in swarm is that you really shouldn't care where they run as long as swarm keeps them up and running. But mongo needs to know that in order to configure the replica set.</p>
+<p>So the first approach is to find out this information from the docker api. Also, since the recipe is expected to be self-contained and work without dependencies on things running outside the swarm, we need to get this information from a container running in the swarm. My understanding is that such an introspective api to safely retrieve this kind of information is yet to come (e.g <a href="https://github.com/docker/docker/issues/8427">this issue</a> and related ones such as <a href="https://github.com/docker/docker/issues/1143#issuecomment-233152700">this one</a>). So for now this is depending on access to the host's docker socket <strong>(terribly insecure workaround)</strong>. A different approach to explore would be passing to the script at runtime the list of IPs. IPs of the containers if possible, or if not, IPs of the nodes where the services are deployed and use different ports in each replica member so as to avoid clashes in the docker ingress network. Or, something considering a custom IPM via plugins.</p>
+<p>Further things to keep in mind:</p>
+<ul>
+<li>The script has some improvement suggestions marked with TODO comments.</li>
+<li>At the moment this recipe does not include a data persistence solution.</li>
+<li>Consider using authentication in the replica-set.</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../../tools/readme/" class="btn btn-neutral float-right" title="Tools">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../../../iot-services/readme/" class="btn btn-neutral" title="IoT Broker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/martel-innovate/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../../../../iot-services/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../../../tools/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../../../../js/theme.js"></script>
+
+</body>
+</html>
