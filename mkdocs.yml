@@ -4,12 +4,16 @@ docs_dir: 'recipes'
 pages:
   - Home: index.md
   - 'Recipes':
-    - 'Context Broker':
-      - 'Intro': 'context-broker/readme.md'
-      - 'Simple': 'context-broker/simple/readme.md'
-      - 'HA': 'context-broker/replica/readme.md'
-    - 'Mongodb':
-      - 'Replica Set': 'mongodb/replica/readme.md'
+    - 'Data/Context Management':
+        - 'Context Broker':
+          - 'Intro': 'data-management/context-broker/readme.md'
+          - 'Simple': 'data-management/context-broker/simple/readme.md'
+          - 'HA': 'data-management/context-broker/replica/readme.md'
+    - 'IoT Services Enablement':
+        - 'IoT Broker': 'iot-services/readme.md'
+    - 'Utils':
+        - 'Mongodb':
+          - 'Replica Set': 'utils/mongodb/replica/readme.md'
   - 'Tools': 'tools/readme.md'
 theme: readthedocs
 markdown_extensions: [toc,fenced_code]

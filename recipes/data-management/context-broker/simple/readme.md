@@ -50,9 +50,9 @@ This simple recipe triggers an [Orion Context Broker](https://github.com/telefon
     }
 '>
 
-Both services will be running in docker containers, defined in the _[./docker-compose.yml](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/context-broker/simple/docker-compose.yml) file._
+Both services will be running in docker containers, defined in the _[./docker-compose.yml](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml) file._
 
-Data will be persisted in a local folder defined by the value of *DATA_PATH* variable in the _[.env](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/context-broker/simple/.env)_ file.
+Data will be persisted in a local folder defined by the value of *DATA_PATH* variable in the _[.env](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env)_ file.
 
 ##### How to use
 

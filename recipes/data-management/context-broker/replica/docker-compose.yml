@@ -17,6 +17,6 @@ services:
 
 networks:
     # Join the network of the db replicaset
-    # defined in ../../mongodb/replica/docker-compose.yml
+    # defined in ../../utils/mongodb/replica/docker-compose.yml
     mongo-replica_replica:
         external: true

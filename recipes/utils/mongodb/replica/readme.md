@@ -41,7 +41,7 @@ digraph Cluster {
 
 ## How to use
 
-Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../tools/readme.md) section for a quick way to setup a local swarm.
+Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../../tools/readme.md) section for a quick way to setup a local swarm.
 
     $ miniswarm start 3
     $ eval $(docker-machine env ms-manager0)
@@ -117,7 +117,7 @@ If a node goes down, the replica-set will be automatically reconfigured at the a
 
 _NOTE_: If you don't want to have a replica in every node of the swarm, the solution for now is using a combination of constraints and node tags. You can read more about this in [this Github issue](https://github.com/docker/docker/issues/26259).
 
-For further details, refer to the *[docker-compose.yml](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/mongodb/replica/docker-compose.yml)* file or *[replica_ctrl.py](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/mongodb/replica/scripts/replica_ctrl.py)*.
+For further details, refer to the *[docker-compose.yml](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/docker-compose.yml)* file or *[replica_ctrl.py](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/scripts/replica_ctrl.py)*.
 
 
 ## Challenges and Further improvements

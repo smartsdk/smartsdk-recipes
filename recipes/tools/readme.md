@@ -2,7 +2,7 @@
 
 This section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.
 
-The basic environment setup is explained in landing page of the repository: https://github.com/martel-innovate/smartsdk-recipes
+The basic environment setup is explained in landing page of the repository: [https://github.com/martel-innovate/smartsdk-recipes](https://github.com/martel-innovate/smartsdk-recipes).
 
 
 ## Env-related
