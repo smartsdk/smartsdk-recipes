@@ -1,14 +1,22 @@
-orion:
-    image: fiware/orion:latest
-    hostname: orion
-    container_name: orion
-    external_links:
-        - mongo1
-    expose:
-        - "1026"
-    ports:
-        - "1026:1026"
-    volumes:
-      - ./scripts/:/scripts
-      - ../../../wait-for-it/:/wait-for-it
-    entrypoint: /wait-for-it/wait-for-it.sh mongo1:27017 -t 30 -- sh /scripts/setup_orion.sh
+version: '3'
+# NOTE: Default values of this recipe are aimed to work with
+# ../../mongo/replica/docker-compose.yml.
+services:
+
+    orion:
+        image: fiware/orion:1.3.0
+        ports:
+            - "1026:1026"
+        # As host, we use the name of the orion service (mongo-replica_mongo)
+        # And of course the same replicaset name
+        command: -dbhost mongo-replica_mongo -rplSet rs -dbTimeout 10000
+        deploy:
+            replicas: 3
+        networks:
+            - mongo-replica_replica
+
+networks:
+    # Join the network of the db replicaset
+    # defined in ../../mongodb/replica/docker-compose.yml
+    mongo-replica_replica:
+        external: true
