@@ -5,11 +5,11 @@ pages:
   - Home: index.md
   - 'Recipes':
     - 'Context Broker':
-        - 'Simple': 'context-broker/simple/readme.md'
-        - 'HA': 'context-broker/ha/readme.md'
-        - 'Replica Set': 'context-broker/replica/readme.md'
+      - 'Intro': 'context-broker/readme.md'
+      - 'Simple': 'context-broker/simple/readme.md'
+      - 'HA': 'context-broker/replica/readme.md'
     - 'Mongodb':
-        - 'Replica Set': 'mongodb/replica/readme.md'
+      - 'Replica Set': 'mongodb/replica/readme.md'
   - 'Tools': 'tools/readme.md'
 theme: readthedocs
 markdown_extensions: [toc,fenced_code]
