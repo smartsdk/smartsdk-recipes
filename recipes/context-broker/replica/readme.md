@@ -2,7 +2,9 @@
 
 This recipe shows how to deploy an scalable [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) service backed with an scalable [replica set](https://docs.mongodb.com/v3.2/replication/) of MongoDB instances.
 
-All elements will be running in docker containers, defined in docker-compose files. Actually, this recipe reuses the [mongodb replica recipe](../../mongodb/replica/readme.md).
+All elements will be running in docker containers, defined in docker-compose files. Actually, this recipe focuses on the deployment of the Orion frontend, reusing the [mongodb replica recipe](../../mongodb/replica/readme.md) for its backend.
+
+The final deployment is represented by the following picture:
 
 <img src='http://g.gravizo.com/g?
   digraph G {
@@ -12,16 +14,16 @@ All elements will be running in docker containers, defined in docker-compose fil
       	splines=line;
       	Client [fillcolor="aliceblue"];
       	subgraph cluster {
-      		label="Docker Swarm";
+      		label="Docker Swarm Cluster";
       		Internal_LB;
       		subgraph cluster_0 {
-      			label="Orion Context Broker cluster";
+      			label="Orion Context Broker stack";
       			Orion1 [fillcolor="aliceblue"];
       			Orion2 [fillcolor="aliceblue"];
       			Orion3 [fillcolor="aliceblue"];
       		}
       		subgraph cluster_1 {
-      			label="MongoDB Replica Set";
+      			label="MongoDB Replica Set stack";
       			Mongo1 [fillcolor="aliceblue"];
       			Mongo2 [fillcolor="aliceblue"];
       			Mongo3 [fillcolor="aliceblue"];
@@ -36,34 +38,34 @@ All elements will be running in docker containers, defined in docker-compose fil
   }
 '>
 
-The recipe's configuration, as of now, is more suitable for a __development environment__. It has some default values which you might be able to customize with ease.
+__IMPORTANT:__ As explained in the [mongo replica recipe](../../mongodb/replica/readme.md), that recipe is not ready for production deployments for security reasons. Look at the _"Further Improvements"_ section for more details.
 
 
-##### How to use
+## How to use
 
-Firstly, you need to have a Docker Swarm already setup. If you don't have one, checkout the [tools](../../tools/readme.md) section for a quick way to setup a local swarm.
+Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../tools/readme.md) section for a quick way to setup a local swarm.
 
     $ miniswarm start 3
     $ eval $(docker-machine env ms-manager0)
 
-Then, we need to deploy the [mongodb replica](../../mongodb/replica/readme.md) stack.
+Then, you need to deploy the [mongodb replica](../../mongodb/replica/readme.md) stack.
 
     $ docker stack deploy -c ../../mongodb/replica/docker-compose.yml mongo-replica
 
-A quick check would be...
+A quick check to see if it was successfully deployed would be...
 
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
     f081tcqr7rce  mongo-replica_mongo             global      3/3       mongo:latest
     wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
 
-Now, we deploy the orion stack
+As shown above, if you see _3/3_ in the replicas column it means the 3 replicas are up and running.
+
+Now, you deploy the orion stack...
 
     $ docker stack deploy -c docker-compose.yml orion-stack
 
-Allow some time until things get connected before querying for content. At this point we have 3 containers running Orion in 3 different nodes and 3 containers running mongo in a replicaset, also scattered in different nodes.
-
-    $ docker service ls
+Allow some time until things get connected before querying for content. At some point, your deployment should look like this...
 
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
@@ -71,13 +73,32 @@ Allow some time until things get connected before querying for content. At this 
     f081tcqr7rce  mongo-replica_mongo             global      3/3       mongo:latest
     wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
 
-And we check the status of orion...
+
+__IMPORANT__: If you want to change the names of the stacks, you can do it, but you must be careful to keep consistency in the references across the recipes updating this docker-compose file. For example, changing the name of the mongo replica stack could change the name of the network this recipe is expecting to connect to.
+
+
+## A walkthrough
+
+You can check the distribution of the containers of a service (a.k.a tasks) through the swarm running the following...
+
+    $ docker service ps context-broker_orion
+    ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE               ERROR  PORTS
+    vs1ew5yszca6  context-broker_orion.1  fiware/orion:1.3.0  ms-worker1   Running        Running about a minute ago         
+    2tibpye24o5q  context-broker_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running about a minute ago         
+    w9zmn8pp61ql  context-broker_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running about a minute ago  
+
+The good news is that, as you can see from the above output, by default docker already took care of deploying all the replicas of the service _context-broker_orion_ to different hosts. Of course, with the use of labels, constraints or deploying mode you have the power to customize the distribution of tasks among swarm nodes. You can see the [mongo replica recipe](../../mongodb/replica) to understand the deployment of the *mongo-replica_mongo* service.
+
+Now, let's query Orion to check it's truly up and running. The question now is... where is Orion actually running? We'll cover the network internals later, but for now let's query the manager node...
 
     $ sh ../query.sh $(docker-machine ip ms-manager0)
+
+You will get something like...
+
     {
       "orion" : {
       "version" : "1.3.0",
-      "uptime" : "0 d, 0 h, 2 m, 33 s",
+      "uptime" : "0 d, 0 h, 18 m, 13 s",
       "git_hash" : "cb6813f044607bc01895296223a27e4466ab0913",
       "compile_time" : "Fri Sep 2 08:19:12 UTC 2016",
       "compiled_by" : "root",
@@ -86,10 +107,7 @@ And we check the status of orion...
     }
     []
 
-__IMPORANT__: If you want to change the names of the stacks, do it keeping consistency when referenced among the recipes.
-
-
-##### A walkthrough
+Thanks to the docker swarm internal routing mesh, you can actually perform the previous query to any node of the swarm, it will be redirected to a node where the request on port 1026 can be attended (i.e, any node running Orion).
 
 Let's insert some data...
 
@@ -116,7 +134,45 @@ And check it's there...
         }
     ]
 
-Yes, you can query any of the nodes. As explained in the [scalable recipe](../scalable/readme.md), the request will be routed to a node running the orion service. In fact, multiple requests will be load-balanced in a round-robin fashion by docker itself to those services.
+Yes, you can query any of the three nodes.
+
+Swarm's internal load balancer will be load-balancing in a round-robin approach all the requests for an orion service among the orion tasks running in the swarm.
+
+
+##### Rescaling Orion
+
+Scaling up and down orion is a simple as runnnig something like...
+
+    $ docker service scale context-broker_orion=2
+
+(this maps to the _"replicas"_ argument in the docker-compose)
+
+Consequently, one of the nodes (ms-worker1 in my case) is no longer running Orion...
+
+    $ docker service ps context-broker_orion
+    ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE           ERROR  PORTS
+    2tibpye24o5q  context-broker_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago         
+    w9zmn8pp61ql  context-broker_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running 11 minutes ago
+
+But still responds to the querying as mentioned above...
+
+    $ sh ../query.sh $(docker-machine ip ms-worker1)
+    {
+      "orion" : {
+      "version" : "1.3.0",
+      "uptime" : "0 d, 0 h, 14 m, 30 s",
+      "git_hash" : "cb6813f044607bc01895296223a27e4466ab0913",
+      "compile_time" : "Fri Sep 2 08:19:12 UTC 2016",
+      "compiled_by" : "root",
+      "compiled_in" : "ba19f7d3be65"
+    }
+    }
+    []
+
+You can see the [mongo replica recipe](../../mongodb/replica) to see how to scale the mongodb backend. But basically, due to the fact that it's a "global" service, you can scale it down like shown before, but scaling up requires adding a new node to the swarm.
+
+
+##### Dealing with failures
 
 Docker is taking care of the reconciliation of the services in case a container goes down. Let's show this by running the following (always on the manager node):
 
@@ -143,16 +199,34 @@ You will see it gone, but after a while it will automatically come back.
     1d79dca4ff28        taliaga/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
     8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
-Even if a whole node goes down, the service will remain working because we had both redundant orion instances and redundant db replicas.
+Even if a whole node goes down, the service will remain working because you had both redundant orion instances and redundant db replicas.
 
     $ docker-machine rm ms-worker0
 
 You will still get replies to...
 
-        $ sh ../query.sh $(docker-machine ip ms-manager0)
-        $ sh ../query.sh $(docker-machine ip ms-worker1)
+    $ sh ../query.sh $(docker-machine ip ms-manager0)
+    $ sh ../query.sh $(docker-machine ip ms-worker1)
 
 
 ##### Networks considerations
 
 In this case, all containers are attached to the same overlay network (mongo-replica_replica) over which they communicate to each other. However, if you have a different configuration and are running any of the containers behind a firewall, remember to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default).
+
+When containers (tasks) of a service are launched, they get assigned an IP address in this overlay network. Other services of your application's architecture should not be relying on these IPs because they may change (for example, due to a dynamic rescheduling). The good think is that docker creates a virtual ip for the service as a whole, so all traffic to this address will be load-balanced to the tasks adresses.
+
+Thanks to swarms docker internal DNS you can also use the name of the service to connect to. If you look at the *docker-compose.yml* file of this recipe, orion is started with the name of the mongo service as *dbhost* param (regardless if it was a single mongo instance of a whole replica-set).
+
+However, to access the container from outside of the overlay network (for example from the host) you would need to access the ip of the container's interface to the *docker_gwbridge*. It seem there's no easy way to get that information from the outside (see [this open issue](https://github.com/docker/libnetwork/issues/1082). In the walkthrough, we queried orion through one of the swarm nodes because we rely on docker ingress network routing the traffic all the way to one of the containerized orion services.
+
+Some open interesting issues in this regard:
+
+- [https://github.com/docker/swarm/issues/1106](https://github.com/docker/swarm/issues/1106)
+- [https://github.com/docker/docker/issues/27082](https://github.com/docker/docker/issues/27082)
+- [https://github.com/docker/docker/issues/29816](https://github.com/docker/docker/issues/29816)
+- [https://github.com/docker/docker/issues/26696](https://github.com/docker/docker/issues/26696)
+- [https://github.com/docker/docker/issues/23813](https://github.com/docker/docker/issues/23813)
+
+More info about docker network internals can be read at:
+
+- [Docker Reference Architecture](https://success.docker.com/KBase/Docker_Reference_Architecture%3A_Designing_Scalable%2C_Portable_Docker_Container_Networks)
