@@ -38,7 +38,7 @@ The final deployment is represented by the following picture:
   }
 '>
 
-__IMPORTANT:__ As explained in the [mongo replica recipe](../../mongodb/replica/readme.md), that recipe is not ready for production deployments for security reasons. Look at the _"Further Improvements"_ section for more details.
+*IMPORTANT:* As explained in the [mongo replica recipe](../../mongodb/replica/readme.md), that recipe is not ready for production deployments for security reasons. Look at the _"Further Improvements"_ section for more details.
 
 
 ## How to use
@@ -74,7 +74,7 @@ Allow some time until things get connected before querying for content. At some 
     wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
 
 
-__IMPORANT__: If you want to change the names of the stacks, you can do it, but you must be careful to keep consistency in the references across the recipes updating this docker-compose file. For example, changing the name of the mongo replica stack could change the name of the network this recipe is expecting to connect to.
+*IMPORANT*: If you want to change the names of the stacks, you can do it, but you must be careful to keep consistency in the references across the recipes updating this docker-compose file. For example, changing the name of the mongo replica stack could change the name of the network this recipe is expecting to connect to.
 
 
 ## A walkthrough
@@ -139,7 +139,7 @@ Yes, you can query any of the three nodes.
 Swarm's internal load balancer will be load-balancing in a round-robin approach all the requests for an orion service among the orion tasks running in the swarm.
 
 
-##### Rescaling Orion
+## Rescaling Orion
 
 Scaling up and down orion is a simple as runnnig something like...
 
@@ -172,7 +172,7 @@ But still responds to the querying as mentioned above...
 You can see the [mongo replica recipe](../../mongodb/replica) to see how to scale the mongodb backend. But basically, due to the fact that it's a "global" service, you can scale it down like shown before, but scaling up requires adding a new node to the swarm.
 
 
-##### Dealing with failures
+## Dealing with failures
 
 Docker is taking care of the reconciliation of the services in case a container goes down. Let's show this by running the following (always on the manager node):
 
@@ -209,7 +209,7 @@ You will still get replies to...
     $ sh ../query.sh $(docker-machine ip ms-worker1)
 
 
-##### Networks considerations
+## Networks considerations
 
 In this case, all containers are attached to the same overlay network (mongo-replica_replica) over which they communicate to each other. However, if you have a different configuration and are running any of the containers behind a firewall, remember to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default).
 
@@ -219,7 +219,7 @@ Thanks to swarms docker internal DNS you can also use the name of the service to
 
 However, to access the container from outside of the overlay network (for example from the host) you would need to access the ip of the container's interface to the *docker_gwbridge*. It seem there's no easy way to get that information from the outside (see [this open issue](https://github.com/docker/libnetwork/issues/1082). In the walkthrough, we queried orion through one of the swarm nodes because we rely on docker ingress network routing the traffic all the way to one of the containerized orion services.
 
-Some open interesting issues in this regard:
+## Open interesting issues:
 
 - [https://github.com/docker/swarm/issues/1106](https://github.com/docker/swarm/issues/1106)
 - [https://github.com/docker/docker/issues/27082](https://github.com/docker/docker/issues/27082)

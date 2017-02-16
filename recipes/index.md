@@ -10,4 +10,4 @@ Recipes will be based on [Docker](https://docs.docker.com), [docker-compose](htt
 
 Head to [https://github.com/martel-innovate/smartsdk-recipes](https://github.com/martel-innovate/smartsdk-recipes) and follow the instructions to get the code and setup your environment.
 
-Also, have a look at the tools section, specially if you want to test the recipes in a local environment or want to contribute.
+Also, have a look at the [tools](./tools/readme.md) section, specially if you want to test the recipes in a local environment or want to contribute.

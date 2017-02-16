@@ -36,7 +36,7 @@ digraph Cluster {
 }
 '>
 
-__IMPORTANT:__ This recipe is not yet ready for production environments. See _further improvements_ section for more details.
+**IMPORTANT:** This recipe is not yet ready for production environments. See _further improvements_ section for more details.
 
 
 ## How to use

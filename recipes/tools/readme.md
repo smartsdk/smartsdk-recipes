@@ -2,6 +2,8 @@
 
 This section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.
 
+The basic environment setup is explained in landing page of the repository: https://github.com/martel-innovate/smartsdk-recipes
+
 
 ## Env-related
 
@@ -21,6 +23,7 @@ This section contains useful (and sometimes temporary) scripts as well as refere
 Useful shell script used when you need to wait for a service to be started.
 
     Note: This might no longer be needed since docker introduced the [healthchecks](https://docs.docker.com/engine/reference/builder/#/healthcheck) feature.
+
 
 ## Docs-related
 
