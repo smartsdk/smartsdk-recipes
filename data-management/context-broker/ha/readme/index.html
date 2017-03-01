@@ -19,8 +19,8 @@
   <script>
     // Current page data
     var mkdocs_page_name = "HA";
-    var mkdocs_page_input_path = "data-management/context-broker/replica/readme.md";
-    var mkdocs_page_url = "/data-management/context-broker/replica/readme/";
+    var mkdocs_page_input_path = "data-management/context-broker/ha/readme.md";
+    var mkdocs_page_url = "/data-management/context-broker/ha/readme/";
   </script>
   
   <script src="../../../../js/jquery-2.1.1.min.js"></script>
@@ -196,7 +196,7 @@
     <li>HA</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/data-management/context-broker/replica/readme.md"
+        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/data-management/context-broker/ha/readme.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -219,7 +219,7 @@
         Client [fillcolor="aliceblue"];
         subgraph cluster {
             label="Docker Swarm Cluster";
-            Internal_LB;
+            "Load Balancer" [fillcolor="aliceblue"];
             subgraph cluster_0 {
                 label="Orion Context Broker stack";
                 Orion1 [fillcolor="aliceblue"];
@@ -233,8 +233,8 @@
                 Mongo3 [fillcolor="aliceblue"];
             }
         }
-        Client -> Internal_LB [label="1026",lhead=cluster_0];
-        Internal_LB -&gt; {Orion1,Orion2,Orion3};
+        Client -> "Load Balancer" [label="1026",lhead=cluster_0];
+        "Load Balancer" -&gt; {Orion1,Orion2,Orion3};
         Orion1 -&gt; Mongo1 [lhead=cluster_1];
         Orion2 -&gt; Mongo1 [lhead=cluster_1];
         Orion3 -&gt; Mongo1 [lhead=cluster_1];
