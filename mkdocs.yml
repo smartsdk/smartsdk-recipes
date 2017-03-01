@@ -8,7 +8,7 @@ pages:
         - 'Context Broker':
           - 'Intro': 'data-management/context-broker/readme.md'
           - 'Simple': 'data-management/context-broker/simple/readme.md'
-          - 'HA': 'data-management/context-broker/replica/readme.md'
+          - 'HA': 'data-management/context-broker/ha/readme.md'
     - 'IoT Services Enablement':
         - 'IoT Broker': 'iot-services/readme.md'
     - 'Utils':
