@@ -15,7 +15,7 @@ The final deployment is represented by the following picture:
       	Client [fillcolor="aliceblue"];
       	subgraph cluster {
       		label="Docker Swarm Cluster";
-      		Internal_LB;
+      		"Load Balancer" [fillcolor="aliceblue"];
       		subgraph cluster_0 {
       			label="Orion Context Broker stack";
       			Orion1 [fillcolor="aliceblue"];
@@ -29,8 +29,8 @@ The final deployment is represented by the following picture:
       			Mongo3 [fillcolor="aliceblue"];
       		}
       	}
-      	Client -> Internal_LB [label="1026",lhead=cluster_0];
-      	Internal_LB -> {Orion1,Orion2,Orion3};
+      	Client -> "Load Balancer" [label="1026",lhead=cluster_0];
+      	"Load Balancer" -> {Orion1,Orion2,Orion3};
       	Orion1 -> Mongo1 [lhead=cluster_1];
       	Orion2 -> Mongo1 [lhead=cluster_1];
       	Orion3 -> Mongo1 [lhead=cluster_1];
