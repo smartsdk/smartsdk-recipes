@@ -16,6 +16,9 @@ services:
             - mongo-replica_replica
 
 networks:
+    default:
+        driver_opts:
+            com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
     # Join the network of the db replicaset
     # defined in ../../utils/mongodb/replica/docker-compose.yml
     mongo-replica_replica:
