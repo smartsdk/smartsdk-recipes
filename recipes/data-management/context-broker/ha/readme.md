@@ -57,7 +57,7 @@ A quick check to see if it was successfully deployed would be...
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
     f081tcqr7rce  mongo-replica_mongo             global      3/3       mongo:latest
-    wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
+    wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 
 As shown above, if you see _3/3_ in the replicas column it means the 3 replicas are up and running.
 
@@ -71,7 +71,7 @@ Allow some time until things get connected before querying for content. At some 
     ID            NAME                            MODE        REPLICAS  IMAGE
     0ykzt0fjswz2  orion-stack_orion               replicated  3/3       fiware/orion:1.3.0
     f081tcqr7rce  mongo-replica_mongo             global      3/3       mongo:latest
-    wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
+    wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 
 
 *IMPORANT*: If you want to change the names of the stacks, you can do it, but you must be careful to keep consistency in the references across the recipes updating this docker-compose file. For example, changing the name of the mongo replica stack could change the name of the network this recipe is expecting to connect to.
@@ -179,7 +179,7 @@ Docker is taking care of the reconciliation of the services in case a container 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
     abc5e37037f0        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   2 minutes ago       Up 2 minutes        1026/tcp            orion-stack_orion.1.o9ebbardwvzn1gr11pmf61er8
-    1d79dca4ff28        taliaga/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
     8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
 Suppose orion container goes down...
@@ -190,13 +190,13 @@ You will see it gone, but after a while it will automatically come back.
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
-    1d79dca4ff28        taliaga/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
     8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS                  PORTS               NAMES
     60ba3f431d9d        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   6 seconds ago       Up Less than a second   1026/tcp            orion-stack_orion.1.uj1gghehb2s1gnoestup2ugs5
-    1d79dca4ff28        taliaga/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
     8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
 Even if a whole node goes down, the service will remain working because you had both redundant orion instances and redundant db replicas.

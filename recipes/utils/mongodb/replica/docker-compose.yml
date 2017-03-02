@@ -15,7 +15,7 @@ services:
     mongo-controller:
       # According to https://docs.docker.com/compose/compose-file/
       # "build" configuration is ignored in v3. Images must be pre-built.
-      image: taliaga/mongo-replica-ctrl
+      image: martel/mongo-replica-ctrl
       volumes:
         # TODO: Avoid exposing the docker socket (security issue)
         - /var/run/docker.sock:/var/run/docker.sock
