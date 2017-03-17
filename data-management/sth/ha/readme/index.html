@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../../../img/favicon.ico">
-  <title>Simple - SmartSDK Recipes</title>
+  <title>HA - SmartSDK Recipes</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../../../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Simple";
-    var mkdocs_page_input_path = "data-management/context-broker/simple/readme.md";
-    var mkdocs_page_url = "/data-management/context-broker/simple/readme/";
+    var mkdocs_page_name = "HA";
+    var mkdocs_page_input_path = "data-management/sth/ha/readme.md";
+    var mkdocs_page_url = "/data-management/sth/ha/readme/";
   </script>
   
   <script src="../../../../js/jquery-2.1.1.min.js"></script>
@@ -71,34 +71,21 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../readme/">Intro</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Simple</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#single-host-scenario">Single Host Scenario</a></li>
-                
-                    <li><a class="toctree-l4" href="#introduction">Introduction</a></li>
-                
-                    <li><a class="toctree-l4" href="#how-to-use">How to use</a></li>
-                
-                    <li><a class="toctree-l4" href="#how-to-validate">How to validate</a></li>
-                
-            
-            </ul>
+        <a class="" href="../../../context-broker/readme/">Intro</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ha/readme/">HA</a>
+        <a class="" href="../../../context-broker/simple/readme/">Simple</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../context-broker/ha/readme/">HA</a>
         
     </li>
 
@@ -113,21 +100,32 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../sth/readme/">Intro</a>
+        <a class="" href="../../readme/">Intro</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../sth/standalone/readme/">Standalone</a>
+        <a class="" href="../../standalone/readme/">Standalone</a>
         
     </li>
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../../sth/ha/readme/">HA</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">HA</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#ha">HA</a></li>
+                
+                    <li><a class="toctree-l4" href="#introduction">Introduction</a></li>
+                
+                    <li><a class="toctree-l4" href="#a-walkthrough">A walkthrough</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -212,14 +210,14 @@
         
       
         
-          <li>Context Broker &raquo;</li>
+          <li>STH &raquo;</li>
         
       
     
-    <li>Simple</li>
+    <li>HA</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/data-management/context-broker/simple/readme.md"
+        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/data-management/sth/ha/readme.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -229,82 +227,105 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="single-host-scenario">Single Host Scenario</h1>
-<h5 id="introduction">Introduction</h5>
-<p>This simple recipe triggers an <a href="https://github.com/telefonicaid/fiware-orion/blob/master/README.md">Orion Context Broker</a> instance backed with a <a href="https://docs.mongodb.com">MongoDB</a> instance everything running <strong>on an single host</strong>.</p>
+                <h1 id="ha">HA</h1>
+<h3 id="introduction">Introduction</h3>
+<p>Let's test a deployment of Comet with multiple replicas in both its front-end and backend. The idea now is to get the scenario illustrated below.</p>
 <p><img src='http://g.gravizo.com/g?
-    digraph G {
-      compound=true;
-      rankdir=LR;
-      ranksep=1.2;
-      [fontname="times-bold",shape=plaintext];
-      graph [style="filled", nodesep=0.3];
-      graph [fillcolor=aliceblue];
-      Client [shape=record];
-      subgraph cluster_localhost {
-          label="localhost"
-          graph [fillcolor=aliceblue]
-          subgraph cluster_mongo_container {
-              label="mongo container"
-              graph [fillcolor=white] {
-                  node "mongod";
-              }
-              {
-                  node [shape=tab];
-                  "mongo_/data/db" [label="/data/db"];
-              }
-          }
-          subgraph cluster_orion {
-              label="orion container"
-              {
-                  node [shape=tab];
-                  "orion_/scripts" [label="/scripts"];
-              }
-              graph [fillcolor=white] {
-                  node "orion";
-              }
-          }
-          subgraph cluster_hostvolumes {
-              [fillcolor=white];
-              label="local filesystem"
-              node [shape=tab];
-              "host_DATA_PATH" [label="\$DATA_PATH"];
-              "host_./scripts" [label="./scripts"];
-          }
-      }
-      "Client" -> "orion" [label="1026", lhead=cluster_orion];
-      "orion" -&gt; "mongod";
-      "mongo_/data/db" -&gt; "host_DATA_PATH";
-      "orion_/scripts" -&gt; "host_./scripts";
-    }
+digraph Cluster {
+    label="Docker Swarm"
+    rankdir=LR;
+    compound=true;
+    node [shape="record" style="filled" fillcolor=aliceblue];
+    splines=line;
+    "Client" [shape=oval];
+    "NGSI";
+    "Comet LB";
+    Comet1;
+    Comet2;
+    Comet3;
+    "Comet DB 1" [shape=egg];
+    "Comet DB 2" [shape=egg];
+    "Comet DB 3" [shape=egg];
+    "NGSI" -> "Comet LB" [label="Notifications"];
+    "Client" -&gt; "Comet LB" [label=8666];
+    "Comet LB" -&gt; {Comet1,Comet2,Comet3};
+    "Comet2" -&gt; "Comet DB 1";
+    "Comet1" -&gt; "Comet DB 1";
+    "Comet3" -&gt; "Comet DB 1";
+    "Comet DB 1" -&gt; "Comet DB 2" [dir=both];
+    "Comet DB 2" -&gt; "Comet DB 3" [dir=both];
+    "Comet DB 1" -&gt; "Comet DB 3" [dir=both];
+    {rank=same; "Comet DB 2"; "Comet DB 3"}
+}
 '&gt;</p>
-<p>Both services will be running in docker containers, defined in the <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml">./docker-compose.yml</a> file.</em></p>
-<p>Data will be persisted in a local folder defined by the value of <em>DATA_PATH</em> variable in the <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env">.env</a></em> file.</p>
-<h5 id="how-to-use">How to use</h5>
-<p>This recipes has some default values, but optionally you can explore different configurations by modifying the <em>.env</em> file, the <em>docker-compose.yml</em> or even the <em>scripts/setup.sh</em>.</p>
-<p>Then, from this folder simply run:</p>
-<pre><code>$ docker-compose up -d
+<p>Later, this could be combined for example with an <a href="../../../context-broker/ha/readme/">HA deployment of Orion Context Broker</a>.</p>
+<h3 id="a-walkthrough">A walkthrough</h3>
+<p>First, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you don't have one, checkout the <a href="../../../../tools/readme/">tools</a> section for a quick way to setup a local swarm.</p>
+<pre><code>miniswarm start 3
+eval $(docker-machine env ms-manager0)
 </code></pre>
-<h5 id="how-to-validate">How to validate</h5>
-<p>Before testing make sure docker finished downloading the images and spinning-off the containers. You can check that by running:</p>
-<pre><code>$ docker ps
+<p>To start the comet's backend simply run...</p>
+<pre><code>sh deploy_back.sh
 </code></pre>
-<p>You should see the two containers listed and with status "up".</p>
-<p>Then, to test if orion is truly up and running run:</p>
-<pre><code>$ sh ../query.sh
+<p>After a while, when the replica-set is ready, you can deploy comet by running...</p>
+<pre><code>sh deploy_front.sh
 </code></pre>
-<p>It should return something like:</p>
-<pre><code>{
-"orion" : {
-  "version" : "1.6.0-next",
-  "uptime" : "0 d, 0 h, 5 m, 24 s",
-  "git_hash" : "61be6c26c59469621a664d7aeb1490d6363cad38",
-  "compile_time" : "Tue Jan 24 10:52:30 UTC 2017",
-  "compiled_by" : "root",
-  "compiled_in" : "b99744612d0b"
+<p>Now, as usual, a brief test to confirm everything is properly connected. As a source of notifications, we have deployed Orion in the swarm (see <a href="../../../context-broker/ha/readme/">Orion in HA</a> for example).</p>
+<p>For convenience, let's save the IP address of the Orion and Comet services. In this scenario, since both are deployed on Swarm exposing their services ports, only one entry-point to the Swarm's ingress network will suffice.</p>
+<pre><code>ORION=http://$(docker-machine ip ms-manager0)
+COMET=http://$(docker-machine ip ms-manager0)
+</code></pre>
+<p>Insert:</p>
+<pre><code>sh ../../context-broker/insert.sh $ORION
+sh ../../context-broker/query.sh $ORION
+...
+</code></pre>
+<p>Subscribe:</p>
+<pre><code>sh ../subscribe.sh $ORION
+{
+  "subscribeResponse" : {
+    "subscriptionId" : "58bd1940b97cc713f5eacdb7",
+    "duration" : "PT24H"
+  }
 }
+</code></pre>
+<p>Update:</p>
+<pre><code>sh ../../context-broker/update.sh $ORION
+</code></pre>
+<p>And voila:</p>
+<pre><code>sh ../query_sth.sh $COMET
+{
+"contextResponses": [
+    {
+        "contextElement": {
+            "attributes": [
+                {
+                    "name": "temperature",
+                    "values": [
+                        {
+                            "attrType": "Float",
+                            "attrValue": 23,
+                            "recvTime": "2017-03-06T08:09:36.493Z"
+                        },
+                        {
+                            "attrType": "Float",
+                            "attrValue": 29.3,
+                            "recvTime": "2017-03-06T08:11:14.044Z"
+                        }
+                    ]
+                }
+            ],
+            "id": "Room1",
+            "isPattern": false,
+            "type": "Room"
+        },
+        "statusCode": {
+            "code": "200",
+            "reasonPhrase": "OK"
+        }
+    }
+]
 }
-[]
 </code></pre>
               
             </div>
@@ -313,10 +334,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../ha/readme/" class="btn btn-neutral float-right" title="HA">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../../../iot-services/readme/" class="btn btn-neutral float-right" title="IoT Broker">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../readme/" class="btn btn-neutral" title="Intro"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../standalone/readme/" class="btn btn-neutral" title="Standalone"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -344,10 +365,10 @@
           <a href="https://github.com/martel-innovate/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../standalone/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../ha/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../../../iot-services/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

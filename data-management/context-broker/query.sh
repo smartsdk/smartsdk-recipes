@@ -14,4 +14,4 @@ fi
 
 echo "curl ${host}:/${port}"
 curl $host:$port/version
-curl $host:$port/v2/entities -s -S --header 'Accept: application/json' | python -mjson.tool
+curl $host:$port/v2/entities -s -S --header 'Accept: application/json' --header 'fiware-service: default' --header 'fiware-ServicePath: /' | python -mjson.tool

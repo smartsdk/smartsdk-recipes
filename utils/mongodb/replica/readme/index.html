@@ -93,6 +93,35 @@
     </ul>
 
         
+            
+    <ul class="subnav">
+    <li><span>STH</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../data-management/sth/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../data-management/sth/standalone/readme/">Standalone</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../data-management/sth/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
     </ul>
 
         
@@ -240,17 +269,17 @@ digraph Cluster {
 <p><strong>IMPORTANT:</strong> This recipe is not yet ready for production environments. See <em>further improvements</em> section for more details.</p>
 <h2 id="how-to-use">How to use</h2>
 <p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you don't have one, checkout the <a href="../../../../tools/readme/">tools</a> section for a quick way to setup a local swarm.</p>
-<pre><code>$ miniswarm start 3
-$ eval $(docker-machine env ms-manager0)
+<pre><code>miniswarm start 3
+eval $(docker-machine env ms-manager0)
 </code></pre>
 <p>Then, simply run...</p>
-<pre><code>$ docker stack deploy -c docker-compose.yml mongo-replica
+<pre><code>sh deploy.sh
 </code></pre>
 <p>Allow some time while images are pulled in the nodes and services are deployed. After a couple of minutes, you can check if all services are up, as usual, running...</p>
 <pre><code>$ docker service ls
 ID            NAME                            MODE        REPLICAS  IMAGE
 fjxof1n5ce58  mongo-replica_mongo             global      3/3       mongo:latest
-yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
+yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 </code></pre>
 <h2 id="a-walkthrough">A Walkthrough</h2>
 <p>As shown before, the recipe consists of basically two services, namely, one for mongo instances and one for controlling the replica-set.</p>
@@ -288,7 +317,7 @@ docker@ms-worker2:~$ exit
 <pre><code>$ docker service ls
 ID            NAME                            MODE        REPLICAS  IMAGE
 fjxof1n5ce58  mongo-replica_mongo             global      4/4       mongo:latest
-yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       taliaga/mongo-replica-ctrl:latest
+yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 
 $ docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
 ...

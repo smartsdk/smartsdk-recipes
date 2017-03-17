@@ -51,7 +51,10 @@ def get_mongo_service(dc, mongo_service_name):
     for s in dc.services.list():
         if s.name == mongo_service_name:
             return s
-    msg = "Error: Could not find mongo service. Did you correctly deploy the stack with both services?."
+    msg = "Error: Could not find mongo service with name {}. \
+           Did you correctly deploy the stack with both services?.\
+          ".format(mongo_service_name)
+    logger = logging.getLogger(__name__)
     logger.error(msg, exc_info=True)
     return
 
@@ -161,5 +164,7 @@ if __name__ == '__main__':
 
     envs = get_required_env_variables()
     dc = docker.from_env()
+
     mongo_service = get_mongo_service(dc, envs.pop('mongo_service_name'))
-    configure_replica(mongo_service, **envs)
+    if mongo_service:
+        configure_replica(mongo_service, **envs)

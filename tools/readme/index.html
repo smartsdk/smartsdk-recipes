@@ -93,6 +93,35 @@
     </ul>
 
         
+            
+    <ul class="subnav">
+    <li><span>STH</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../data-management/sth/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../data-management/sth/standalone/readme/">Standalone</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../data-management/sth/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
     </ul>
 
         
@@ -213,6 +242,18 @@ $ miniswarm delete
 <h5 id="wait-for-it"><a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a></h5>
 <p>Useful shell script used when you need to wait for a service to be started.</p>
 <p>Note: This might no longer be needed since docker introduced the <a href="https://docs.docker.com/engine/reference/builder/#/healthcheck">healthchecks</a> feature.</p>
+</li>
+<li>
+<h5 id="portainer"><a href="https://portainer.readthedocs.io">portainer</a></h5>
+<p>If you'd like an UI with info about your swarm:</p>
+<pre><code>docker service create \
+--name portainer \
+--publish 9000:9000 \
+--constraint 'node.role == manager' \
+--mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+portainer/portainer \
+-H unix:///var/run/docker.sock
+</code></pre>
 </li>
 </ul>
 <h2 id="docs-related">Docs-related</h2>

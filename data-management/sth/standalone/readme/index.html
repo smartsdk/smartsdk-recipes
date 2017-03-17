@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../../../img/favicon.ico">
-  <title>Simple - SmartSDK Recipes</title>
+  <title>Standalone - SmartSDK Recipes</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../../../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Simple";
-    var mkdocs_page_input_path = "data-management/context-broker/simple/readme.md";
-    var mkdocs_page_url = "/data-management/context-broker/simple/readme/";
+    var mkdocs_page_name = "Standalone";
+    var mkdocs_page_input_path = "data-management/sth/standalone/readme.md";
+    var mkdocs_page_url = "/data-management/sth/standalone/readme/";
   </script>
   
   <script src="../../../../js/jquery-2.1.1.min.js"></script>
@@ -71,34 +71,21 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../readme/">Intro</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Simple</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#single-host-scenario">Single Host Scenario</a></li>
-                
-                    <li><a class="toctree-l4" href="#introduction">Introduction</a></li>
-                
-                    <li><a class="toctree-l4" href="#how-to-use">How to use</a></li>
-                
-                    <li><a class="toctree-l4" href="#how-to-validate">How to validate</a></li>
-                
-            
-            </ul>
+        <a class="" href="../../../context-broker/readme/">Intro</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../ha/readme/">HA</a>
+        <a class="" href="../../../context-broker/simple/readme/">Simple</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../context-broker/ha/readme/">HA</a>
         
     </li>
 
@@ -113,21 +100,32 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../sth/readme/">Intro</a>
+        <a class="" href="../../readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Standalone</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#standalone">Standalone</a></li>
+                
+                    <li><a class="toctree-l4" href="#introduction">Introduction</a></li>
+                
+                    <li><a class="toctree-l4" href="#a-walkthrough">A walkthrough</a></li>
+                
+            
+            </ul>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../sth/standalone/readme/">Standalone</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../../../sth/ha/readme/">HA</a>
+        <a class="" href="../../ha/readme/">HA</a>
         
     </li>
 
@@ -212,14 +210,14 @@
         
       
         
-          <li>Context Broker &raquo;</li>
+          <li>STH &raquo;</li>
         
       
     
-    <li>Simple</li>
+    <li>Standalone</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/data-management/context-broker/simple/readme.md"
+        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/data-management/sth/standalone/readme.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -229,82 +227,120 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="single-host-scenario">Single Host Scenario</h1>
-<h5 id="introduction">Introduction</h5>
-<p>This simple recipe triggers an <a href="https://github.com/telefonicaid/fiware-orion/blob/master/README.md">Orion Context Broker</a> instance backed with a <a href="https://docs.mongodb.com">MongoDB</a> instance everything running <strong>on an single host</strong>.</p>
+                <h1 id="standalone">Standalone</h1>
+<h3 id="introduction">Introduction</h3>
+<p>The idea of this standalone walkthrough is to test and showcase the Comet Generic Enabler within a simple notification-based scenario, like the one illustrated below.</p>
 <p><img src='http://g.gravizo.com/g?
-    digraph G {
-      compound=true;
-      rankdir=LR;
-      ranksep=1.2;
-      [fontname="times-bold",shape=plaintext];
-      graph [style="filled", nodesep=0.3];
-      graph [fillcolor=aliceblue];
-      Client [shape=record];
-      subgraph cluster_localhost {
-          label="localhost"
-          graph [fillcolor=aliceblue]
-          subgraph cluster_mongo_container {
-              label="mongo container"
-              graph [fillcolor=white] {
-                  node "mongod";
-              }
-              {
-                  node [shape=tab];
-                  "mongo_/data/db" [label="/data/db"];
-              }
-          }
-          subgraph cluster_orion {
-              label="orion container"
-              {
-                  node [shape=tab];
-                  "orion_/scripts" [label="/scripts"];
-              }
-              graph [fillcolor=white] {
-                  node "orion";
-              }
-          }
-          subgraph cluster_hostvolumes {
-              [fillcolor=white];
-              label="local filesystem"
-              node [shape=tab];
-              "host_DATA_PATH" [label="\$DATA_PATH"];
-              "host_./scripts" [label="./scripts"];
-          }
-      }
-      "Client" -> "orion" [label="1026", lhead=cluster_orion];
-      "orion" -&gt; "mongod";
-      "mongo_/data/db" -&gt; "host_DATA_PATH";
-      "orion_/scripts" -&gt; "host_./scripts";
-    }
+digraph Cluster {
+    label="Docker Swarm"
+    rankdir=LR;
+    compound=true;
+    node [shape="record" style="filled" fillcolor=aliceblue];
+    splines=line;
+    "Client" [shape=oval];
+    "Orion";
+    "Orion DB" [shape=egg];
+    "Comet LB";
+    Comet1;
+    Comet2;
+    Comet3;
+    "Comet DB" [shape=egg];
+    "Orion" -> "Comet LB";
+    "Orion" -&gt; "Comet LB";
+    "Orion" -&gt; "Comet LB" [label="NGSI Notifications"];
+    "Orion DB" -&gt; "Orion"[dir=both];
+    "Client" -&gt; "Orion" [label=1026];
+    "Client" -&gt; "Comet LB" [label=8666];
+    "Comet LB" -&gt; {Comet1,Comet2,Comet3};
+    "Comet2" -&gt; "Comet DB";
+    "Comet1" -&gt; "Comet DB";
+    "Comet3" -&gt; "Comet DB";
+    {rank=same; "Orion"; "Orion DB";}
+}
 '&gt;</p>
-<p>Both services will be running in docker containers, defined in the <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml">./docker-compose.yml</a> file.</em></p>
-<p>Data will be persisted in a local folder defined by the value of <em>DATA_PATH</em> variable in the <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env">.env</a></em> file.</p>
-<h5 id="how-to-use">How to use</h5>
-<p>This recipes has some default values, but optionally you can explore different configurations by modifying the <em>.env</em> file, the <em>docker-compose.yml</em> or even the <em>scripts/setup.sh</em>.</p>
-<p>Then, from this folder simply run:</p>
-<pre><code>$ docker-compose up -d
+<h3 id="a-walkthrough">A walkthrough</h3>
+<p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you don't have one, checkout the <a href="../../../../tools/readme/">tools</a> section for a quick way to setup a local swarm.</p>
+<pre><code>miniswarm start 3
+eval $(docker-machine env ms-manager0)
 </code></pre>
-<h5 id="how-to-validate">How to validate</h5>
-<p>Before testing make sure docker finished downloading the images and spinning-off the containers. You can check that by running:</p>
-<pre><code>$ docker ps
+<p>To start the whole stack simply run, as usual:</p>
+<pre><code>docker stack deploy -c docker-compose.yml comet
 </code></pre>
-<p>You should see the two containers listed and with status "up".</p>
-<p>Then, to test if orion is truly up and running run:</p>
-<pre><code>$ sh ../query.sh
+<p>Then, wait until you see all the replicas up and running:</p>
+<pre><code>docker service ls
+ID            NAME               MODE        REPLICAS  IMAGE
+1ysxmrxrqvp4  comet_comet-mongo  replicated  1/1       mongo:3.2
+8s9acybjxo0m  comet_orion        replicated  1/1       fiware/orion:latest
+ra84eex0zsd0  comet_comet        replicated  3/3       telefonicaiot/fiware-sth-comet:latest
+xg8ds3szkoi7  comet_orion-mongo  replicated  1/1       mongo:3.2
 </code></pre>
-<p>It should return something like:</p>
-<pre><code>{
+<p>Now let's start some checkups. For convenience, let's save the IP address of the Orion and Comet services. In this scenario, since both are deployed on Swarm exposing their services ports, only one entry-point to the Swarm's ingress network will suffice.</p>
+<pre><code>ORION=http://$(docker-machine ip ms-manager0)
+COMET=http://$(docker-machine ip ms-manager0)
+</code></pre>
+<p>Let's start some checkups, first making sure Orion is up and running.</p>
+<pre><code>sh ../../context-broker/query.sh $ORION
+{
 "orion" : {
-  "version" : "1.6.0-next",
-  "uptime" : "0 d, 0 h, 5 m, 24 s",
-  "git_hash" : "61be6c26c59469621a664d7aeb1490d6363cad38",
-  "compile_time" : "Tue Jan 24 10:52:30 UTC 2017",
+  "version" : "1.7.0-next",
+  "uptime" : "0 d, 0 h, 1 m, 39 s",
+  "git_hash" : "f710ee525f0fa55f665e578e309fc716c12cfd99",
+  "compile_time" : "Wed Feb 22 10:14:18 UTC 2017",
   "compiled_by" : "root",
   "compiled_in" : "b99744612d0b"
 }
 }
 []
+</code></pre>
+<p>Let's insert some simple data (Room1 measurements):</p>
+<pre><code>sh ../../context-broker/insert.sh $ORION
+</code></pre>
+<p>Now, let's subscribe Comet to the notifications of changes in temperature of Room1.</p>
+<pre><code>sh ../subscribe.sh $COMET
+{
+  "subscribeResponse" : {
+    "subscriptionId" : "58b98c0cdb69948641065907",
+    "duration" : "PT24H"
+  }
+}
+</code></pre>
+<p>Let's update the temperature value in Orion...</p>
+<pre><code>sh ../../context-broker/update.sh $ORION
+</code></pre>
+<p>And check you can see the Short-Term-Historical view of both measurements.</p>
+<pre><code>sh ../query_sth.sh $COMET
+{
+    "contextResponses": [
+        {
+            "contextElement": {
+                "attributes": [
+                    {
+                        "name": "temperature",
+                        "values": [
+                            {
+                                "attrType": "Float",
+                                "attrValue": 23,
+                                "recvTime": "2017-03-03T15:30:20.650Z"
+                            },
+                            {
+                                "attrType": "Float",
+                                "attrValue": 29.3,
+                                "recvTime": "2017-03-03T15:32:48.741Z"
+                            }
+                        ]
+                    }
+                ],
+                "id": "Room1",
+                "isPattern": false,
+                "type": "Room"
+            },
+            "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+            }
+        }
+    ]
+}
 </code></pre>
               
             </div>

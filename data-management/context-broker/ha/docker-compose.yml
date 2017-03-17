@@ -1,22 +1,27 @@
 version: '3'
-# NOTE: Default values of this recipe are aimed to work with
-# ../../mongo/replica/docker-compose.yml.
+
 services:
 
     orion:
-        image: fiware/orion:1.3.0
+        image: fiware/orion:${ORION_VERSION}
         ports:
             - "1026:1026"
-        # As host, we use the name of the orion service (mongo-replica_mongo)
-        # And of course the same replicaset name
-        command: -dbhost mongo-replica_mongo -rplSet rs -dbTimeout 10000
+        command: -dbhost ${MONGO_SERVICE_NAME} -rplSet ${REPLICASET_NAME} -dbTimeout 10000
         deploy:
             replicas: 3
         networks:
-            - mongo-replica_replica
+            - backend
+            - frontend
 
 networks:
-    # Join the network of the db replicaset
-    # defined in ../../utils/mongodb/replica/docker-compose.yml
-    mongo-replica_replica:
+    default:
+        driver_opts:
+            com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
+            # Join the network of the db replicaset
+            # defined in ../../utils/mongodb/replica/docker-compose.yml
+    backend:
+        driver: overlay
+        external: true
+    frontend:
+        driver: overlay
         external: true
