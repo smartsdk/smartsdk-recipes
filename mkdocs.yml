@@ -13,6 +13,9 @@ pages:
           - 'Intro': 'data-management/sth/readme.md'
           - 'Standalone': 'data-management/sth/standalone/readme.md'
           - 'HA': 'data-management/sth/ha/readme.md'
+        - 'Cygnus':
+          - 'Intro': 'data-management/cygnus/readme.md'
+          - 'HA': 'data-management/cygnus/ha/readme.md'
     - 'IoT Services Enablement':
         - 'IoT Broker': 'iot-services/readme.md'
     - 'Utils':
