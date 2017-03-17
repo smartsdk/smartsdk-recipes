@@ -48,46 +48,38 @@ Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you 
     $ miniswarm start 3
     $ eval $(docker-machine env ms-manager0)
 
-Then, you need to deploy the [mongodb replica](../../../utils/mongodb/replica/readme.md) stack.
+Then, simply run...
 
-    $ docker stack deploy -c ../../../utils/mongodb/replica/docker-compose.yml mongo-replica
+    $ sh deploy_back.sh
 
-A quick check to see if it was successfully deployed would be...
+Wait some time until the backend is ready and then...
+
+    $ sh deploy_front.sh
+
+At some point, your deployment should look like this...
 
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
-    f081tcqr7rce  mongo-replica_mongo             global      3/3       mongo:latest
-    wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+    nrxbm6k0a2yn  orion-backend_mongo             global      3/3       mongo:3.2
+    rgws8vumqye2  orion-backend_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+    zk7nu592vsde  orion_orion                     replicated  3/3       fiware/orion:1.3.0
 
 As shown above, if you see _3/3_ in the replicas column it means the 3 replicas are up and running.
-
-Now, you deploy the orion stack...
-
-    $ docker stack deploy -c docker-compose.yml orion-stack
-
-Allow some time until things get connected before querying for content. At some point, your deployment should look like this...
-
-    $ docker service ls
-    ID            NAME                            MODE        REPLICAS  IMAGE
-    0ykzt0fjswz2  orion-stack_orion               replicated  3/3       fiware/orion:1.3.0
-    f081tcqr7rce  mongo-replica_mongo             global      3/3       mongo:latest
-    wq7quugr9b12  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
-
-
-*IMPORANT*: If you want to change the names of the stacks, you can do it, but you must be careful to keep consistency in the references across the recipes updating this docker-compose file. For example, changing the name of the mongo replica stack could change the name of the network this recipe is expecting to connect to.
 
 
 ## A walkthrough
 
 You can check the distribution of the containers of a service (a.k.a tasks) through the swarm running the following...
 
-    $ docker service ps context-broker_orion
+    $ docker service ps orion_orion
     ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE               ERROR  PORTS
-    vs1ew5yszca6  context-broker_orion.1  fiware/orion:1.3.0  ms-worker1   Running        Running about a minute ago         
-    2tibpye24o5q  context-broker_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running about a minute ago         
-    w9zmn8pp61ql  context-broker_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running about a minute ago  
+    wwgt3q6nqqg3  orion_orion.1  fiware/orion:1.3.0  ms-worker0   Running        Running 9 minutes ago          
+    l1wavgqra8ry  orion_orion.2  fiware/orion:1.3.0  ms-worker1   Running        Running 9 minutes ago          
+    z20v0pnym8ky  orion_orion.3  fiware/orion:1.3.0  ms-manager0  Running        Running 25 minutes ago    
 
-The good news is that, as you can see from the above output, by default docker already took care of deploying all the replicas of the service _context-broker_orion_ to different hosts. Of course, with the use of labels, constraints or deploying mode you have the power to customize the distribution of tasks among swarm nodes. You can see the [mongo replica recipe](../../../utils/mongodb/replica) to understand the deployment of the *mongo-replica_mongo* service.
+The good news is that, as you can see from the above output, by default docker already took care of deploying all the replicas of the service *context-broker_orion* to different hosts.
+
+Of course, with the use of labels, constraints or deploying mode you have the power to customize the distribution of tasks among swarm nodes. You can see the [mongo replica recipe](../../../utils/mongodb/replica) to understand the deployment of the *mongo-replica_mongo* service.
 
 Now, let's query Orion to check it's truly up and running. The question now is... where is Orion actually running? We'll cover the network internals later, but for now let's query the manager node...
 
@@ -143,16 +135,16 @@ Swarm's internal load balancer will be load-balancing in a round-robin approach 
 
 Scaling up and down orion is a simple as runnnig something like...
 
-    $ docker service scale context-broker_orion=2
+    $ docker service scale orion_orion=2
 
 (this maps to the _"replicas"_ argument in the docker-compose)
 
 Consequently, one of the nodes (ms-worker1 in my case) is no longer running Orion...
 
-    $ docker service ps context-broker_orion
+    $ docker service ps orion_orion
     ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE           ERROR  PORTS
-    2tibpye24o5q  context-broker_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago         
-    w9zmn8pp61ql  context-broker_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running 11 minutes ago
+    2tibpye24o5q  orion_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago         
+    w9zmn8pp61ql  orion_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running 11 minutes ago
 
 But still responds to the querying as mentioned above...
 
@@ -169,7 +161,7 @@ But still responds to the querying as mentioned above...
     }
     []
 
-You can see the [mongo replica recipe](../../../utils/mongodb/replica) to see how to scale the mongodb backend. But basically, due to the fact that it's a "global" service, you can scale it down like shown before, but scaling up requires adding a new node to the swarm.
+You can see the [mongo replica recipe](../../../utils/mongodb/replica) to see how to scale the mongodb backend. But basically, due to the fact that it's a "global" service, you can scale it down like shown before. However, scaling it up might require adding a new node to the swarm because there can be only one instance per node.
 
 
 ## Dealing with failures
@@ -178,9 +170,9 @@ Docker is taking care of the reconciliation of the services in case a container 
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
-    abc5e37037f0        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   2 minutes ago       Up 2 minutes        1026/tcp            orion-stack_orion.1.o9ebbardwvzn1gr11pmf61er8
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+    abc5e37037f0        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   2 minutes ago       Up 2 minutes        1026/tcp            orion_orion.1.o9ebbardwvzn1gr11pmf61er8
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        orion-backend_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           orion-backend_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
 Suppose orion container goes down...
 
@@ -190,14 +182,14 @@ You will see it gone, but after a while it will automatically come back.
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        orion-backend_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           orion-backend_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS                  PORTS               NAMES
-    60ba3f431d9d        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   6 seconds ago       Up Less than a second   1026/tcp            orion-stack_orion.1.uj1gghehb2s1gnoestup2ugs5
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-replica_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-replica_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+    60ba3f431d9d        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   6 seconds ago       Up Less than a second   1026/tcp            orion_orion.1.uj1gghehb2s1gnoestup2ugs5
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            orion-backend_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           orion-backend_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
 Even if a whole node goes down, the service will remain working because you had both redundant orion instances and redundant db replicas.
 
@@ -211,7 +203,7 @@ You will still get replies to...
 
 ## Networks considerations
 
-In this case, all containers are attached to the same overlay network (mongo-replica_replica) over which they communicate to each other. However, if you have a different configuration and are running any of the containers behind a firewall, remember to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default).
+In this case, all containers are attached to the same overlay network (backend) over which they communicate to each other. However, if you have a different configuration and are running any of the containers behind a firewall, remember to keep traffic open for TCP at ports 1026 (Orion's default) and 27017 (Mongo's default).
 
 When containers (tasks) of a service are launched, they get assigned an IP address in this overlay network. Other services of your application's architecture should not be relying on these IPs because they may change (for example, due to a dynamic rescheduling). The good think is that docker creates a virtual ip for the service as a whole, so all traffic to this address will be load-balanced to the tasks adresses.
 

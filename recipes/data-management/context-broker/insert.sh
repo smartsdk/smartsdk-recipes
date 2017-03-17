@@ -12,7 +12,7 @@ else
     port=1026
 fi
 
-curl $host:$port/v2/entities -s -S --header 'Content-Type: application/json' -d @- <<EOF
+curl $host:$port/v2/entities -s -S --header 'Content-Type: application/json' --header 'fiware-service: default' --header 'fiware-ServicePath: /' -d @- <<EOF
 {
   "id": "Room1",
   "type": "Room",

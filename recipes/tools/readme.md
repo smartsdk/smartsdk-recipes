@@ -24,6 +24,16 @@ Useful shell script used when you need to wait for a service to be started.
 
     Note: This might no longer be needed since docker introduced the [healthchecks](https://docs.docker.com/engine/reference/builder/#/healthcheck) feature.
 
+- ##### [portainer](https://portainer.readthedocs.io)
+If you'd like an UI with info about your swarm:
+
+        docker service create \
+        --name portainer \
+        --publish 9000:9000 \
+        --constraint 'node.role == manager' \
+        --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+        portainer/portainer \
+        -H unix:///var/run/docker.sock
 
 ## Docs-related
 

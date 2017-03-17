@@ -3,31 +3,28 @@ version: '3'
 services:
 
     mongo:
-      image: mongo
-      entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
+      image: mongo:${MONGO_VERSION}
+      entrypoint: [ "/usr/bin/mongod", "--replSet", "${REPLICASET_NAME}", "--journal", "--smallfiles"]
       ports:
-        - "27017:27017"
+        - "${MONGO_PORT}:27017"
       networks:
-        - replica
+        - backend
       deploy:
         mode: global
 
     mongo-controller:
-      # According to https://docs.docker.com/compose/compose-file/
-      # "build" configuration is ignored in v3. Images must be pre-built.
       image: martel/mongo-replica-ctrl
       volumes:
         # TODO: Avoid exposing the docker socket (security issue)
         - /var/run/docker.sock:/var/run/docker.sock
       environment:
-        # TODO: Dynamically populate these using common env variables with this compose file
-        - OVERLAY_NETWORK_NAME=mongo-replica_replica
-        - MONGO_SERVICE_NAME=mongo-replica_mongo
-        - REPLICASET_NAME=rs
+        - OVERLAY_NETWORK_NAME=backend
+        - MONGO_SERVICE_NAME=${STACK_NAME}_mongo
+        - REPLICASET_NAME=${REPLICASET_NAME}
         - MONGO_PORT=27017
       entrypoint: python /src/replica_ctrl.py
       networks:
-          - replica
+          - backend
       depends_on:
           - "mongo"
       deploy:
@@ -41,5 +38,6 @@ networks:
     default:
         driver_opts:
             com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
-    replica:
+    backend:
         driver: overlay
+        external: true

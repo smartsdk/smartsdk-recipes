@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+    orion-mongo:
+        image: mongo:3.2
+        command: --nojournal
+
+    orion:
+        image: fiware/orion
+        depends_on:
+            - comet_orion-mongo
+        ports:
+            - "1026:1026"
+        command: -dbhost orion-mongo
+
+    comet-mongo:
+        image: mongo:3.2
+
+    comet:
+        image: telefonicaiot/fiware-sth-comet
+        depends_on:
+            - comet_comet-mongo
+        ports:
+            - "8666:8666"
+        deploy:
+            replicas: 3
+        environment:
+            - STH_HOST=0.0.0.0
+            - DB_URI=comet-mongo:27017

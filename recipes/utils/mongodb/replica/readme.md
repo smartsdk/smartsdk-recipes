@@ -43,12 +43,12 @@ digraph Cluster {
 
 Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../../tools/readme.md) section for a quick way to setup a local swarm.
 
-    $ miniswarm start 3
-    $ eval $(docker-machine env ms-manager0)
+    miniswarm start 3
+    eval $(docker-machine env ms-manager0)
 
 Then, simply run...
 
-    $ docker stack deploy -c docker-compose.yml mongo-replica
+    sh deploy.sh
 
 Allow some time while images are pulled in the nodes and services are deployed. After a couple of minutes, you can check if all services are up, as usual, running...
 
