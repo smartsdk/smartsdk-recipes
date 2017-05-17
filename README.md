@@ -1,12 +1,12 @@
 # SmartSDK Recipes
 [![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Documentation badge](https://img.shields.io/badge/docs-WIP-yellow.svg)](https://martel-innovate.github.io/smartsdk-recipes/)
+[![Documentation badge](https://img.shields.io/badge/docs-WIP-yellow.svg)](https://smartsdk.github.io/smartsdk-recipes/)
 
 
 ## Introduction
 This repository is part of the [SmartSDK](http://smartsdk.eu/) project and contains recipes to use different [FIWARE Generic Enablers](https://catalogue.fiware.org) to develop FIWARE-based applications.
 
-For more info, refer to the _readme.md_ of each subfolder or directly to the **[docs](https://martel-innovate.github.io/smartsdk-recipes/)**.
+For more info, refer to the _readme.md_ of each subfolder or directly to the **[docs](https://smartsdk.github.io/smartsdk-recipes/)**.
 
 
 ## Requirements
@@ -19,11 +19,11 @@ Installation instructions can be found [here](https://docs.docker.com/engine/ins
 
 Having git and docker installed, simply run:
 
-    $ git clone --recursive https://github.com/martel-innovate/smartsdk-recipes.git
+    $ git clone --recursive https://github.com/smartsdk/smartsdk-recipes.git
 
 Then navigate through the directories or the docs to get more details about the recipes of your interest.
 
-Checkout the **[tools](https://github.com/martel-innovate/smartsdk-recipes/tree/master/recipes/tools)** section for instructions on how to create a docker swarm cluster locally to test the recipes.
+Checkout the **[tools](https://github.com/smartsdk/smartsdk-recipes/tree/master/recipes/tools)** section for instructions on how to create a docker swarm cluster locally to test the recipes.
 
 
 ## License
