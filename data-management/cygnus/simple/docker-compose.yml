@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-
-    cygnus-common:
-        image: martel/cygnus-ngsi
-        environment:
-            - CYGNUS_CONF_URL=https://gist.githubusercontent.com/taliaga/26ebe4b540befa32f24a8f847de4c72b/raw/c53ec8b3d62a35b808f0d61d4865ca017862b7d5/cygnus_agent.conf

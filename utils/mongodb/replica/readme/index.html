@@ -221,7 +221,7 @@
     <li>Replica Set</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/martel-innovate/smartsdk-recipes/edit/master/recipes/utils/mongodb/replica/readme.md"
+        <a href="https://github.com/smartsdk/smartsdk-recipes/edit/master/recipes/utils/mongodb/replica/readme.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -327,7 +327,7 @@ INFO:__main__:replSetReconfig: {'ok': 1.0}
 </code></pre>
 <p>If a node goes down, the replica-set will be automatically reconfigured at the application level by mongo. Docker, on the other hand, will not reschedule the replica because it's expected to run one only one per node.</p>
 <p><em>NOTE</em>: If you don't want to have a replica in every node of the swarm, the solution for now is using a combination of constraints and node tags. You can read more about this in <a href="https://github.com/docker/docker/issues/26259">this Github issue</a>.</p>
-<p>For further details, refer to the <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/docker-compose.yml">docker-compose.yml</a></em> file or <em><a href="https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/scripts/replica_ctrl.py">replica_ctrl.py</a></em>.</p>
+<p>For further details, refer to the <em><a href="https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/docker-compose.yml">docker-compose.yml</a></em> file or <em><a href="https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/scripts/replica_ctrl.py">replica_ctrl.py</a></em>.</p>
 <h2 id="challenges-and-further-improvements">Challenges and Further improvements</h2>
 <p>The main challenge for this script was to know at runtime where each mongod instance was running so as to configure the replica-set properly. The idea of the new orchestration features in swarm is that you really shouldn't care where they run as long as swarm keeps them up and running. But mongo needs to know that in order to configure the replica set.</p>
 <p>So the first approach is to find out this information from the docker api. Also, since the recipe is expected to be self-contained and work without dependencies on things running outside the swarm, we need to get this information from a container running in the swarm. My understanding is that such an introspective api to safely retrieve this kind of information is yet to come (e.g <a href="https://github.com/docker/docker/issues/8427">this issue</a> and related ones such as <a href="https://github.com/docker/docker/issues/1143#issuecomment-233152700">this one</a>). So for now this is depending on access to the host's docker socket <strong>(terribly insecure workaround)</strong>. A different approach to explore would be passing to the script at runtime the list of IPs. IPs of the containers if possible, or if not, IPs of the nodes where the services are deployed and use different ports in each replica member so as to avoid clashes in the docker ingress network. Or, something considering a custom IPM via plugins.</p>
@@ -372,7 +372,7 @@ INFO:__main__:replSetReconfig: {'ok': 1.0}
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/martel-innovate/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/smartsdk/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../../../../iot-services/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
