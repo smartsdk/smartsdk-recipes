@@ -10,6 +10,6 @@ Recipes will be organized in folders respecting the FIWARE chapters and generic 
 
 ## Getting started
 
-Head to [https://github.com/martel-innovate/smartsdk-recipes](https://github.com/martel-innovate/smartsdk-recipes) and follow the instructions to get the code and setup your environment.
+Head to [https://github.com/smartsdk/smartsdk-recipes](https://github.com/smartsdk/smartsdk-recipes) and follow the instructions to get the code and setup your environment.
 
 Also, have a look at the [tools](./tools/readme.md) section, specially if you want to test the recipes in a local environment or want to contribute.

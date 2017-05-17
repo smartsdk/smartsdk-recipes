@@ -117,7 +117,7 @@ If a node goes down, the replica-set will be automatically reconfigured at the a
 
 _NOTE_: If you don't want to have a replica in every node of the swarm, the solution for now is using a combination of constraints and node tags. You can read more about this in [this Github issue](https://github.com/docker/docker/issues/26259).
 
-For further details, refer to the *[docker-compose.yml](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/docker-compose.yml)* file or *[replica_ctrl.py](https://github.com/martel-innovate/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/scripts/replica_ctrl.py)*.
+For further details, refer to the *[docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/docker-compose.yml)* file or *[replica_ctrl.py](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/utils/mongodb/replica/scripts/replica_ctrl.py)*.
 
 
 ## Challenges and Further improvements
