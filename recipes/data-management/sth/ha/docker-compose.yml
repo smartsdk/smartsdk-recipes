@@ -7,11 +7,12 @@ services:
         ports:
             - "8666:8666"
         deploy:
-            replicas: 3
+            replicas: 1
         environment:
             - STH_HOST=0.0.0.0
             - DB_URI=${MONGO_SERVICE_URI}
             - REPLICA_SET=${REPLICASET_NAME}
+            - LOGOPS_LEVEL=DEBUG
         networks:
             - frontend
             - backend

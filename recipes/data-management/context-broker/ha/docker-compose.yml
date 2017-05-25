@@ -6,9 +6,9 @@ services:
         image: fiware/orion:${ORION_VERSION}
         ports:
             - "1026:1026"
-        command: -dbhost ${MONGO_SERVICE_NAME} -rplSet ${REPLICASET_NAME} -dbTimeout 10000
+        command: -logLevel DEBUG -dbhost ${MONGO_SERVICE_NAME} -rplSet ${REPLICASET_NAME} -dbTimeout 10000
         deploy:
-            replicas: 3
+            replicas: 1
         networks:
             - backend
             - frontend
