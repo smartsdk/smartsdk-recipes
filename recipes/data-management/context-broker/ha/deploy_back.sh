@@ -1,4 +1,6 @@
-#!/bin/sh
-source backend.env
+#!/bin/bash
+set -o allexport
+. ./backend.env
+set +o allexport
 docker network create -d overlay backend
-env $(cat backend.env | grep ^[A-Z] | xargs) docker stack deploy -c ../../../utils/mongodb/replica/docker-compose.yml ${STACK_NAME}
+docker stack deploy -c ../../../utils/mongodb/replica/docker-compose.yml ${STACK_NAME}
