@@ -12,6 +12,11 @@ services:
         networks:
             - backend
             - frontend
+        healthcheck:
+          test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+          interval: 1m
+          timeout: 10s
+          retries: 3
 
 networks:
     default:
