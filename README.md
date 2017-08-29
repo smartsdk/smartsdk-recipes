@@ -11,7 +11,7 @@ For more info, refer to the _readme.md_ of each subfolder or directly to the **[
 
 ## Requirements
 
-The only requirement is to have [Docker](https://docs.docker.com) (version >= 1.13).
+The only requirement is to have [curl](https://curl.haxx.se/) and [Docker](https://docs.docker.com) (version >= 1.13).
 Installation instructions can be found [here](https://docs.docker.com/engine/installation/).
 
 
