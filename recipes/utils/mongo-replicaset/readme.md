@@ -117,15 +117,4 @@ If a node goes down, the replica-set will be automatically reconfigured at the a
 
 _NOTE_: If you don't want to have a replica in every node of the swarm, the solution for now is using a combination of constraints and node tags. You can read more about this in [this Github issue](https://github.com/docker/docker/issues/26259).
 
-For further details, refer to the [mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm) repository, in particular the *[docker-compose.yml](hhttps://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)* file or the *[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)* controller script.
-
-
-## Challenges and Further improvements
-
-The main challenge for this script was to know at runtime where each mongod instance was running so as to configure the replica-set properly. The idea of the new orchestration features in swarm is that you really shouldn't care where they run as long as swarm keeps them up and running. But mongo needs to know that in order to configure the replica set.
-
-So, the first approach is to find out this information from the docker api. Also, since the recipe is expected to be self-contained and work without dependencies on things running outside the swarm, we need to get this information from a container running in the swarm. My understanding is that such an introspective api to safely retrieve this kind of information is yet to come (e.g [this issue](https://github.com/docker/docker/issues/8427) and related ones such as [this one](https://github.com/docker/docker/issues/1143#issuecomment-233152700)). So for now this is depending on access to the host's docker socket **(terribly insecure workaround)**. A different approach to explore would be passing to the script at runtime the list of IPs. IPs of the containers if possible, or if not, IPs of the nodes where the services are deployed and use different ports in each replica member so as to avoid clashes in the docker ingress network. Or, something considering a custom IPM via plugins.
-
-Further things to keep in mind:
-- The script has some improvement suggestions marked with TODO comments.
-- Consider using authentication in the replica-set.
+For further details, refer to the [mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm) repository, in particular the *[docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)* file or the *[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)* controller script.
