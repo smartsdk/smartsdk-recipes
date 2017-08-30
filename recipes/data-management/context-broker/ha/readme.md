@@ -2,7 +2,7 @@
 
 This recipe shows how to deploy an scalable [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) service backed with an scalable [replica set](https://docs.mongodb.com/v3.2/replication/) of MongoDB instances.
 
-All elements will be running in docker containers, defined in docker-compose files. Actually, this recipe focuses on the deployment of the Orion frontend, reusing the [mongodb replica recipe](../../../utils/mongodb/replica/readme.md) for its backend.
+All elements will be running in docker containers, defined in docker-compose files. Actually, this recipe focuses on the deployment of the Orion frontend, reusing the [mongodb replica recipe](../../../utils/mongo-replicaset/readme.md) for its backend.
 
 The final deployment is represented by the following picture:
 
@@ -38,7 +38,7 @@ The final deployment is represented by the following picture:
   }
 '>
 
-*IMPORTANT:* As explained in the [mongo replica recipe](../../../utils/mongodb/replica/readme.md), that recipe is not ready for production deployments for security reasons. Look at the _"Further Improvements"_ section for more details.
+*IMPORTANT:* As explained in the [mongo replica recipe](../../../utils/mongo-replicaset/readme.md), that recipe is not ready for production deployments for security reasons. Look at the _"Further Improvements"_ section for more details.
 
 
 ## How to use
@@ -79,7 +79,7 @@ You can check the distribution of the containers of a service (a.k.a tasks) thro
 
 The good news is that, as you can see from the above output, by default docker already took care of deploying all the replicas of the service *context-broker_orion* to different hosts.
 
-Of course, with the use of labels, constraints or deploying mode you have the power to customize the distribution of tasks among swarm nodes. You can see the [mongo replica recipe](../../../utils/mongodb/replica) to understand the deployment of the *mongo-replica_mongo* service.
+Of course, with the use of labels, constraints or deploying mode you have the power to customize the distribution of tasks among swarm nodes. You can see the [mongo replica recipe](../../../utils/mongo-replicaset) to understand the deployment of the *mongo-replica_mongo* service.
 
 Now, let's query Orion to check it's truly up and running. The question now is... where is Orion actually running? We'll cover the network internals later, but for now let's query the manager node...
 
@@ -161,7 +161,7 @@ But still responds to the querying as mentioned above...
     }
     []
 
-You can see the [mongo replica recipe](../../../utils/mongodb/replica) to see how to scale the mongodb backend. But basically, due to the fact that it's a "global" service, you can scale it down like shown before. However, scaling it up might require adding a new node to the swarm because there can be only one instance per node.
+You can see the [mongo replica recipe](../../../utils/mongo-replicaset) to see how to scale the mongodb backend. But basically, due to the fact that it's a "global" service, you can scale it down like shown before. However, scaling it up might require adding a new node to the swarm because there can be only one instance per node.
 
 
 ## Dealing with failures

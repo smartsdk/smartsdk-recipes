@@ -16,8 +16,7 @@ pages:
     - 'IoT Services Enablement':
         - 'IoT Broker': 'iot-services/readme.md'
     - 'Utils':
-        - 'Mongodb':
-          - 'Replica Set': 'utils/mongodb/replica/readme.md'
+        - 'MongoDB Replica Set': 'utils/mongo-replicaset/readme.md'
   - 'Tools': 'tools/readme.md'
 theme: readthedocs
 markdown_extensions: [toc,fenced_code]
