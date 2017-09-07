@@ -2,9 +2,9 @@
 
 This recipe will show you how to deploy a default cygnus-ngsi configuration with a MySQL backend. Note that this generic enabler can actually be deployed with [many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
 
-This recipe in particular requires the use of "configs" and hence depends on a docker-compose file version "3.3", supported in docker versions 17.06.0+.
+This recipe in particular requires the use of [docker "configs"](https://docs.docker.com/compose/compose-file/#configs) and hence depends on a docker-compose file version "3.3", supported in docker versions 17.06.0+.
 
-Instructions on how to prepare your environment to test these recipes are given in [https://github.com/smartsdk/smartsdk-recipes](https://github.com/smartsdk/smartsdk-recipes). Assuming you have created a 3-nodes Swarm setup, this deployment will look as follows...
+Instructions on how to prepare your environment to test these recipes are given in the [Installation](../../installation.md) section of the docs. Assuming you have created a 3-nodes Swarm setup, this deployment will look as follows...
 
 <img src='http://g.gravizo.com/g?
   digraph G {
@@ -54,7 +54,7 @@ After a couple of minutes you should be able to see the two services up and runn
     l3h1fsk36v35        cygnus_mysql           replicated          3/3                 mysql:latest                *:3306->3306/tcp
     vmju1turlizr        cygnus_cygnus-common   replicated          3/3                 fiware/cygnus-ngsi:latest   *:5050->5050/tcp
 
-For illustration purposes, let's send an NGSI notification to cygnu's entrypoint using the simple notification.sh script.
+For illustration purposes, let's send an NGSI notification to cygnu's entrypoint using the simple ```notification.sh``` script.
 
     $ sh notification.sh http://0.0.0.0:5050/notify
     *   Trying 0.0.0.0...
@@ -76,9 +76,9 @@ For illustration purposes, let's send an NGSI notification to cygnu's entrypoint
     <
     * Connection #0 to host 0.0.0.0 left intact
 
-By now the sent data has been processed by cygnus and will be available in the configured sink (MySQL in this case).
+By now, the data sent by the script has been processed by cygnus and will be available in the configured sink (MySQL in this case).
 
-Having now cygnus running as a service on a Docker Swarm cluster, scaling it can be achieved as with any other docker service. For more details, refer to the [Orion recipe](../../context-broker/ha/readme.md) to see how this can be done with Docker.
+Having cygnus running as a service on a Docker Swarm cluster, scaling it can be achieved as with any other docker service. For more details, refer to the [Orion recipe](../../context-broker/ha/readme.md) to see how this can be done with Docker. Otherwise, refer to the [Docker service docs](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/).
 
 ## What if I wanted a different backend?
 

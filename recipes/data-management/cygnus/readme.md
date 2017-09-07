@@ -2,7 +2,7 @@
 
 Here you can find recipes aimed at different usages of Cygnus, in particular, cygnus-ngsi. We assume you are already familiar with it, but if not, refer to the [official documentation](http://fiware-cygnus.readthedocs.io/en/latest/index.html).
 
-Instructions on how to prepare your environment to test these recipes are given in [https://github.com/martel-innovate/smartsdk-recipes](https://github.com/martel-innovate/smartsdk-recipes).
+Instructions on how to prepare your environment to test these recipes are given in the [Installation](../../installation.md) section of the docs.
 
 
 ## Some Considerations regarding HA
