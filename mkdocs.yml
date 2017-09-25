@@ -3,6 +3,7 @@ site_description: Docker recipes for FIWARE Generic Enablers
 docs_dir: 'recipes'
 pages:
   - Home: index.md
+  - 'Installation': 'installation.md'
   - 'Recipes':
     - 'Data/Context Management':
         - 'Context Broker':
@@ -13,11 +14,17 @@ pages:
           - 'Intro': 'data-management/sth/readme.md'
           - 'Standalone': 'data-management/sth/standalone/readme.md'
           - 'HA': 'data-management/sth/ha/readme.md'
+        - 'Cygnus':
+          - 'Intro': 'data-management/cygnus/readme.md'
+          - 'HA': 'data-management/cygnus/ha/readme.md'
+        - 'QuantumLeap':
+          - 'Intro': 'data-management/quantumleap/readme.md'
     - 'IoT Services Enablement':
         - 'IoT Broker': 'iot-services/readme.md'
     - 'Utils':
         - 'MongoDB Replica Set': 'utils/mongo-replicaset/readme.md'
   - 'Tools': 'tools/readme.md'
+  - 'Contributing': 'contributing.md'
 theme: readthedocs
 markdown_extensions: [toc,fenced_code]
 extra_css: ["https://fiware.org/style/fiware_readthedocs.css"]

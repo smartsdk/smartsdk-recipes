@@ -2,22 +2,11 @@
 
 This section contains useful (and sometimes temporary) scripts as well as references to tools, projects and pieces of documentation used for the development of the recipes.
 
-The basic environment setup is explained in landing page of the repository: [https://github.com/smartsdk/smartsdk-recipes](https://github.com/smartsdk/smartsdk-recipes).
-
+The basic environment setup is explained in the [Installation](../installation.md) part of the docs.
 
 ## Env-related
 
 - ##### [miniswarm](https://github.com/aelsabbahy/miniswarm)
-
-    To quickly test deployments on a local swarm. Refer to the [repo](https://github.com/aelsabbahy/miniswarm) for further details, but getting started is as simple as:
-
-        # First-time only to install miniswarm
-        $ curl -sSL https://raw.githubusercontent.com/aelsabbahy/miniswarm/master/miniswarm -o /usr/local/bin/miniswarm
-        $ chmod +rx /usr/local/bin/miniswarm
-
-        # Every time you create/destroy a swarm
-        $ miniswarm start 3
-        $ miniswarm delete
 
 - ##### [wait-for-it](https://github.com/vishnubob/wait-for-it)
 Useful shell script used when you need to wait for a service to be started.
