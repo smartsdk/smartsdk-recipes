@@ -7,11 +7,12 @@ The basic environment setup is explained in the [Installation](../installation.m
 ## Env-related
 
 - ##### [miniswarm](https://github.com/aelsabbahy/miniswarm)
+Helpful tool to help you quickly setup a local virtualbox-based swarm cluster for testing purposes.
 
 - ##### [wait-for-it](https://github.com/vishnubob/wait-for-it)
 Useful shell script used when you need to wait for a service to be started.
 
-    Note: This might no longer be needed since docker introduced the [healthchecks](https://docs.docker.com/engine/reference/builder/#/healthcheck) feature.
+    *Note*: This might no longer be needed since docker introduced the [healthchecks](https://docs.docker.com/engine/reference/builder/#/healthcheck) feature.
 
 - ##### [portainer](https://portainer.readthedocs.io)
 If you'd like an UI with info about your swarm:
@@ -23,6 +24,23 @@ If you'd like an UI with info about your swarm:
         --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
         portainer/portainer \
         -H unix:///var/run/docker.sock
+
+- ##### [docker-swarm-visualizer](https://github.com/dockersamples/docker-swarm-visualizer)
+If you'd like to have a basic view of the distribution of containers in your swarm cluster, add the following service to your docker-compose.yml file.
+
+        viz:
+          image: dockersamples/visualizer
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+          deploy:
+            placement:
+              constraints: [node.role == manager]
+          ports:
+            - "8282:8080"
+          networks:
+            - backend
+            - frontend
+
 
 ## Docs-related
 
