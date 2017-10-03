@@ -1,0 +1,122 @@
+version: '3.3'
+
+services:
+
+  quantumleap:
+    image: smartsdk/quantumleap
+    ports:
+      - 8668:8668
+    depends_on:
+      - crate
+    environment:
+      - CRATE_HOST=crate
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m
+    networks:
+      - backend
+      - frontend
+
+  traefik:
+    image: traefik:1.3.5-alpine
+    command:
+      - --web
+      - --docker
+      - --docker.watch
+      - --docker.swarmmode
+      - --docker.domain=${CLUSTER_DOMAIN:-mydomain.com}
+      - --docker.endpoint=unix:///var/run/docker.sock
+      - --debug=true
+      - --logLevel=DEBUG
+      - --configFile=/run/secrets/traefik.toml
+    secrets:
+      - traefik.toml
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "4200:4200"
+      - "4300:4300"
+    networks:
+      - frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      labels:
+        - "traefik.enable=false"
+      mode: global
+      placement:
+        constraints: [node.role==manager]
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.30'
+          memory: 72M
+        reservations:
+          cpus: '0.10'
+          memory: 36M
+
+  crate:
+    image: crate:1.0.5
+    # ports:
+      # Admin UI
+    #   - 4200:4200
+      # Transport protocol
+    #   - 4300:4300
+    command: ["crate",
+        "-Clicense.enterprise=false",
+        "-Cgateway.expected_nodes=3",
+        "-Cgateway.recover_after_nodes=2",
+        "-Cgateway.recover_after_time=5m",
+        "-Cdiscovery.zen.minimum_master_nodes=2",
+        "-Cdiscovery.zen.ping.unicast.hosts=crate",
+        "-Cnetwork.host=0.0.0.0",
+        "-Ccluster.name=quantumleap",
+        "-Chttp.cors.enabled=true",
+        '-Chttp.cors.allow-origin="*"']
+    environment:
+      - CRATE_HEAP_SIZE=1g
+      - ES_JAVA_OPTS="-Xms512m -Xmx512m"
+      - MAX_MAP_COUNT=262144
+    deploy:
+      endpoint_mode: dnsrr
+      mode: global
+      labels:
+        - "traefik.port=4200"
+        - "traefik.frontend.rule=Host:crate.${CLUSTER_DOMAIN:-mydomain.com}"
+        - "traefik.backend.loadbalancer.sticky=true"
+        - "traefik.backend=crate"
+        - "traefik.backend.loadbalancer.swarm=false"
+        - "traefik.frontend.passHostHeader=true"
+        - "traefik.backend.circuitbreaker.expression=NetworkErrorRatio() > 0.5"
+        - "traefik.docker.network=frontend"
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+    volumes:
+      - cratedata:/data
+    networks:
+      - frontend  # For the UI
+      - backend
+
+secrets:
+  traefik.toml:
+    file: traefik.toml
+
+volumes:
+  cratedata:
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+  backend:
+    external: true
+  frontend:
+    external: true
