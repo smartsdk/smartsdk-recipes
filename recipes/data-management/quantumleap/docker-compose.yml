@@ -10,6 +10,13 @@ services:
       - crate
     environment:
       - CRATE_HOST=crate
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m
     networks:
       - backend
       - frontend
@@ -98,18 +105,6 @@ services:
       - frontend  # For the UI
       - backend
 
-  grafana:
-    image: grafana/grafana
-    ports:
-      - 3000:3000
-    environment:
-      - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
-    depends_on:
-      - crate
-    networks:
-      - backend  # To access Crate DB
-      - frontend
-
 secrets:
   traefik.toml:
     file: traefik.toml
@@ -122,8 +117,6 @@ networks:
     driver_opts:
       com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
   backend:
-    driver: overlay
     external: true
   frontend:
-    driver: overlay
     external: true

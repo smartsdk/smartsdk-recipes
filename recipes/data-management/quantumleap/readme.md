@@ -72,7 +72,16 @@ Note we've included one entry for crate because we'll be accessing the CrateDB c
 
 Now, we're ready to launch the stack with the name "ql".
 
+If you want to deploy the basic stack of QuantumLeap you can simply run...
+
     $ docker stack deploy -c docker-compose ql
+
+Otherwise, if you'd like to include some extra services such as Grafana for data visualisation, you can integrate the addons present in the *docker-compose-addons.yml*. Unfortunately docker is currently not directly supporting [multiple compose files to do a single deploy](https://github.com/moby/moby/issues/30127). Hence the suggested way to proceed is the following...
+
+    # First we merge the two compose files using docker-compose
+    $ docker-compose -f docker-compose.yml -f docker-compose-addons.yml config > ql.yml
+    # Now we deploy the "ql" stack from the generated ql.yml file.
+    $ docker stack deploy -c ql.yml ql
 
 Wait until you see all instances up and running (this might take some minutes).
 
@@ -84,6 +93,7 @@ Wait until you see all instances up and running (this might take some minutes).
     ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
     tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000->3000/tcp
 
+Now you are ready to scale services according to your needs using simple docker service scale command as explained in [the official docs](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/).
 
 #### Explore
 
