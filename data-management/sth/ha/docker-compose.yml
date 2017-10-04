@@ -7,11 +7,12 @@ services:
         ports:
             - "8666:8666"
         deploy:
-            replicas: 3
+            replicas: 1
         environment:
             - STH_HOST=0.0.0.0
             - DB_URI=${MONGO_SERVICE_URI}
             - REPLICA_SET=${REPLICASET_NAME}
+            - LOGOPS_LEVEL=DEBUG
         networks:
             - frontend
             - backend
@@ -20,8 +21,6 @@ networks:
     default:
         driver_opts:
             com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
-    # Join the network of the db replicaset
-    # defined in ../../utils/mongodb/replica/docker-compose.yml
     frontend:
         driver: overlay
         external: true

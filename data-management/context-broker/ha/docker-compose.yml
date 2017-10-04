@@ -6,19 +6,22 @@ services:
         image: fiware/orion:${ORION_VERSION}
         ports:
             - "1026:1026"
-        command: -dbhost ${MONGO_SERVICE_NAME} -rplSet ${REPLICASET_NAME} -dbTimeout 10000
+        command: -logLevel DEBUG -dbhost ${MONGO_SERVICE_NAME} -rplSet ${REPLICASET_NAME} -dbTimeout 10000
         deploy:
-            replicas: 3
+            replicas: 1
         networks:
             - backend
             - frontend
+        healthcheck:
+          test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+          interval: 1m
+          timeout: 10s
+          retries: 3
 
 networks:
     default:
         driver_opts:
             com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
-            # Join the network of the db replicaset
-            # defined in ../../utils/mongodb/replica/docker-compose.yml
     backend:
         driver: overlay
         external: true

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Installation - SmartSDK Recipes</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  <link href="https://fiware.org/style/fiware_readthedocs.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Installation";
+    var mkdocs_page_input_path = "installation.md";
+    var mkdocs_page_url = "/installation/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> SmartSDK Recipes</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Installation</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#getting-the-recipes">Getting the Recipes</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#requirements">Requirements</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#preparing-a-local-swarm-cluster">Preparing a Local Swarm Cluster</a></li>
+                
+                    <li><a class="toctree-l4" href="#creating-the-cluster">Creating the Cluster</a></li>
+                
+                    <li><a class="toctree-l4" href="#creating-the-networks">Creating the networks</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Recipes</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Data/Context Management</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Context Broker</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/context-broker/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/context-broker/simple/readme/">Simple</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/context-broker/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>STH</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/sth/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/sth/standalone/readme/">Standalone</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/sth/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Cygnus</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/cygnus/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/cygnus/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>QuantumLeap</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../data-management/quantumleap/readme/">Intro</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>IoT Services Enablement</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../iot-services/readme/">IoT Broker</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Utils</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../utils/mongo-replicaset/readme/">MongoDB Replica Set</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../tools/readme/">Tools</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../contributing/">Contributing</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">SmartSDK Recipes</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Installation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/smartsdk/smartsdk-recipes/edit/master/recipes/installation.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="getting-the-recipes">Getting the Recipes</h1>
+<p>Get the latest version from the git repository.</p>
+<pre><code>$ git clone https://github.com/smartsdk/smartsdk-recipes
+</code></pre>
+<h1 id="requirements">Requirements</h1>
+<p>The recipes are prepared to run using the latest <a href="https://docs.docker.com">Docker</a> version (minimum 1.13+, ideally 17.06.0+). To install Docker refer to the <a href="https://docs.docker.com/engine/installation/">Installation instructions</a>.</p>
+<p>For some testing and walkthroughs, you may also need to install <a href="https://curl.haxx.se/">curl</a> if it's not already available in your system.</p>
+<p>Finally, you should install <a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a> if you want to create clusters in your local environment to test the recipes (see next section).</p>
+<p>Note For Windows Users: Many of the walkthroughs and verification steps are designed to run tools typically found in a Linux/macOS environment. Therefore, you will need to consider compatible workarounds from time to time.</p>
+<h1 id="preparing-a-local-swarm-cluster">Preparing a Local Swarm Cluster</h1>
+<h2 id="creating-the-cluster">Creating the Cluster</h2>
+<p>Although you can run most (if not all) of the recipes using <a href="https://docs.docker.com/compose/install/">docker-compose</a>, the recipes are tailored to be deployed as services on Docker Swarm Clusters.</p>
+<p>You can turn your local Docker client into a single-node Swarm cluster by simply running</p>
+<pre><code>$ docker swarm init
+</code></pre>
+<p>However, things get more interesting when you're actually working on a multi-node cluster.</p>
+<p>The fastest way to create one is using <a href="https://github.com/aelsabbahy/miniswarm">miniswarm</a>. Getting started is as simple as:</p>
+<pre><code># First-time only to install miniswarm
+$ curl -sSL https://raw.githubusercontent.com/aelsabbahy/miniswarm/master/miniswarm -o /usr/local/bin/miniswarm
+$ chmod +rx /usr/local/bin/miniswarm
+
+# Every time you create/destroy a swarm
+$ miniswarm start 3
+$ miniswarm delete
+</code></pre>
+<p>Otherwise, you can create your own using <a href="https://docs.docker.com/machine/overview/">docker-machine</a>.</p>
+<h2 id="creating-the-networks">Creating the networks</h2>
+<p>For convenience reasons, most if not all of the recipes will be using overlay networks to connect the services. We have agreed-upon the convention of having at least two overlay networks available: "backend" and "frontend". The latest typically connects services that need some exposure to the outside world.</p>
+<p>If you want to buy you some time, you can now create the two networks before starting the trials with the recipes. This can be done by running the following commands:</p>
+<pre><code>$ docker network create -d overlay --opt com.docker.network.driver.mtu=${DOCKER_MTU:-1400} backend
+$ docker network create -d overlay --opt com.docker.network.driver.mtu=${DOCKER_MTU:-1400} frontend
+</code></pre>
+<p>Or, if you are lazy, there is a script in the <em>tools</em> folder.</p>
+<pre><code>$ sh tools/create_networks.sh
+</code></pre>
+<p>Again, this is a convention to simplify the experimentation with the recipes. In the end, you may want to edit the recipes to adapt to your specific networking needs.</p>
+<h3 id="on-virtualised-environments">On virtualised environments</h3>
+<p>If you are running the recipes in a virtualised environment such as your FIWARE
+Lab, if at some point you experience problems with the connectivity of the containers to the outside world, chances are that the cause of the package dropping is due to a mismatch of the <a href="https://en.wikipedia.org/wiki/Maximum_transmission_unit">MTU</a> settings.</p>
+<p>In FIWARE Lab, the default MTU for the vm's bridge is set to 1400, hence you will notice that this is the default MTU for the networks used in the recipes. If you need to change that value, feel free to set a <em>DOCKER_MTU</em> env variable with the value you want before you create the networks.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../data-management/context-broker/readme/" class="btn btn-neutral float-right" title="Intro">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/smartsdk/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../data-management/context-broker/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

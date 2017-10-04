@@ -19,8 +19,8 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Intro";
-    var mkdocs_page_input_path = "data-management/sth/readme.md";
-    var mkdocs_page_url = "/data-management/sth/readme/";
+    var mkdocs_page_input_path = "data-management/cygnus/readme.md";
+    var mkdocs_page_url = "/data-management/cygnus/readme/";
   </script>
   
   <script src="../../../js/jquery-2.1.1.min.js"></script>
@@ -106,29 +106,22 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Intro</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#comet">Comet</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../sth/readme/">Intro</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../standalone/readme/">Standalone</a>
+        <a class="" href="../../sth/standalone/readme/">Standalone</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../ha/readme/">HA</a>
+        <a class="" href="../../sth/ha/readme/">HA</a>
         
     </li>
 
@@ -142,15 +135,24 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../cygnus/readme/">Intro</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Intro</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#cygnus">Cygnus</a></li>
+                
+                    <li><a class="toctree-l4" href="#some-considerations-regarding-ha">Some Considerations regarding HA</a></li>
+                
+            
+            </ul>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../cygnus/ha/readme/">HA</a>
+        <a class="" href="../ha/readme/">HA</a>
         
     </li>
 
@@ -249,14 +251,14 @@
         
       
         
-          <li>STH &raquo;</li>
+          <li>Cygnus &raquo;</li>
         
       
     
     <li>Intro</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/smartsdk/smartsdk-recipes/edit/master/recipes/data-management/sth/readme.md"
+        <a href="https://github.com/smartsdk/smartsdk-recipes/edit/master/recipes/data-management/cygnus/readme.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -266,10 +268,16 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="comet">Comet</h1>
-<p>Here you can find recipes aimed at different usages of Comet, the Reference Implementation of the STH Generic Enabler. We assume you are already familiar with Comet. If not, refer to the <a href="http://fiware-sth-comet.readthedocs.io/en/latest/index.html">official documentation</a>.</p>
-<p>The easiest and simplest way to try Comet is to follow the <a href="../standalone/readme/">Standalone Walkthrough</a>.</p>
-<p>Instructions on how to prepare your environment to test these recipes are given in <a href="https://github.com/smartsdk/smartsdk-recipes">https://github.com/smartsdk/smartsdk-recipes</a>.</p>
+                <h1 id="cygnus">Cygnus</h1>
+<p>Here you can find recipes aimed at different usages of Cygnus, in particular, cygnus-ngsi. We assume you are already familiar with it, but if not, refer to the <a href="http://fiware-cygnus.readthedocs.io/en/latest/index.html">official documentation</a>.</p>
+<p>Instructions on how to prepare your environment to test these recipes are given in the <a href="../../../installation/">Installation</a> section of the docs.</p>
+<h2 id="some-considerations-regarding-ha">Some Considerations regarding HA</h2>
+<p>The first thing to note is that when we talk about high availability while using cygnus, we refer to the availability of data processed by cygnus agents before it's dropped to the final storage solution. So, as you can read from the <a href="http://fiware-cygnus.readthedocs.io/en/latest/index.html">official documentation</a>, different sinks can give you persistence in different storage solutions (mongodb, mysql, hdfs, etc). Keeping the persisted data in HA mode is a different challenge and the implementation will depend on the used solution. For the case of MongoDB, you can have a look at the <a href="../../utils/mongodb/replica/readme.md">MongoDB Replicaset Recipe</a>. So, this recipes will show you how to connect to some backends, but how you manage them is up to you.</p>
+<p>Moreover, we will be discussing the deployment of the agent as a single configurable entity. But note that within an agent, there exist multiple available configurations (using single and multiple sources, channels and sinks), as described in <a href="http://fiware-cygnus.readthedocs.io/en/latest/architecture/index.html#advanced-cygnus-architectures">Advanced Cygnus Architectures</a>. How you setup those internal advanced architectures and the advantages of each will not be covered here, since this is already discussed in the official documentation.</p>
+<p>That being said, in order to deploy Cygnus, we need to understand whether it's a stateless or stateful service. It turns out that source and sink parts of the agent do not persist data, however, the channels do, at least for a short period of time until data is processed and taken out of the channel by the sink[s]. As you can read from Cygnus and Flume's documentation, channels come in the form of MemoryChannel and FileChannel.</p>
+<p>It's easy to see that MemoryChannel and Batching has a potential for data loss, for example, in the case when an agent crashes before events were taken out of the channel. In fact, to avoid storage access for each event, Cygnus comes with default values of batch size and batch flush timeouts. As a side note, it'd be nice if this could be dynamically changed according to dynamic demands, but this is an interesting point to investigate at a later point.</p>
+<p>Therefore, the FileChannel could be used, at the cost of a higher latency, to give persistence to the "inflight data" and this way prevent a complete loss if there happens to be a software failure/crash at the agent. Note however that the location of this file within the container and not customizable, hence a container crash will cause those un-flushed values to be lost.</p>
+<p>One could explore ways to persist those channels somewhere else, or share channels across different containers. Or maybe looking for Message-based solutions such as Solace to be used at the Channel level. But this of course, would involve some updates to Cygnus which are beyond the scope of this project.</p>
               
             </div>
           </div>
@@ -277,10 +285,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../standalone/readme/" class="btn btn-neutral float-right" title="Standalone">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../ha/readme/" class="btn btn-neutral float-right" title="HA">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../context-broker/ha/readme/" class="btn btn-neutral" title="HA"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../sth/ha/readme/" class="btn btn-neutral" title="HA"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -308,10 +316,10 @@
           <a href="https://github.com/smartsdk/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../context-broker/ha/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../sth/ha/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../standalone/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../ha/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

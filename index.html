@@ -64,6 +64,13 @@
 <li>
           
             <li>
+    <li class="toctree-l1 ">
+        <a class="" href="installation/">Installation</a>
+        
+    </li>
+<li>
+          
+            <li>
     <ul class="subnav">
     <li><span>Recipes</span></li>
 
@@ -131,6 +138,43 @@
     </ul>
 
         
+            
+    <ul class="subnav">
+    <li><span>Cygnus</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="data-management/cygnus/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="data-management/cygnus/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>QuantumLeap</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="data-management/quantumleap/readme/">Intro</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
     </ul>
 
         
@@ -155,18 +199,10 @@
 
         
             
-    <ul class="subnav">
-    <li><span>Mongodb</span></li>
-
-        
-            
     <li class="toctree-l1 ">
-        <a class="" href="utils/mongodb/replica/readme/">Replica Set</a>
+        <a class="" href="utils/mongo-replicaset/readme/">MongoDB Replica Set</a>
         
     </li>
-
-        
-    </ul>
 
         
     </ul>
@@ -178,6 +214,13 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="tools/readme/">Tools</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="contributing/">Contributing</a>
         
     </li>
 <li>
@@ -221,11 +264,13 @@
 <p>This site is dedicated to the documentation of the recipes brought by
 <a href="https://www.smartsdk.eu">SmartSDK</a> to launch, test and experiment different
 <a href="https://catalogue.fiware.org/enablers">FIWARE Generic Enablers</a> and combinations of them known as common use cases.</p>
-<p>Recipes will be based on <a href="https://docs.docker.com">Docker</a>, <a href="https://docs.docker.com/compose/">docker-compose</a> and maybe some complementary scripts. For simple cases, they will be aimed to run on a single Docker host. For more complex scenarios, they will be aimed to run in a <a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a>.</p>
-<p>Recipes will be organized in folders respecting the FIWARE chapters and generic enablers they are mainly aimed to work with.</p>
+<p>Recipes will be based on <a href="https://docs.docker.com">Docker</a> and maybe some complementary scripts. For simple cases, you may be able to run them on a single Docker host using <a href="https://docs.docker.com/compose/">docker-compose</a>. However, the more interesting scenarios are aimed to be run in a <a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a> cluster.</p>
+<p>Recipes are organized in folders respecting the <a href="https://www.fiware.org/our-vision/">FIWARE Chapters</a> and the <a href="./(https://catalogue.fiware.org/enablers)">Generic Enablers</a> they are aimed to work with. Shared functionality can be found in the <code>utils</code> folder.</p>
 <h2 id="getting-started">Getting started</h2>
-<p>Head to <a href="https://github.com/smartsdk/smartsdk-recipes">https://github.com/smartsdk/smartsdk-recipes</a> and follow the instructions to get the code and setup your environment.</p>
-<p>Also, have a look at the <a href="tools/readme/">tools</a> section, specially if you want to test the recipes in a local environment or want to contribute.</p>
+<p>Head first to the <a href="installation/">Installation</a> section and follow the instructions to get the code and set-up your environment.</p>
+<p>Then, feel free to explore the different recipes and their referenced parts of the corresponding FIWARE documentation.</p>
+<p>Don't miss the <a href="contributing/">Contributing</a> section in case you'd like to improve this repo.</p>
+<p>Also, you may want to have a look at the <a href="tools/readme/">Tools</a> section, specially if you want to test the recipes in a local environment.</p>
               
             </div>
           </div>
@@ -233,7 +278,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="data-management/context-broker/readme/" class="btn btn-neutral float-right" title="Intro">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -263,7 +308,7 @@
       
       
       
-        <span style="margin-left: 15px"><a href="data-management/context-broker/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="installation/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -274,5 +319,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-05-23 06:33:42
+Build Date UTC : 2017-10-04 09:45:43
 -->

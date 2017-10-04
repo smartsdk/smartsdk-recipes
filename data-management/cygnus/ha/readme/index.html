@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../../../img/favicon.ico">
+  <title>HA - SmartSDK Recipes</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../css/highlight.css">
+  <link href="https://fiware.org/style/fiware_readthedocs.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "HA";
+    var mkdocs_page_input_path = "data-management/cygnus/ha/readme.md";
+    var mkdocs_page_url = "/data-management/cygnus/ha/readme/";
+  </script>
+  
+  <script src="../../../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../../.." class="icon icon-home"> SmartSDK Recipes</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../../..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../installation/">Installation</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Recipes</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Data/Context Management</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Context Broker</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../context-broker/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../context-broker/simple/readme/">Simple</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../context-broker/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>STH</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../sth/readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../sth/standalone/readme/">Standalone</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../sth/ha/readme/">HA</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Cygnus</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../readme/">Intro</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">HA</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#getting-started">Getting started</a></li>
+                
+                    <li><a class="toctree-l4" href="#what-if-i-wanted-a-different-backend">What if I wanted a different backend?</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>QuantumLeap</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../quantumleap/readme/">Intro</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>IoT Services Enablement</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../iot-services/readme/">IoT Broker</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Utils</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../utils/mongo-replicaset/readme/">MongoDB Replica Set</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../tools/readme/">Tools</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../../../contributing/">Contributing</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../..">SmartSDK Recipes</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Data/Context Management &raquo;</li>
+        
+      
+        
+          <li>Cygnus &raquo;</li>
+        
+      
+    
+    <li>HA</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/smartsdk/smartsdk-recipes/edit/master/recipes/data-management/cygnus/ha/readme.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="getting-started">Getting started</h1>
+<p>This recipe will show you how to deploy a default cygnus-ngsi configuration with a MySQL backend. Note that this generic enabler can actually be deployed with <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html">many other backends</a>.</p>
+<p>This recipe in particular requires the use of <a href="https://docs.docker.com/compose/compose-file/#configs">docker "configs"</a> and hence depends on a docker-compose file version "3.3", supported in docker versions 17.06.0+.</p>
+<p>Instructions on how to prepare your environment to test these recipes are given in the <a href="../../installation.md">Installation</a> section of the docs. Assuming you have created a 3-nodes Swarm setup, this deployment will look as follows...</p>
+<p><img src='http://g.gravizo.com/g?
+  digraph G {
+      rankdir=LR;
+        compound=true;
+        node [shape="record" style="filled"];
+        splines=line;
+        Client [fillcolor="aliceblue"];
+        subgraph cluster {
+            label="Docker Swarm Cluster";
+            "Load Balancer" [fillcolor="aliceblue"];
+            subgraph clustern3 {
+                label="Node 3";
+                "Cygnus Agent 3" [fillcolor="aliceblue"];
+            }
+            subgraph clustern2 {
+                label="Node 2";
+                "Cygnus Agent 2" [fillcolor="aliceblue"];
+            }
+            subgraph clustern1 {
+                label="Node 1";
+                "Cygnus Agent" [fillcolor="aliceblue"];
+            }
+            MySQL [fillcolor="aliceblue"];
+        }
+        Client -> "Load Balancer" [label="5050",lhead=cluster_0];
+        "Load Balancer" -&gt; {"Cygnus Agent","Cygnus Agent 2","Cygnus Agent 3"};
+        "Cygnus Agent" -&gt; MySQL [lhead=cluster_1];
+        "Cygnus Agent 2" -&gt; MySQL [lhead=cluster_1];
+        "Cygnus Agent 3" -&gt; MySQL [lhead=cluster_1];
+  }
+'&gt;</p>
+<p>As you may already know <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html">from the docs</a>, in order to configure cygnus, you need to provide a specific agent configuration file. In this case, you can customize the <code>cygnus_agent.conf</code> and <code>cartodb_keys.conf</code> files within the <code>conf</code> folder. The content of these files will be loaded by docker into their corresponding configs, which will be available for all the replicas of the cygnus service.</p>
+<p>If you inspect the <code>docker-compose.yml</code> you will realize that you can customize the values of the MySQL user and password by setting the environment varialbes <code>CYGNUS_MYSQL_USER</code> and <code>CYGNUS_MYSQL_PASS</code>.</p>
+<p>To launch the example as it is, simply run:</p>
+<pre><code>docker stack deploy -c docker-compose.yml cygnus
+</code></pre>
+<p>After a couple of minutes you should be able to see the two services up and running.</p>
+<pre><code>$ docker service ls
+ID                  NAME                   MODE                REPLICAS            IMAGE                       PORTS
+l3h1fsk36v35        cygnus_mysql           replicated          3/3                 mysql:latest                *:3306-&gt;3306/tcp
+vmju1turlizr        cygnus_cygnus-common   replicated          3/3                 fiware/cygnus-ngsi:latest   *:5050-&gt;5050/tcp
+</code></pre>
+<p>For illustration purposes, let's send an NGSI notification to cygnu's entrypoint using the simple <code>notification.sh</code> script.</p>
+<pre><code>$ sh notification.sh http://0.0.0.0:5050/notify
+*   Trying 0.0.0.0...
+* TCP_NODELAY set
+* Connected to 0.0.0.0 (127.0.0.1) port 5050 (#0)
+&gt; POST /notify HTTP/1.1
+&gt; Host: 0.0.0.0:5050
+&gt; User-Agent: curl/7.54.0
+&gt; Content-Type: application/json; charset=utf-8
+&gt; Accept: application/json
+&gt; Fiware-Service: default
+&gt; Fiware-ServicePath: /
+&gt; Content-Length: 607
+&gt;
+* upload completely sent off: 607 out of 607 bytes
+&lt; HTTP/1.1 200 OK
+&lt; Transfer-Encoding: chunked
+&lt; Server: Jetty(6.1.26)
+&lt;
+* Connection #0 to host 0.0.0.0 left intact
+</code></pre>
+<p>By now, the data sent by the script has been processed by cygnus and will be available in the configured sink (MySQL in this case).</p>
+<p>Having cygnus running as a service on a Docker Swarm cluster, scaling it can be achieved as with any other docker service. For more details, refer to the <a href="../../../context-broker/ha/readme/">Orion recipe</a> to see how this can be done with Docker. Otherwise, refer to the <a href="https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/">Docker service docs</a>.</p>
+<h2 id="what-if-i-wanted-a-different-backend">What if I wanted a different backend?</h2>
+<p>If you wanted to try a different backend for your cygnus deployment, there are 3 steps you need to follow.</p>
+<ol>
+<li>Configure your <code>cygnus_agent.conf</code> according to your needs. More info <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html">in the docs</a>.</li>
+<li>Update the <code>docker-compose.yml</code>, specifically the environment variables configured for the cygnus service.
+    For example, if you wanted to use MongoDB instead of MySQL, you'll need to use variables CYGNUS_MONGO_USER and CYGNUS_MONGO_PASS. For a complete list of required variables, refer to the <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2">cygnus docs</a>.</li>
+<li>Update the <code>docker-compose.yml</code>, removing the definition of the mysql service and introducing the one of your preference. Also, don't forget to update the <code>depends_on:</code> section of cygnus with the name of your new service.</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../quantumleap/readme/" class="btn btn-neutral float-right" title="Intro">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../readme/" class="btn btn-neutral" title="Intro"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/smartsdk/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../../readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../../quantumleap/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../../../../js/theme.js"></script>
+
+</body>
+</html>
