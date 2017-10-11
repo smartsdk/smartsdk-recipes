@@ -80,9 +80,9 @@ services:
         "-Chttp.cors.enabled=true",
         '-Chttp.cors.allow-origin="*"']
     environment:
-      - CRATE_HEAP_SIZE=1g
-      - ES_JAVA_OPTS="-Xms512m -Xmx512m"
       - MAX_MAP_COUNT=262144
+      - ES_JAVA_OPTS="-Xms1g -Xmx1g"
+      - CRATE_HEAP_SIZE=1g
     deploy:
       endpoint_mode: dnsrr
       mode: global
