@@ -1,0 +1,3 @@
+#!/bin/sh
+export ORION_EP=192.168.99.100:1026
+export IOTA_EP=192.168.99.100:4041

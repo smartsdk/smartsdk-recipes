@@ -1,0 +1,55 @@
+version: '3.3'
+
+services:
+
+  mosquitto:
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-1.4.12}
+    ports:
+      - "1883:1883"
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+    configs:
+      - source: mosquitto_conf
+        target: /mosquitto/config/mosquitto.conf
+    networks:
+      - backend
+    volumes:
+      - mosquittodata:/mosquitto/data
+
+  iotagent:
+    image: fiware/iotagent-json:${IOTA_VERSION:-1.6.0}
+    ports:
+      # HTTP transport
+      - "7896:7896"
+      # Agent
+      - "4041:4041"
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+    configs:
+      - source: iota-json-conf
+        target: /opt/iotajson/config.js  # As per current IOTA Dockerfile
+    networks:
+      - backend
+
+configs:
+  mosquitto_conf:
+    file: ./mosquitto.conf
+  iota-json-conf:
+    file: ./config.js
+
+volumes:
+  mosquittodata:
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+
+  backend:
+    external: true
