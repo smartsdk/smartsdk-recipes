@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+
+  iotagent:
+    image: fiware/iotagent-ul:${AGENT_VERSION:-1.5.0}
+    entrypoint: "bin/iotagent-ul config.js" 
+    ports:
+      # HTTP transport
+      - "7896:7896"
+      # Agent
+      - "4041:4041"
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+    configs:
+      - source: iota-ul-conf
+        target: /opt/iotaul/config.js
+    networks:
+      - backend
+
+configs:
+  iota-ul-conf:
+    file: ./config.js
+    
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+
+  backend:
+    external: true
