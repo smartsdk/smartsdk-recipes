@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+
+  iotagent:
+    image: telefonicaiot/lightweightm2m-iotagent  # No tags :/
+    entrypoint: "bin/lwm2mAgent.js config.js" 
+    ports:
+      # lwm2m
+      - "5684:5684"
+      # Agent
+      - "4041:4041"
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+    configs:
+      - source: iota-lwm2m-conf
+        target: /opt/iota-lwm2m/config.js  # As per Dockerfile
+    networks:
+      - backend
+
+configs:
+  iota-lwm2m-conf:
+    file: ./config.js
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+
+  backend:
+    external: true
