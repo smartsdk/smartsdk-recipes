@@ -23,12 +23,3 @@ We assume you have already setup your environment as explained in the [Installat
 The deployed services will be:
 
 - [IoTAgent-ul](https://github.com/telefonicaid/iotagent-ul)
-
-
-### Important Things to keep in mind
-
-- If you want to follow the step-by-step, remember you no longer have everything running in local host so you will have to adjust the urls sometimes. You can use the service names if you are inside the docker network or the IP of your docker swarm node (any of them) if you are outside the cluster. Checkout the scripts in test folder.
-
-
-### TODO
-- Complete with MQTT and AMQP transport options when completely supported.

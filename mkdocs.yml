@@ -21,6 +21,8 @@ pages:
           - 'Intro': 'data-management/quantumleap/readme.md'
     - 'IoT Services Enablement': 'iot-services/readme.md'
         - 'IoT Agent JSON': 'iot-services/iotagent-json/readme.md'
+        - 'IoT Agent LWM2M': 'iot-services/iotagent-lwm2m/readme.md'
+        - 'IoT Agent UL': 'iot-services/iotagent-ul/readme.md'
     - 'Utils':
         - 'MongoDB Replica Set': 'utils/mongo-replicaset/readme.md'
   - 'Tools': 'tools/readme.md'

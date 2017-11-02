@@ -30,7 +30,7 @@ config.iota = {
     types: {},
     service: 'howtoService',
     subservice: '/howto',
-    providerUrl: 'http://iotagent:4041',
+    providerUrl: 'http://iotagent:4041',  /* Name of agent docker service */
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing'
 };

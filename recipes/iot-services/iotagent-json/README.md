@@ -30,8 +30,6 @@ The deployed services will be:
 
 ### Important Things to keep in mind
 
-- If you want to follow the step-by-step, remember you no longer have everything running in local host so you will have to adjust the urls sometimes. You can use the service names if you are inside the docker network or the IP of your docker swarm node (any of them) if you are outside the cluster.
-
 - As of today, the official Mosquitto Docker Image is not including the mosquitto-clients, so if you want to execute commands like ```mosquitto_sub``` and ```mosquitto_pub```, you basically have 2 options:
     - Install them in your system and add the host parameter to point to the docker mosquitto service.
     
