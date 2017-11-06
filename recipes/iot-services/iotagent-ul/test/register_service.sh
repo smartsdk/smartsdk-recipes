@@ -14,6 +14,3 @@ curl -H "Content-type: application/json" -H "Fiware-Service: openiot" -H "Fiware
 
 # Check
 curl -H "Content-type: application/json" -H "Fiware-Service: openiot" -H "Fiware-ServicePath: /" http://${IOTA_EP}/iot/services | jq .
-
-
-
