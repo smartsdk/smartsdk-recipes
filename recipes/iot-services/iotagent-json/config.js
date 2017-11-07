@@ -1,33 +1,34 @@
 var config = {};
 
 config.mqtt = {
-    host: 'mosquitto',
-    port: 1883,
+    host: process.env.IOTA_MQTT_HOST|| 'mosquitto',
+    port: process.env.IOTA_MQTT_PORT|| 1883,
     thinkingThingsPlugin: true
 };
 
 config.iota = {
-    logLevel: 'DEBUG',
-    timestamp: true,
+    logLevel: process.env.IOTA_LOG_LEVEL || 'DEBUG',
+    timestamp: process.env.IOTA_TIMESTAMP || true,
     contextBroker: {
-        host: 'orion',
-        port: '1026'
+        host: process.env.IOTA_CB_HOST || 'orion',
+        port: process.env.IOTA_CB_PORT || '1026'
     },
     server: {
-        port: 4041
+        port: process.env.IOTA_NORTH_PORT || 4041
     },
     deviceRegistry: {
-        type: 'mongodb'
+        type: process.env.IOTA_REGISTRY_TYPE || 'mongodb'
     },
     mongodb: {
-        host: 'mongo',
-        port: '27017',
-        db: 'iotagentjson'
+        host: process.env.IOTA_MONGO_HOST || 'mongo',
+        port: process.env.IOTA_MONGO_PORT || '27017',
+        db: process.env.IOTA_MONGO_DB || 'iotagentjson',
+        replicaSet: process.env.IOTA_MONGO_REPLICASET || 'rs'
     },
     types: {},
     service: 'howtoService',
     subservice: '/howto',
-    providerUrl: 'http://iotagent:4041',  /* Name of agent docker service */
+    providerUrl: process.env.IOTA_PROVIDER_URL || 'http://iotagent:4041',
     deviceRegistrationDuration: 'P1M',
     defaultKey: '1234', 
     defaultType: 'Thing'

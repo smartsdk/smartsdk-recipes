@@ -3,13 +3,13 @@ version: '3.3'
 services:
 
   iotagent:
-    image: telefonicaiot/lightweightm2m-iotagent  # No tags :/
+    image: telefonicaiot/lightweightm2m-iotagent:${IOTA_VERSION:-latest}
     entrypoint: "bin/lwm2mAgent.js config.js" 
     ports:
       # lwm2m
-      - "5684:5684"
-      # Agent
-      - "4041:4041"
+      - "${IOTA_LWM2M_PORT:-5684}:${IOTA_LWM2M_PORT:-5684}"
+      # Agent Northbound port
+      - "${IOTA_NORTH_PORT:-4041}:${IOTA_NORTH_PORT:-4041}"
     deploy:
       mode: replicated
       restart_policy:

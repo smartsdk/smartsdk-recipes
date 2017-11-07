@@ -1,8 +1,8 @@
 var config = {};
 
 config.lwm2m = {
-    logLevel: 'DEBUG',
-    port: 5684,
+    logLevel: process.env.IOTA_LOG_LEVEL || 'DEBUG',
+    port: process.env.IOTA_LWM2M_PORT || 5684,
     defaultType: 'Device',
     ipProtocol: 'udp4',
     serverProtocol: 'udp4',
@@ -34,16 +34,22 @@ config.lwm2m = {
 };
 
 config.ngsi = {
-    logLevel: 'DEBUG',
+    logLevel: process.env.IOTA_LOG_LEVEL || 'DEBUG',
     contextBroker: {
-        host: 'orion',
-        port: '1026'
+        host: process.env.IOTA_CB_HOST || 'orion',
+        port: process.env.IOTA_CB_PORT || '1026'
     },
     server: {
-        port: 4041
+        port: process.env.IOTA_NORTH_PORT || 4041
     },
     deviceRegistry: {
-        type: 'memory'
+        type: process.env.IOTA_REGISTRY_TYPE || 'mongodb'
+    },
+    mongodb: {
+        host: process.env.IOTA_MONGO_HOST || 'mongo',
+        port: process.env.IOTA_MONGO_PORT || '27017',
+        db: process.env.IOTA_MONGO_DB || 'iotagentjson',
+        replicaSet: process.env.IOTA_MONGO_REPLICASET || 'rs'
     },
     types: { 
         'Robot': {
@@ -88,8 +94,8 @@ config.ngsi = {
     },
     service: 'smartGondor',
     subservice: '/gardens',
-    providerUrl: 'http://iotagent:4041',
-    deviceRegistrationDuration: 'P1M'
+    providerUrl: process.env.IOTA_PROVIDER_URL || 'http://iotagent:4041',
+        deviceRegistrationDuration: 'P1M'
 };
 
 module.exports = config;
