@@ -20,7 +20,7 @@ For the documentation of the variables please refer to the [global configuration
 - IOTA_MONGO_HOST: Defaults to *mongo*.
 - IOTA_MONGO_PORT: Defaults to *27017*.
 - IOTA_MONGO_DB: Defaults to *iotagentjson*.
-- IOTA_MONGO_REPLICASET: Defaults to *rs*.
+- IOTA_MONGO_REPLICASET: Defaults to *rs*. Unset to disable replicaset option.
 - IOTA_HTTP_PORT: Defaults to *7896*.
 - IOTA_PROVIDER_URL: Defaults to *http://iotagent:4041*.
 

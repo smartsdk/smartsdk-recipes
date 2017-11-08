@@ -19,7 +19,7 @@ Official documentation of this IoT Agent: https://fiware-iotagent-lwm2m.readthed
 - IOTA_MONGO_HOST: Defaults to *mongo*.
 - IOTA_MONGO_PORT: Defaults to *27017*.
 - IOTA_MONGO_DB: Defaults to *iotagentjson*.
-- IOTA_MONGO_REPLICASET: Defaults to *rs*.
+- IOTA_MONGO_REPLICASET: Defaults to *rs*. Unset to disable replicaset option.
 - IOTA_PROVIDER_URL: Defaults to *http://iotagent:4041*.
 
 For the documentation of the variables please refer to the [global configuration docs]((https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)).
