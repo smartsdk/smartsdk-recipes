@@ -247,8 +247,133 @@
         }, 
         {
             "location": "/iot-services/readme/", 
-            "text": "Comming soon...", 
-            "title": "IoT Broker"
+            "text": "Backend Device Management (IDAS)\n\n\nFor more info about this Chapter, see \nhere\n.\n\n\nFor more info about this GE, see \nhere\n.\n\n\nIoT Agents\n\n\nWhy using an IoT Agent?\n\n\n\n\nTransform IoT Device specific protocol to NGSI (a.k.a Active attributes)\n\n\nRequest data from the IoT Device at some intervals (a.k.a Lazy attributes)\n\n\nExecute commands on the IoT Device communication based on context in the Broker (see Commands).\n\n\n\n\nExplore the subfolders of each of the available IoT Agent recipes. The Agents can be considered stateless services and hence be deployed in the replicated mode of swarm with any required amount of replicas, provided that you keep your configurations using the service name of the agent for routing purposes.\n\n\nFor good scalability, when deploying the mongo databases that your agents may use in case of persistence need, make sure you deploy with the provided recipe for mongo replica sets. More info \nhere\n.\n\n\nTesting\n\n\nIf you would like to try the IoT Agents in a local development environment, you can deploy the complementary services (Orion and Mongo) by using their corresponding recipes. See \nOrion's\n and \nMongo's\n\n\nIf you are following the step-by-step of the official documentation guides, you may find the scripts in the \ntest\n subfolders useful. Remember you no longer have everything running in local host so you will have to adjust the urls sometimes. You can use the service names if you are inside the docker network or the IP of your docker swarm node (any of them) if you are outside the cluster. Checkout the setup.sh.", 
+            "title": "IDAS"
+        }, 
+        {
+            "location": "/iot-services/readme/#backend-device-management-idas", 
+            "text": "For more info about this Chapter, see  here .  For more info about this GE, see  here .", 
+            "title": "Backend Device Management (IDAS)"
+        }, 
+        {
+            "location": "/iot-services/readme/#iot-agents", 
+            "text": "Why using an IoT Agent?   Transform IoT Device specific protocol to NGSI (a.k.a Active attributes)  Request data from the IoT Device at some intervals (a.k.a Lazy attributes)  Execute commands on the IoT Device communication based on context in the Broker (see Commands).   Explore the subfolders of each of the available IoT Agent recipes. The Agents can be considered stateless services and hence be deployed in the replicated mode of swarm with any required amount of replicas, provided that you keep your configurations using the service name of the agent for routing purposes.  For good scalability, when deploying the mongo databases that your agents may use in case of persistence need, make sure you deploy with the provided recipe for mongo replica sets. More info  here .  Testing  If you would like to try the IoT Agents in a local development environment, you can deploy the complementary services (Orion and Mongo) by using their corresponding recipes. See  Orion's  and  Mongo's  If you are following the step-by-step of the official documentation guides, you may find the scripts in the  test  subfolders useful. Remember you no longer have everything running in local host so you will have to adjust the urls sometimes. You can use the service names if you are inside the docker network or the IP of your docker swarm node (any of them) if you are outside the cluster. Checkout the setup.sh.", 
+            "title": "IoT Agents"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/", 
+            "text": "IoT Agent (JSON)\n\n\nOfficial documentation of this IoT Agent: http://fiware-iotagent-json.readthedocs.io/en/latest/index.html\n\n\nMQTT Transport\n\n\nWhat you can customise\n\n\nVia ENV variables\n\n\nFor the documentation of the variables please refer to the \nglobal configuration docs\n.\n\n\n\n\nMOSQUITTO_VERSION: Version number (tag) of the \nMosquitto Docker Image\n. Defaults to \n1.4.12\n. \n\n\nIOTA_MQTT_HOST: Defaults to \nmosquitto\n, which is the name of the docker service.\n\n\n\n\nIOTA_MQTT_PORT: Defaults to \n1883\n.\n\n\n\n\n\n\nIOTA_VERSION: Version number (tag) of the \nAgent Docker Image\n. Defaults to \n1.6.0\n.\n\n\n\n\nIOTA_LOG_LEVEL: Defaults to \nDEBUG\n.\n\n\nIOTA_TIMESTAMP: Defaults to \ntrue\n.\n\n\nIOTA_CB_HOST: Defaults to \norion\n.\n\n\nIOTA_CB_PORT: Defaults to \n1026\n.\n\n\nIOTA_NORTH_PORT: Defaults to \n4041\n.\n\n\nIOTA_REGISTRY_TYPE: Defaults to \nmongodb\n.\n\n\nIOTA_MONGO_HOST: Defaults to \nmongo\n.\n\n\nIOTA_MONGO_PORT: Defaults to \n27017\n.\n\n\nIOTA_MONGO_DB: Defaults to \niotagentjson\n.\n\n\nIOTA_MONGO_REPLICASET: Defaults to \nrs\n. Unset to disable replicaset option.\n\n\nIOTA_HTTP_PORT: Defaults to \n7896\n.\n\n\nIOTA_PROVIDER_URL: Defaults to \nhttp://iotagent:4041\n.\n\n\n\n\nVia Files\n\n\n\n\n\n\nconfig.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a \nconfig\n. Remember that values specified via ENV variables will override those set in the file.\n\n\n\n\n\n\nmosquitto.conf: Feel free to edit this file before deployment, it will be used by mosquitto as its config file. It is treated by docker as a \nconfig\n.\n\n\n\n\n\n\nDeploying this recipe\n\n\nWe assume you have already setup your environment as explained in the \nInstallation\n.\n\n\ndocker stack deploy -c docker-compose.yml iota-json\n\n\n\nThe deployed services will be:\n\n\n\n\nIoTAgent-json\n\n\nMosquitto\n as MQTT Broker\n\n\n\n\nImportant Things to keep in mind\n\n\n\n\n\n\nAs of today, the official Mosquitto Docker Image is not including the mosquitto-clients, so if you want to execute commands like \nmosquitto_sub\n and \nmosquitto_pub\n, you basically have 2 options:\n\n\n\n\n\n\nInstall them in your system and add the host parameter to point to the docker mosquitto service.\n\n\n\n\n\n\nInstall the clients in the mosquitto container. Note this will not persist after a container restart! If you need this to persist create your docker image accordingly. \n        docker exec -ti mosquitto_container sh -c \"apk --no-cache add mosquitto-clients\"    \n\n\n\n\n\n\n\n\n\n\nTODO\n\n\n\n\nComplete testing of the step-by-step guide to make sure this recipe provides all the minimum requirements for a first successful walkthrough with the Agent. Depends on \nthis issue\n.", 
+            "title": "IoT Agent JSON"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#iot-agent-json", 
+            "text": "Official documentation of this IoT Agent: http://fiware-iotagent-json.readthedocs.io/en/latest/index.html", 
+            "title": "IoT Agent (JSON)"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#mqtt-transport", 
+            "text": "", 
+            "title": "MQTT Transport"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#what-you-can-customise", 
+            "text": "", 
+            "title": "What you can customise"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#via-env-variables", 
+            "text": "For the documentation of the variables please refer to the  global configuration docs .   MOSQUITTO_VERSION: Version number (tag) of the  Mosquitto Docker Image . Defaults to  1.4.12 .   IOTA_MQTT_HOST: Defaults to  mosquitto , which is the name of the docker service.   IOTA_MQTT_PORT: Defaults to  1883 .    IOTA_VERSION: Version number (tag) of the  Agent Docker Image . Defaults to  1.6.0 .   IOTA_LOG_LEVEL: Defaults to  DEBUG .  IOTA_TIMESTAMP: Defaults to  true .  IOTA_CB_HOST: Defaults to  orion .  IOTA_CB_PORT: Defaults to  1026 .  IOTA_NORTH_PORT: Defaults to  4041 .  IOTA_REGISTRY_TYPE: Defaults to  mongodb .  IOTA_MONGO_HOST: Defaults to  mongo .  IOTA_MONGO_PORT: Defaults to  27017 .  IOTA_MONGO_DB: Defaults to  iotagentjson .  IOTA_MONGO_REPLICASET: Defaults to  rs . Unset to disable replicaset option.  IOTA_HTTP_PORT: Defaults to  7896 .  IOTA_PROVIDER_URL: Defaults to  http://iotagent:4041 .", 
+            "title": "Via ENV variables"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#via-files", 
+            "text": "config.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a  config . Remember that values specified via ENV variables will override those set in the file.    mosquitto.conf: Feel free to edit this file before deployment, it will be used by mosquitto as its config file. It is treated by docker as a  config .", 
+            "title": "Via Files"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#deploying-this-recipe", 
+            "text": "We assume you have already setup your environment as explained in the  Installation .  docker stack deploy -c docker-compose.yml iota-json  The deployed services will be:   IoTAgent-json  Mosquitto  as MQTT Broker", 
+            "title": "Deploying this recipe"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#important-things-to-keep-in-mind", 
+            "text": "As of today, the official Mosquitto Docker Image is not including the mosquitto-clients, so if you want to execute commands like  mosquitto_sub  and  mosquitto_pub , you basically have 2 options:    Install them in your system and add the host parameter to point to the docker mosquitto service.    Install the clients in the mosquitto container. Note this will not persist after a container restart! If you need this to persist create your docker image accordingly. \n        docker exec -ti mosquitto_container sh -c \"apk --no-cache add mosquitto-clients\"", 
+            "title": "Important Things to keep in mind"
+        }, 
+        {
+            "location": "/iot-services/iotagent-json/readme/#todo", 
+            "text": "Complete testing of the step-by-step guide to make sure this recipe provides all the minimum requirements for a first successful walkthrough with the Agent. Depends on  this issue .", 
+            "title": "TODO"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/", 
+            "text": "IoT Agent (LWM2M)\n\n\nOfficial documentation of this IoT Agent: https://fiware-iotagent-lwm2m.readthedocs.io/\n\n\nHTTP Transport\n\n\nWhat you can customise\n\n\nVia ENV variables\n\n\n\n\nIOTA_VERSION: Version number (tag) of the \nAgent Docker Image\n. Defaults to \nlatest\n.\n\n\n\n\nIOTA_LWM2M_PORT: Defaults to \n5684\n.\n\n\n\n\n\n\nIOTA_LOG_LEVEL: Defaults to \nDEBUG\n.\n\n\n\n\nIOTA_CB_HOST: Defaults to \norion\n.\n\n\nIOTA_CB_PORT: Defaults to \n1026\n.\n\n\nIOTA_NORTH_PORT: Defaults to \n4041\n.\n\n\nIOTA_REGISTRY_TYPE: Defaults to \nmongodb\n.\n\n\nIOTA_MONGO_HOST: Defaults to \nmongo\n.\n\n\nIOTA_MONGO_PORT: Defaults to \n27017\n.\n\n\nIOTA_MONGO_DB: Defaults to \niotagentjson\n.\n\n\nIOTA_MONGO_REPLICASET: Defaults to \nrs\n. Unset to disable replicaset option.\n\n\nIOTA_PROVIDER_URL: Defaults to \nhttp://iotagent:4041\n.\n\n\n\n\nFor the documentation of the variables please refer to the \nglobal configuration docs\n.\n\n\nVia Files\n\n\n\n\nconfig.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a \nconfig\n.\n\n\n\n\nDeploying this recipe\n\n\nWe assume you have already setup your environment as explained in the \nInstallation\n.\n\n\ndocker stack deploy -c docker-compose.yml iota-lwm2m\n\n\n\nThe deployed services will be:\n\n\n\n\nIoTAgent-lwm2m\n\n\n\n\nNote\n\n\nIf you are following the \nofficial step-by-step guide\n, you can quickly launch the lwm2m client as:\n\n\ndocker exec -ti [AGENT_CONTAINER_ID_HERE] node_modules/lwm2m-node-lib/bin/iotagent-lwm2m-client.js", 
+            "title": "IoT Agent LWM2M"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/#iot-agent-lwm2m", 
+            "text": "Official documentation of this IoT Agent: https://fiware-iotagent-lwm2m.readthedocs.io/", 
+            "title": "IoT Agent (LWM2M)"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/#http-transport", 
+            "text": "", 
+            "title": "HTTP Transport"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/#what-you-can-customise", 
+            "text": "", 
+            "title": "What you can customise"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/#via-env-variables", 
+            "text": "IOTA_VERSION: Version number (tag) of the  Agent Docker Image . Defaults to  latest .   IOTA_LWM2M_PORT: Defaults to  5684 .    IOTA_LOG_LEVEL: Defaults to  DEBUG .   IOTA_CB_HOST: Defaults to  orion .  IOTA_CB_PORT: Defaults to  1026 .  IOTA_NORTH_PORT: Defaults to  4041 .  IOTA_REGISTRY_TYPE: Defaults to  mongodb .  IOTA_MONGO_HOST: Defaults to  mongo .  IOTA_MONGO_PORT: Defaults to  27017 .  IOTA_MONGO_DB: Defaults to  iotagentjson .  IOTA_MONGO_REPLICASET: Defaults to  rs . Unset to disable replicaset option.  IOTA_PROVIDER_URL: Defaults to  http://iotagent:4041 .   For the documentation of the variables please refer to the  global configuration docs .", 
+            "title": "Via ENV variables"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/#via-files", 
+            "text": "config.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a  config .", 
+            "title": "Via Files"
+        }, 
+        {
+            "location": "/iot-services/iotagent-lwm2m/readme/#deploying-this-recipe", 
+            "text": "We assume you have already setup your environment as explained in the  Installation .  docker stack deploy -c docker-compose.yml iota-lwm2m  The deployed services will be:   IoTAgent-lwm2m   Note  If you are following the  official step-by-step guide , you can quickly launch the lwm2m client as:  docker exec -ti [AGENT_CONTAINER_ID_HERE] node_modules/lwm2m-node-lib/bin/iotagent-lwm2m-client.js", 
+            "title": "Deploying this recipe"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/", 
+            "text": "IoT Agent (UL)\n\n\nOfficial documentation of this IoT Agent: http://fiware-iotagent-ul.readthedocs.io/en/latest/index.html\n\n\nHTTP Transport\n\n\nWhat you can customise\n\n\nVia ENV variables\n\n\nFor the documentation of the variables please refer to the \nglobal configuration docs\n.\n\n\n\n\nIOTA_VERSION: Version number (tag) of the \nAgent Docker Image\n.\n\n\nIOTA_LOG_LEVEL: Defaults to \nDEBUG\n.\n\n\nIOTA_TIMESTAMP: Defaults to \ntrue\n.\n\n\nIOTA_CB_HOST: Defaults to \norion\n.\n\n\nIOTA_CB_PORT: Defaults to \n1026\n.\n\n\nIOTA_NORTH_PORT: Defaults to \n4041\n.\n\n\nIOTA_REGISTRY_TYPE: Defaults to \nmongodb\n.\n\n\nIOTA_MONGO_HOST: Defaults to \nmongo\n.\n\n\nIOTA_MONGO_PORT: Defaults to \n27017\n.\n\n\nIOTA_MONGO_DB: Defaults to \niotagentjson\n.\n\n\nIOTA_MONGO_REPLICASET: Defaults to \nrs\n. Unset to disable replicaset option.\n\n\nIOTA_HTTP_PORT: Defaults to \n7896\n.\n\n\nIOTA_PROVIDER_URL: Defaults to \nhttp://iotagent:4041\n.\n\n\n\n\nVia Files\n\n\n\n\nconfig.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a \nconfig\n.\n\n\n\n\nDeploying this recipe\n\n\nWe assume you have already setup your environment as explained in the \nInstallation\n.\n\n\ndocker stack deploy -c docker-compose.yml iota-ul\n\n\n\nThe deployed services will be:\n\n\n\n\nIoTAgent-ul", 
+            "title": "IoT Agent UL"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/#iot-agent-ul", 
+            "text": "Official documentation of this IoT Agent: http://fiware-iotagent-ul.readthedocs.io/en/latest/index.html", 
+            "title": "IoT Agent (UL)"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/#http-transport", 
+            "text": "", 
+            "title": "HTTP Transport"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/#what-you-can-customise", 
+            "text": "", 
+            "title": "What you can customise"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/#via-env-variables", 
+            "text": "For the documentation of the variables please refer to the  global configuration docs .   IOTA_VERSION: Version number (tag) of the  Agent Docker Image .  IOTA_LOG_LEVEL: Defaults to  DEBUG .  IOTA_TIMESTAMP: Defaults to  true .  IOTA_CB_HOST: Defaults to  orion .  IOTA_CB_PORT: Defaults to  1026 .  IOTA_NORTH_PORT: Defaults to  4041 .  IOTA_REGISTRY_TYPE: Defaults to  mongodb .  IOTA_MONGO_HOST: Defaults to  mongo .  IOTA_MONGO_PORT: Defaults to  27017 .  IOTA_MONGO_DB: Defaults to  iotagentjson .  IOTA_MONGO_REPLICASET: Defaults to  rs . Unset to disable replicaset option.  IOTA_HTTP_PORT: Defaults to  7896 .  IOTA_PROVIDER_URL: Defaults to  http://iotagent:4041 .", 
+            "title": "Via ENV variables"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/#via-files", 
+            "text": "config.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a  config .", 
+            "title": "Via Files"
+        }, 
+        {
+            "location": "/iot-services/iotagent-ul/readme/#deploying-this-recipe", 
+            "text": "We assume you have already setup your environment as explained in the  Installation .  docker stack deploy -c docker-compose.yml iota-ul  The deployed services will be:   IoTAgent-ul", 
+            "title": "Deploying this recipe"
         }, 
         {
             "location": "/utils/mongo-replicaset/readme/", 

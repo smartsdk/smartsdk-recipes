@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>IoT Broker - SmartSDK Recipes</title>
+  <title>IDAS - SmartSDK Recipes</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "IoT Broker";
+    var mkdocs_page_name = "IDAS";
     var mkdocs_page_input_path = "iot-services/readme.md";
     var mkdocs_page_url = "/iot-services/readme/";
   </script>
@@ -176,11 +176,37 @@
         
             
     <li class="toctree-l1 current">
-        <a class="current" href="./">IoT Broker</a>
+        <a class="current" href="./">IDAS</a>
         
             <ul>
             
+                <li class="toctree-l3"><a href="#backend-device-management-idas">Backend Device Management (IDAS)</a></li>
+                
+                    <li><a class="toctree-l4" href="#iot-agents">IoT Agents</a></li>
+                
+            
             </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../iotagent-json/readme/">IoT Agent JSON</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../iotagent-lwm2m/readme/">IoT Agent LWM2M</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../iotagent-ul/readme/">IoT Agent UL</a>
         
     </li>
 
@@ -250,7 +276,7 @@
         
       
     
-    <li>IoT Broker</li>
+    <li>IDAS</li>
     <li class="wy-breadcrumbs-aside">
       
         <a href="https://github.com/smartsdk/smartsdk-recipes/edit/master/recipes/iot-services/readme.md"
@@ -263,7 +289,21 @@
           <div role="main">
             <div class="section">
               
-                <p>Comming soon...</p>
+                <h1 id="backend-device-management-idas">Backend Device Management (IDAS)</h1>
+<p>For more info about this Chapter, see <a href="https://catalogue.fiware.org/chapter/internet-things-services-enablement">here</a>.</p>
+<p>For more info about this GE, see <a href="https://catalogue.fiware.org/enablers/backend-device-management-idas">here</a>.</p>
+<h2 id="iot-agents">IoT Agents</h2>
+<p><strong>Why using an IoT Agent?</strong></p>
+<ul>
+<li>Transform IoT Device specific protocol to NGSI (a.k.a Active attributes)</li>
+<li>Request data from the IoT Device at some intervals (a.k.a Lazy attributes)</li>
+<li>Execute commands on the IoT Device communication based on context in the Broker (see Commands).</li>
+</ul>
+<p>Explore the subfolders of each of the available IoT Agent recipes. The Agents can be considered stateless services and hence be deployed in the replicated mode of swarm with any required amount of replicas, provided that you keep your configurations using the service name of the agent for routing purposes.</p>
+<p>For good scalability, when deploying the mongo databases that your agents may use in case of persistence need, make sure you deploy with the provided recipe for mongo replica sets. More info <a href="../../utils/mongo-replicaset/readme/">here</a>.</p>
+<p><strong>Testing</strong></p>
+<p>If you would like to try the IoT Agents in a local development environment, you can deploy the complementary services (Orion and Mongo) by using their corresponding recipes. See <a href="../../data-management/context-broker/ha/readme/">Orion's</a> and <a href="../../utils/mongo-replicaset/readme/">Mongo's</a></p>
+<p>If you are following the step-by-step of the official documentation guides, you may find the scripts in the <code>test</code> subfolders useful. Remember you no longer have everything running in local host so you will have to adjust the urls sometimes. You can use the service names if you are inside the docker network or the IP of your docker swarm node (any of them) if you are outside the cluster. Checkout the setup.sh.</p>
               
             </div>
           </div>
@@ -271,7 +311,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../utils/mongo-replicaset/readme/" class="btn btn-neutral float-right" title="MongoDB Replica Set">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../iotagent-json/readme/" class="btn btn-neutral float-right" title="IoT Agent JSON">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../../data-management/quantumleap/readme/" class="btn btn-neutral" title="Intro"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -305,11 +345,14 @@
         <span><a href="../../data-management/quantumleap/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../utils/mongo-replicaset/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../iotagent-json/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
     <script src="../../js/theme.js"></script>
+      <script src="../../iot-services/iotagent-json/config.js"></script>
+      <script src="../../iot-services/iotagent-lwm2m/config.js"></script>
+      <script src="../../iot-services/iotagent-ul/config.js"></script>
 
 </body>
 </html>
