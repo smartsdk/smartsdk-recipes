@@ -1,0 +1,625 @@
+{
+	"info": {
+		"name": "SmartSDK",
+		"_postman_id": "4df65e23-cd35-4df2-db44-7bd0df8f9744",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Orion",
+			"description": "",
+			"item": [
+				{
+					"name": "Orion version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/version",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"version"
+							]
+						},
+						"description": "Orion version in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Orion entities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities"
+							]
+						},
+						"description": "Orion entities in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Orion entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"Room1\",\n  \"type\": \"Room\",\n  \"temperature\": {\n    \"value\": 23,\n    \"type\": \"Float\"\n  },\n  \"pressure\": {\n    \"value\": 720,\n    \"type\": \"Integer\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities"
+							]
+						},
+						"description": "Insert entities into Orion in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Orion update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"temperature\": {\n    \"value\": 24,\n    \"type\": \"Number\"\n  },\n  \"pressure\": {\n    \"value\": 720,\n    \"type\": \"Integer\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/entities/Room1/attrs",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities",
+								"Room1",
+								"attrs"
+							]
+						},
+						"description": "Update atttrs of Orion entities in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Orion entity",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/entities/Room1",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities",
+								"Room1"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Orion subscriptions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						},
+						"description": "Orion subscriptions in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Orion subscription",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"entities\": [\n        {\n            \"type\": \"Room\",\n            \"id\": \"Room1\"\n        }\n    ],\n    \"attributes\": [\n        \"temperature\",\n        \"pressure\"\n    ],\n    \"reference\": \"http://comet:8666/notify\",\n    \"notifyConditions\": [\n        {\n            \"type\": \"ONCHANGE\",\n            \"condValues\": [\n                \"temperature\",\n                \"pressure\"\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v1/subscribeContext",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v1",
+								"subscribeContext"
+							]
+						},
+						"description": "Subscribe Comet to Orion changes in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Orion subscription",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/subscriptions/5a0dbfdd30073de858882d0f",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								"5a0dbfdd30073de858882d0f"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comet",
+			"description": "",
+			"item": [
+				{
+					"name": "Comet version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{COMET_EP}}/version",
+							"protocol": "http",
+							"host": [
+								"{{COMET_EP}}"
+							],
+							"path": [
+								"version"
+							]
+						},
+						"description": "Orion version in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Comet subscribe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"entities\": [\n        {\n            \"type\": \"Room\",\n            \"id\": \"Room1\"\n        }\n    ],\n    \"attributes\": [\n        \"temperature\",\n        \"pressure\"\n    ],\n    \"reference\": \"http://comet:8666/notify\",\n    \"notifyConditions\": [\n        {\n            \"type\": \"ONCHANGE\",\n            \"condValues\": [\n                \"temperature\",\n                \"pressure\"\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v1/subscribeContext",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v1",
+								"subscribeContext"
+							]
+						},
+						"description": "Subscribe Comet to Orion changes in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Comet raw information",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/Room/id/Room1/attributes/pressure?lastN=10&hLimit=100",
+							"protocol": "http",
+							"host": [
+								"{{COMET_EP}}"
+							],
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"Room",
+								"id",
+								"Room1",
+								"attributes",
+								"pressure"
+							],
+							"query": [
+								{
+									"key": "lastN",
+									"value": "10",
+									"equals": true
+								},
+								{
+									"key": "hLimit",
+									"value": "100",
+									"equals": true
+								}
+							]
+						},
+						"description": "Historical data in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "Comet aggregated information",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/Room/id/Room1/attributes/pressure?aggrMethod=max&aggrPeriod=second&lastN=10&hLimit=100",
+							"protocol": "http",
+							"host": [
+								"{{COMET_EP}}"
+							],
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"Room",
+								"id",
+								"Room1",
+								"attributes",
+								"pressure"
+							],
+							"query": [
+								{
+									"key": "aggrMethod",
+									"value": "max",
+									"equals": true
+								},
+								{
+									"key": "aggrPeriod",
+									"value": "second",
+									"equals": true
+								},
+								{
+									"key": "lastN",
+									"value": "10",
+									"equals": true
+								},
+								{
+									"key": "hLimit",
+									"value": "100",
+									"equals": true
+								}
+							]
+						},
+						"description": "Historical data in Swarm"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "QuantumLeap",
+			"description": "",
+			"item": [
+				{
+					"name": "QL version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{QL_EP}}/version",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"version"
+							]
+						},
+						"description": "Orion version in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "QL subscribe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"QL Subscription\",\n    \"subject\": {\n        \"entities\": [\n        {\n            \"type\": \"Room\",\n            \"id\": \"Room1\"\n        }\n        ],\n        \"condition\": {\n            \"attrs\": [\n            \"temperature\",\n            \"pressure\"\n            ]\n        }\n    },\n    \"notification\": {\n        \"http\": {\n            \"url\": \"http://192.0.0.1:8668/notify\"\n        },\n        \"attrs\": [\n        \"temperature\",\n        \"pressure\"\n        ],\n        \"metadata\": [\"dateCreated\", \"dateModified\"]\n    },\n    \"throttling\": 5\n}"
+						},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						},
+						"description": "Subscribe Comet to Orion changes in Swarm"
+					},
+					"response": []
+				},
+				{
+					"name": "QL notify",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "default"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subscriptionId\": \"5947d174793fe6f7eb5e3961\", \n\t\"data\": [\n\t\t{\n\t\t\t\"id\": \"Room1\", \n\t\t\t\"type\": \"Room\", \n\t\t\t\"temperature\": {\n\t\t\t\t\"type\": \"Number\", \n\t\t\t\t\"value\": 25.6, \n\t\t\t\t\"metadata\": {\n\t\t\t\t\t\"dateModified\": {\n\t\t\t\t\t\t\"type\": \"DateTime\", \n\t\t\t\t\t\t\"value\": \"2017-06-19T11:46:45.00Z\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "http://{{QL_EP}}/notify",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"notify"
+							]
+						},
+						"description": "Insert entities into QL"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
