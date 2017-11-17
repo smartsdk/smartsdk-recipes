@@ -2,29 +2,29 @@ version: '3'
 
 services:
 
-    orion:
-        image: fiware/orion:${ORION_VERSION}
-        ports:
-            - "1026:1026"
-        command: -logLevel DEBUG -dbhost ${MONGO_SERVICE_URI} -rplSet ${REPLICASET_NAME} -dbTimeout 10000
-        deploy:
-            replicas: 1
-        networks:
-            - backend
-            - frontend
-        healthcheck:
-          test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
-          interval: 1m
-          timeout: 10s
-          retries: 3
+  orion:
+    image: fiware/orion:${ORION_VERSION:-1.7.0}
+    ports:
+      - "1026:1026"
+    command: -logLevel DEBUG -dbhost ${MONGO_SERVICE_URI:-"mongo-rs_mongo"} -rplSet ${REPLICASET_NAME:-rs} -dbTimeout 10000
+    deploy:
+      replicas: 2
+    networks:
+      - backend
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
 
 networks:
-    default:
-        driver_opts:
-            com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
-    backend:
-        driver: overlay
-        external: true
-    frontend:
-        driver: overlay
-        external: true
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+  backend:
+    driver: overlay
+    external: true
+  frontend:
+    driver: overlay
+    external: true

@@ -42,9 +42,9 @@ First, you need to have a Docker Swarm (docker >= 1.13) already setup. If you do
     miniswarm start 3
     eval $(docker-machine env ms-manager0)
 
-Comet needs a mongo database for its backend. If you have already deployed Mongo within your cluster and would like to reuse that database, you can skip the next step (deploying backend). You will just need to pay attention to the variables you define for Comet to link to Mongo, namely, MONGO_SERVICE_URI and REPLICASET_NAME. Make sure you have the correct values in frontend.env.
+Comet needs a mongo database for its backend. If you have already deployed Mongo within your cluster and would like to reuse that database, you can skip the next step (deploying backend). You will just need to pay attention to the variables you define for Comet to link to Mongo, namely, ```MONGO_SERVICE_URI``` and ```REPLICASET_NAME```. Make sure you have the correct values in ```frontend.env```. The value of ```MONGO_SERVICE_URI``` should be a routable address for mongo. If deployed within the swarm, the service name (with stack prefix) would suffice. You can read more in the [official docker docs](https://docs.docker.com/docker-cloud/apps/service-links/). The default values should be fine for you if you used the [Mongo Replicaset Recipe](../../../utils/mongo-replicaset/readme.md).
 
-Otherwise, if you prefer to make a new deployment of Mongo just for comet, simply run...
+Otherwise, if you prefer to make a new deployment of Mongo just for Comet, you can take a shortcut and run...
 
     sh deploy_back.sh
 

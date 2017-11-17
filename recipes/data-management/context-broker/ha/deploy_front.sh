@@ -1,3 +1,6 @@
 #!/bin/bash
+set -o allexport
+. ./backend.env
 . ./frontend.env
-env $(cat frontend.env | grep ^[A-Z] | xargs) docker stack deploy -c docker-compose.yml ${STACK_NAME}
+set +o allexport
+docker stack deploy -c docker-compose.yml ${STACK_NAME}
