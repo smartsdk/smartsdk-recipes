@@ -19,7 +19,7 @@ services:
 networks:
   default:
     driver_opts:
-      com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
   frontend:
     driver: overlay
     external: true
