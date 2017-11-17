@@ -1,6 +1,6 @@
 # IoT Agent (JSON)
 
-Official documentation of this IoT Agent: http://fiware-iotagent-json.readthedocs.io/en/latest/index.html
+Official documentation of this IoT Agent: [here](http://fiware-iotagent-json.readthedocs.io/en/latest/index.html)
 
 ## MQTT Transport
 
@@ -8,9 +8,9 @@ Official documentation of this IoT Agent: http://fiware-iotagent-json.readthedoc
 
 ##### Via ENV variables
 
-For the documentation of the variables please refer to the [global configuration docs]((https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)).
+For the documentation of the variables please refer to the [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
-- MOSQUITTO_VERSION: Version number (tag) of the [Mosquitto Docker Image](https://hub.docker.com/\_/eclipse-mosquitto/). Defaults to *1.4.12*. 
+- MOSQUITTO_VERSION: Version number (tag) of the [Mosquitto Docker Image](https://hub.docker.com/\_/eclipse-mosquitto/). Defaults to *1.4.12*.
 - IOTA_MQTT_HOST: Defaults to *mosquitto*, which is the name of the docker service.
 - IOTA_MQTT_PORT: Defaults to *1883*.
 
@@ -35,7 +35,7 @@ For the documentation of the variables please refer to the [global configuration
 
 ### Deploying this recipe
 
-We assume you have already setup your environment as explained in the [Installation](../installation.md).
+We assume you have already setup your environment as explained in the [Installation](../../installation.md).
 
     docker stack deploy -c docker-compose.yml iota-json
 
@@ -49,8 +49,8 @@ The deployed services will be:
 
 - As of today, the official Mosquitto Docker Image is not including the mosquitto-clients, so if you want to execute commands like ```mosquitto_sub``` and ```mosquitto_pub```, you basically have 2 options:
     - Install them in your system and add the host parameter to point to the docker mosquitto service.
-    
-    - Install the clients in the mosquitto container. Note this will not persist after a container restart! If you need this to persist create your docker image accordingly. 
+
+    - Install the clients in the mosquitto container. Note this will not persist after a container restart! If you need this to persist create your docker image accordingly.
             docker exec -ti mosquitto_container sh -c "apk --no-cache add mosquitto-clients"    
 
 ### TODO
