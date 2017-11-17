@@ -41,7 +41,7 @@ digraph Cluster {
 
 ## How to use
 
-Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../../tools/readme.md) section for a quick way to setup a local swarm.
+Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../tools/readme.md) section for a quick way to setup a local swarm.
 
     miniswarm start 3
     eval $(docker-machine env ms-manager0)
