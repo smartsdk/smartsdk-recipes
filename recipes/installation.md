@@ -6,7 +6,7 @@ Get the latest version from the git repository.
 
 # Requirements
 
-The recipes are prepared to run using the latest [Docker](https://docs.docker.com) version (minimum 1.13+, ideally 17.06.0+). To install Docker refer to the [Installation instructions](https://docs.docker.com/engine/installation/).
+The recipes are prepared to run using the latest [Docker](https://docs.docker.com) version (minimum 1.13+, ideally >= 17.06.0+). To install Docker refer to the [Installation instructions](https://docs.docker.com/engine/installation/).
 
 For some testing and walkthroughs, you may also need to install [curl](https://curl.haxx.se/) if it's not already available in your system.
 
