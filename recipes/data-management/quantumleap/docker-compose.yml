@@ -70,10 +70,10 @@ services:
     #   - 4300:4300
     command: ["crate",
         "-Clicense.enterprise=false",
-        "-Cgateway.expected_nodes=${EXPECTED_NODES:-4}",
-        "-Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-3}",
+        "-Cgateway.expected_nodes=${EXPECTED_NODES:-1}",
+        "-Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}",
         "-Cgateway.recover_after_time=5m",
-        "-Cdiscovery.zen.minimum_master_nodes=${MINIMUM_MASTER_NODES:-3}",
+        "-Cdiscovery.zen.minimum_master_nodes=${MINIMUM_MASTER_NODES:-1}",
         "-Cdiscovery.zen.ping.unicast.hosts=${CRATE_HOST:-crate}",
         "-Cnetwork.host=0.0.0.0",
         "-Ccluster.name=quantumleap",

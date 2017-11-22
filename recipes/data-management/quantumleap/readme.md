@@ -68,12 +68,13 @@ If you are just testing locally and don't own one, you can fake it editing your 
 
 Note we've included one entry for `crate.mydomain.com` because we'll be accessing the CrateDB cluster UI through the [Traefik](https://traefik.io) proxy.
 
-You will also need to set the values for the following 3 special environment variables, depending on the structure of your cluster. If you have a 4-nodes cluster, you may not need to edit these variables since the default values will be fine.
+You will also need to set the values for the following 3 special environment variables, depending on the structure of your cluster. The default values will assume your cluster has only 1 node, which is not ideal if your cluster has multiple nodes.
 
-For more details, check out [these docs](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10) or the corresponding section in [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
 - `EXPECTED_NODES`: How many nodes to wait for until the cluster state is recovered. The value should be equal to the number of nodes in the cluster.
 - `RECOVER_AFTER_NODES`: The number of nodes that need to be started before any cluster state recovery will start.
 - `MINIMUM_MASTER_NODES`: It’s highly recommend to set the quorum greater than half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is the maximum number of nodes in the cluster.
+
+For more details, check out [these docs](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10) or the corresponding section in [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
 
 #### Deploy
 
