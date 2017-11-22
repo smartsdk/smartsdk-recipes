@@ -112,7 +112,7 @@ For a quick test, you can use the *insert.sh* script in this folder.
 
 Otherwise, open your favourite API tester and send the fake notification shown below to QuantumLeap to later see it persisted in the database through the Crate Dashboard.
 
-    # Simple fake payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
+    # Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
     {
         "subscriptionId": "5947d174793fe6f7eb5e3961",
         "data": [
@@ -132,6 +132,8 @@ Otherwise, open your favourite API tester and send the fake notification shown b
             }
         ]
     }
+
+Remember in the typical scenario is not the client that will be sending payloads directly to the `/notify` endpoint, but rather *Orion Context Broker* in the form of notifications. More info in the [official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
 
 You can use the postman collection available in the [tools section](../../tools/readme.md).
 
