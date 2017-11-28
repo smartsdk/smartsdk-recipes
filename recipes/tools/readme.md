@@ -30,6 +30,9 @@ If you'd like a more sophisticated UI with info about your swarm, you can deploy
         portainer/portainer \
         -H unix:///var/run/docker.sock
 
+Alternatively, you can make use of the docker-compose file available in this folder.
+
+    docker stack deploy -c portainer.yml portainer
 
 
 - ### [postman](https://www.getpostman.com/)
