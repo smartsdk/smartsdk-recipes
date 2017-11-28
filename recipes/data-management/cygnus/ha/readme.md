@@ -141,7 +141,7 @@ can choose between a Memory-based or a File-based channel. Feel free to
 comment/uncomment (i.e, leave/remove the `#` character) from the channel type
 configuration.
 
-    cygnus-ngsi.channels.test-channel.type = memory
-    #cygnus-ngsi.channels.test-channel.type = file
+    cygnus-ngsi.channels.main-channel.type = memory
+    #cygnus-ngsi.channels.main-channel.type = file
 
 For more info on channels, checkout the [channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations) in the official docs.
