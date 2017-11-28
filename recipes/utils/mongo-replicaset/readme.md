@@ -38,6 +38,10 @@ digraph Cluster {
 }
 '>
 
+## Prerequisites
+
+Please make sure you read the [welcome page](../../index.md) and followed the steps explained in the [installation guide](../../installation.md).
+
 ## How to use
 
 Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup.

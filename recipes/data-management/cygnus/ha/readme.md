@@ -1,8 +1,11 @@
-# Getting started
+# Cygnus
 
-This recipe will show you how to deploy a default cygnus-ngsi configuration with
-a MySQL backend. Note that this generic enabler can actually be deployed with
-[many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
+## Prerequisites
+
+Please make sure you read the [welcome page](../../../index.md) and followed the steps explained in the [installation guide](../../../installation.md).
+
+## Getting started
+This recipe will show you how to deploy a default cygnus-ngsi configuration with a MySQL backend. Note that this generic enabler can actually be deployed with [many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
 
 This recipe in particular requires the use of
 [docker "configs"](https://docs.docker.com/compose/compose-file/#configs)
