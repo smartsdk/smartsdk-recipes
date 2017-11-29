@@ -3,7 +3,7 @@
 Official documentation of this IoT Agent:
 [here](http://fiware-iotagent-json.readthedocs.io/en/latest/index.html)
 
-## Prerequisites
+## Requirements
 
 Please make sure you read the [welcome page](../../index.md) and followed the steps explained in the [installation guide](../../installation.md).
 
