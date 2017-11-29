@@ -14,17 +14,29 @@ For the documentation of the variables please refer to the
 
 - IOTA_VERSION: Version number (tag) of the
   [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-ul/~/dockerfile/).
+
 - IOTA_LOG_LEVEL: Defaults to `DEBUG`.
+
 - IOTA_TIMESTAMP: Defaults to `true`.
+
 - IOTA_CB_HOST: Defaults to `orion`.
+
 - IOTA_CB_PORT: Defaults to `1026`.
+
 - IOTA_NORTH_PORT: Defaults to `4041`.
+
 - IOTA_REGISTRY_TYPE: Defaults to `mongodb`.
+
 - IOTA_MONGO_HOST: Defaults to `mongo`.
+
 - IOTA_MONGO_PORT: Defaults to `27017`.
+
 - IOTA_MONGO_DB: Defaults to `iotagentjson`.
+
 - IOTA_MONGO_REPLICASET: Defaults to `rs`. Unset to disable replicaset option.
+
 - IOTA_HTTP_PORT: Defaults to `7896`.
+
 - IOTA_PROVIDER_URL: Defaults to `http://iotagent:4041`.
 
 ##### Via Files

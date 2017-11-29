@@ -1,7 +1,9 @@
 # Single Host Scenario
 
 ## Introduction
-This simple recipe triggers an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)
+
+This simple recipe triggers an
+[Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)
 instance backed with a [MongoDB](https://docs.mongodb.com) instance everything
 running **on an single host**.
 

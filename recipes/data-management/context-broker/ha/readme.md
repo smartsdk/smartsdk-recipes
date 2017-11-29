@@ -1,6 +1,7 @@
 # Orion in HA
 
-This recipe shows how to deploy an scalable [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)
+This recipe shows how to deploy an scalable
+[Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)
 service backed with an scalable
 [replica set](https://docs.mongodb.com/v3.2/replication/) of MongoDB instances.
 
@@ -49,8 +50,10 @@ Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup.
 If you don't have one, checkout the [tools](../../../tools/readme.md) section
 for a quick way to setup a local swarm.
 
+```
     $ miniswarm start 3
     $ eval $(docker-machine env ms-manager0)
+```
 
 Orion needs a mongo database for its backend. If you have already deployed Mongo
 within your cluster and would like to reuse that database, you can skip the next
@@ -59,8 +62,10 @@ you define for Orion to link to Mongo, namely, `MONGO_SERVICE_URI`
 and `REPLICASET_NAME`. Make sure you have the correct values in `frontend.env`.
 The value of `MONGO_SERVICE_URI` should be a routable address for mongo.
 If deployed within the swarm, the service name (with stack prefix)
-would suffice. You can read more in the [official docker docs](https://docs.docker.com/docker-cloud/apps/service-links/).
-The default values should be fine for you if you used the [Mongo ReplicaSet Recipe](../../../utils/mongo-replicaset/readme.md).
+would suffice. You can read more in the
+[official docker docs](https://docs.docker.com/docker-cloud/apps/service-links/).
+The default values should be fine for you if you used the
+[Mongo ReplicaSet Recipe](../../../utils/mongo-replicaset/readme.md).
 
 Otherwise, if you prefer to make a new deployment of Mongo just for Orion,
 you can take a shortcut and run...
@@ -87,7 +92,6 @@ At some point, your deployment should look like this...
 
 As shown above, if you see `3/3`in the replicas column it means the 3 replicas
 are up and running.
-
 
 ## A walkthrough
 
@@ -174,7 +178,6 @@ Swarm's internal load balancer will be load-balancing in a round-robin approach
 all the requests for an orion service among the orion tasks running
 in the swarm.
 
-
 ## Rescaling Orion
 
 Scaling up and down orion is a simple as runnnig something like...
@@ -254,7 +257,8 @@ You will see it gone, but after a while it will automatically come back.
     8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 ```
 
-Even if a whole node goes down, the service will remain working because you had both redundant orion instances and redundant db replicas.
+Even if a whole node goes down, the service will remain working because you had
+both redundant orion instances and redundant db replicas.
 
 ```
     $ docker-machine rm ms-worker0
@@ -275,18 +279,37 @@ configuration and are running any of the containers behind a firewall, remember
 to keep traffic open for TCP at ports 1026 (Orion's default) and 27017
 (Mongo's default).
 
-When containers (tasks) of a service are launched, they get assigned an IP address in this overlay network. Other services of your application's architecture should not be relying on these IPs because they may change (for example, due to a dynamic rescheduling). The good think is that docker creates a virtual ip for the service as a whole, so all traffic to this address will be load-balanced to the tasks adresses.
+When containers (tasks) of a service are launched, they get assigned an IP
+address in this overlay network. Other services of your application's
+architecture should not be relying on these IPs because they may change
+(for example, due to a dynamic rescheduling). The good think is that docker
+creates a virtual ip for the service as a whole, so all traffic to this address
+will be load-balanced to the tasks addresses.
 
-Thanks to swarms docker internal DNS you can also use the name of the service to connect to. If you look at the *docker-compose.yml* file of this recipe, orion is started with the name of the mongo service as *dbhost* param (regardless if it was a single mongo instance of a whole replica-set).
+Thanks to swarms docker internal DNS you can also use the name of the service
+to connect to. If you look at the `docker-compose.yml` file of this recipe,
+orion is started with the name of the mongo service as `dbhost` param
+(regardless if it was a single mongo instance of a whole replica-set).
 
-However, to access the container from outside of the overlay network (for example from the host) you would need to access the ip of the container's interface to the *docker_gwbridge*. It seem there's no easy way to get that information from the outside (see [this open issue](https://github.com/docker/libnetwork/issues/1082). In the walkthrough, we queried orion through one of the swarm nodes because we rely on docker ingress network routing the traffic all the way to one of the containerized orion services.
+However, to access the container from outside of the overlay network (for
+example from the host) you would need to access the ip of the container's
+interface to the `docker_gwbridge`. It seem there's no easy way to get that
+information from the outside (see
+[this open issue](https://github.com/docker/libnetwork/issues/1082).
+In the walkthrough, we queried orion through one of the swarm nodes because we
+rely on docker ingress network routing the traffic all the way to one of the
+containerized orion services.
 
 ## Open interesting issues:
 
 - [https://github.com/docker/swarm/issues/1106](https://github.com/docker/swarm/issues/1106)
+
 - [https://github.com/docker/docker/issues/27082](https://github.com/docker/docker/issues/27082)
+
 - [https://github.com/docker/docker/issues/29816](https://github.com/docker/docker/issues/29816)
+
 - [https://github.com/docker/docker/issues/26696](https://github.com/docker/docker/issues/26696)
+
 - [https://github.com/docker/docker/issues/23813](https://github.com/docker/docker/issues/23813)
 
 More info about docker network internals can be read at:
