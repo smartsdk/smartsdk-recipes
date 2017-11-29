@@ -1,8 +1,10 @@
 # Backend Device Management (IDAS)
 
-For more info about this Chapter, see [here]( https://catalogue.fiware.org/chapter/internet-things-services-enablement).
+For more info about this Chapter, see 
+[here]( https://catalogue.fiware.org/chapter/internet-things-services-enablement).
 
-For more info about this GE, see [here](https://catalogue.fiware.org/enablers/backend-device-management-idas).
+For more info about this GE, see 
+[here](https://catalogue.fiware.org/enablers/backend-device-management-idas).
 
 ## IoT Agents
 

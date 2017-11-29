@@ -34,16 +34,23 @@ For the documentation of the variables please refer to the
 - IOTA_PROVIDER_URL: Defaults to *http://iotagent:4041*.
 
 ##### Via Files
-- config.js: Feel free to edit this file before deployment, it will be used by
-  the agent as its config file. It is treated by docker as a [config](https://docs.docker.com/compose/compose-file/#configs). Remember that values specified via ENV variables will override those set in the file.
 
-- mosquitto.conf: Feel free to edit this file before deployment, it will be used by mosquitto as its config file. It is treated by docker as a [config](https://docs.docker.com/compose/compose-file/#configs).
+- config.js: Feel free to edit this file before deployment, it will be used by
+  the agent as its config file. It is treated by docker as a
+  [config](https://docs.docker.com/compose/compose-file/#configs). Remember that
+  values specified via ENV variables will override those set in the file.
+- mosquitto.conf: Feel free to edit this file before deployment, it will be used
+  by mosquitto as its config file. It is treated by docker as a
+  [config](https://docs.docker.com/compose/compose-file/#configs).
 
 ### Deploying this recipe
 
-We assume you have already setup your environment as explained in the [Installation](../../installation.md).
+We assume you have already setup your environment as explained in the
+[Installation](../../installation.md).
 
+```
     docker stack deploy -c docker-compose.yml iota-json
+```
 
 The deployed services will be:
 
@@ -68,6 +75,7 @@ The deployed services will be:
 ```
 
 ### TODO
+
 - Complete testing of the step-by-step guide to make sure this recipe provides
   all the minimum requirements for a first successful walkthrough with
   the Agent. Depends on

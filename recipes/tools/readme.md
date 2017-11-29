@@ -9,17 +9,20 @@ The basic environment setup is explained in the
 
 ## Playing with Recipes?
 
-- ### [miniswarm](https://github.com/aelsabbahy/miniswarm)
+### [miniswarm](https://github.com/aelsabbahy/miniswarm)
+
 Helpful tool to help you quickly setup a local virtualbox-based swarm cluster
 for testing purposes.
 
-- ### [wait-for-it](https://github.com/vishnubob/wait-for-it)
+### [wait-for-it](https://github.com/vishnubob/wait-for-it)
+
 Useful shell script used when you need to wait for a service to be started.
 
 *Note*: This might no longer be needed since docker introduced the [healthchecks](https://docs.docker.com/engine/reference/builder/#/healthcheck)
 feature.
 
-- ### [docker-swarm-visualizer](https://github.com/dockersamples/docker-swarm-visualizer)
+### [docker-swarm-visualizer](https://github.com/dockersamples/docker-swarm-visualizer)
+
 If you'd like to have a basic view of the distribution of containers in your
 swarm cluster, you can use the `visualzer.yml` file provided in this folder.
 
@@ -27,7 +30,8 @@ swarm cluster, you can use the `visualzer.yml` file provided in this folder.
         docker stack deploy -c visualizer.yml vis
 ```
 
-- ### [portainer](https://portainer.readthedocs.io)
+### [portainer](https://portainer.readthedocs.io)
+
 If you'd like a more sophisticated UI with info about your swarm, you can deploy
 portainer as follows.
 
@@ -48,7 +52,8 @@ this folder.
     docker stack deploy -c portainer.yml portainer
 ```
 
-- ### [postman](https://www.getpostman.com/)
+### [postman](https://www.getpostman.com/)
+
 A well-known tool for experimenting with APIs. Do you want to try the curl-based
 examples of the recipes from Postman? Import the ```postman_collection.json```
 available in this folder and make your tests easier. Note: this collection is
@@ -72,21 +77,24 @@ done with [gravizo's converter](http://www.gravizo.com/#converter).
 Inspect the source of any recipe's `readme.md` to see an example.
 
 Other tools for documentation that you may find useful are...
-- ##### [draw.io](https://www.draw.io)
+
+### [draw.io](https://www.draw.io)
+
 Use this tool when the diagrams start getting too complex of when you foresee
 the diagram will be complex from the scratch.
 
-    Complex in the sense that making a simple change takes more time
-    understanding the `.dot` than making a manual gui-based change.
+Complex in the sense that making a simple change takes more time understanding
+the `.dot` than making a manual gui-based change.
 
-    When using draw.io, keep the source file in the repository under a
-    `/doc` subfolder of the corresponding recipe.
+When using draw.io, keep the source file in the repository under a `/doc`
+subfolder of the corresponding recipe.
 
-- ##### [color names](http://www.graphviz.org/doc/info/colors.html)
+### [color names](http://www.graphviz.org/doc/info/colors.html)
+
 The reference for color names used in `.dot` files.
 
-- ##### [diagramr](http://diagramr.inventage.com)
-(deprecated).
+### [diagramr](http://diagramr.inventage.com) (deprecated).
+
 To give more docker-related details we could use this tool to create diagrams
 from docker-compose files. The tools gives also the .dot file, which would
 be eventually customized and then turned into a png file using

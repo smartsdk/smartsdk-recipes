@@ -54,6 +54,7 @@ Then, simply run...
 ```
     sh deploy.sh
 ```
+
 Allow some time while images are pulled in the nodes and services are deployed.
 After a couple of minutes, you can check if all services are up, as usual,
 running...
@@ -85,10 +86,12 @@ Let's now check that the controller worked fine inspecting the logs of the
 
 or running the following...
 
+```
     $  docker logs $(docker ps -f "name=mongo-rs_mongo-controller" -q)
     INFO:__main__:Waiting some time before starting
     INFO:__main__:Initial config: {'version': 1, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}]}
     INFO:__main__:replSetInitiate: {'ok': 1.0}
+```
 
 As you can see, the replica-set was configured with 3 replicas represented by containers running in the same overlay network. You can also run a mongo command in any of the mongo containers and execute *rs.status()* to see the same results.
 
@@ -141,4 +144,8 @@ You can read more about this in
 [this Github issue](https://github.com/docker/docker/issues/26259).
 
 For further details, refer to the [mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm)
-repository, in particular the *[docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)* file or the *[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)* controller script.
+repository, in particular the 
+`[docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)`
+file or the 
+`[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)`
+controller script.

@@ -9,10 +9,10 @@ Official documentation of this IoT Agent:
 
 ##### Via ENV variables
 
-- IOTA_VERSION: Version number (tag) of the [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/).
-Defaults to *latest*.
+- IOTA_VERSION: Version number (tag) of the
+  [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/).
+  Defaults to *latest*.
 - IOTA_LWM2M_PORT: Defaults to *5684*.
-
 - IOTA_LOG_LEVEL: Defaults to *DEBUG*.
 - IOTA_CB_HOST: Defaults to *orion*.
 - IOTA_CB_PORT: Defaults to *1026*.
@@ -28,6 +28,7 @@ For the documentation of the variables please refer to the
 [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
 ##### Via Files
+
 - config.js: Feel free to edit this file before deployment, it will be used by
 the agent as its config file. It is treated by docker as a
 [config](https://docs.docker.com/compose/compose-file/#configs).
