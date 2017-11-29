@@ -4,9 +4,10 @@ This recipe will show you how to deploy a default cygnus-ngsi configuration with
 a MySQL backend. Note that this generic enabler can actually be deployed with
 [many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
 
-This recipe in particular requires the use of [docker "configs"](https://docs.docker.com/compose/compose-file/#configs) and hence
-depends on a docker-compose file version "3.3", supported in docker versions
-17.06.0+.
+This recipe in particular requires the use of
+[docker "configs"](https://docs.docker.com/compose/compose-file/#configs)
+and hence depends on a docker-compose file version "3.3", supported in docker
+versions 17.06.0+.
 
 Instructions on how to prepare your environment to test these recipes are given
 in the [Installation](../../../installation.md) section of the docs. Assuming
@@ -44,7 +45,9 @@ you have created a 3-nodes Swarm setup, this deployment will look as follows...
   }
 '>
 
-As you may already know [from the docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html), in order to configure cygnus, you need to provide a
+As you may already know
+[from the docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html),
+in order to configure cygnus, you need to provide a
 specific agent configuration file. In this case, you can customize the
 `cygnus_agent.conf` and `cartodb_keys.conf` files within the `conf` folder.
 The content of these files will be loaded by docker into their corresponding
@@ -54,7 +57,6 @@ If you inspect the `docker-compose.yml` you will realize that you can
 customize the values of the MySQL user and password by setting the environment
 variables `CYGNUS_MYSQL_USER` and `CYGNUS_MYSQL_PASS`.
 
-
 To launch the example as it is, simply run:
 
 ```
@@ -62,6 +64,7 @@ To launch the example as it is, simply run:
 ```
 
 After a couple of minutes you should be able to see the two services up and running.
+
 ```
     $ docker service ls
     ID                  NAME                   MODE                REPLICAS            IMAGE                       PORTS
@@ -110,12 +113,14 @@ steps you need to follow.
 
 1. Configure your `cygnus_agent.conf` according to your needs. More info
 [in the docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html).
+
 1. Update the `docker-compose.yml`, specifically the environment variables
 configured for the cygnus service.
 For example, if you wanted to use MongoDB instead of MySQL, you'll need to
 use variables CYGNUS_MONGO_USER and CYGNUS_MONGO_PASS. For a complete list
 of required variables, refer to the
 [cygnus docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2).
+
 1. Update the `docker-compose.yml`, removing the definition of the mysql service
 and introducing the one of your preference. Also, don't forget to update the
 `depends_on:` section of cygnus with the name of your new service.

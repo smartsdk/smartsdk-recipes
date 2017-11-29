@@ -1,12 +1,11 @@
-## Contributions
+# Contributions
 
 Contributions are more than welcome in the form of [Pull Requests](https://help.github.com/articles/about-pull-requests/).
 
 Feel free to [open issues](https://github.com/smartsdk/smartsdk-recipes/issues)
 if something looks wrong.
 
-
-## Documentation
+# Documentation
 
 For now we are using [Mkdocs](http://www.mkdocs.org) deploying on
 [Github Pages](https://pages.github.com).

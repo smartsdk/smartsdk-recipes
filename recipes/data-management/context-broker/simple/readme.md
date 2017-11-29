@@ -52,10 +52,14 @@ running **on an single host**.
     }
 '>
 
-Both services will be running in docker containers, defined in the [./docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml) file.
+Both services will be running in docker containers, defined in the 
+`[./docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml)`
+file.
 
 Data will be persisted in a local folder defined by the value of `DATA_PATH`
-variable in the [.env](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env) file.
+variable in the
+`[.env](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env)`
+file.
 
 ## How to use
 

@@ -88,8 +88,10 @@ multiple nodes.
 
 - `EXPECTED_NODES`: How many nodes to wait for until the cluster state is
 recovered. The value should be equal to the number of nodes in the cluster.
+
 - `RECOVER_AFTER_NODES`: The number of nodes that need to be started before any
 cluster state recovery will start.
+
 - `MINIMUM_MASTER_NODES`: It’s highly recommend to set the quorum greater than
 half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is
 the maximum number of nodes in the cluster.
@@ -141,7 +143,8 @@ service scale command as explained in
 
 #### Explore
 
-Now, if you open your explorer to http://crate.mydomain.com you should see the
+Now, if you open your explorer to
+[http://crate.mydomain.com](http://crate.mydomain.com) you should see the
 CRATE.IO dashboard. In the "cluster" tab you should see the same number of nodes
 you have in the swarm cluster.
 
