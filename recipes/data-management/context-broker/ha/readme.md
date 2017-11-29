@@ -48,7 +48,9 @@ Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you 
     $ miniswarm start 3
     $ eval $(docker-machine env ms-manager0)
 
-Then, simply run...
+Orion needs a mongo database for its backend. If you have already deployed Mongo within your cluster and would like to reuse that database, you can skip the next step (deploying backend). You will just need to pay attention to the variables you define for Orion to link to Mongo, namely, ```MONGO_SERVICE_URI``` and ```REPLICASET_NAME```. Make sure you have the correct values in ```frontend.env```. The value of ```MONGO_SERVICE_URI``` should be a routable address for mongo. If deployed within the swarm, the service name (with stack prefix) would suffice. You can read more in the [official docker docs](https://docs.docker.com/docker-cloud/apps/service-links/). The default values should be fine for you if you used the [Mongo Replicaset Recipe](../../../utils/mongo-replicaset/readme.md).
+
+Otherwise, if you prefer to make a new deployment of Mongo just for Orion, you can take a shortcut and run...
 
     $ sh deploy_back.sh
 
@@ -60,8 +62,8 @@ At some point, your deployment should look like this...
 
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
-    nrxbm6k0a2yn  orion-backend_mongo             global      3/3       mongo:3.2
-    rgws8vumqye2  orion-backend_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+    nrxbm6k0a2yn  mongo-rs_mongo             global      3/3       mongo:3.2
+    rgws8vumqye2  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
     zk7nu592vsde  orion_orion                     replicated  3/3       fiware/orion:1.3.0
 
 As shown above, if you see _3/3_ in the replicas column it means the 3 replicas are up and running.
@@ -171,8 +173,8 @@ Docker is taking care of the reconciliation of the services in case a container 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
     abc5e37037f0        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   2 minutes ago       Up 2 minutes        1026/tcp            orion_orion.1.o9ebbardwvzn1gr11pmf61er8
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        orion-backend_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           orion-backend_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
 Suppose orion container goes down...
 
@@ -182,14 +184,14 @@ You will see it gone, but after a while it will automatically come back.
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        orion-backend_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           orion-backend_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
     $ docker ps
     CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS                  PORTS               NAMES
     60ba3f431d9d        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   6 seconds ago       Up Less than a second   1026/tcp            orion_orion.1.uj1gghehb2s1gnoestup2ugs5
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            orion-backend_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           orion-backend_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
 Even if a whole node goes down, the service will remain working because you had both redundant orion instances and redundant db replicas.
 

@@ -39,12 +39,12 @@ configs:
 networks:
   default:
     driver_opts:
-      com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
   frontend:
     driver: overlay
     driver_opts:
-      com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
   backend:
     driver: overlay
     driver_opts:
-      com.docker.network.driver.mtu: ${DOCKER_MTU:-1500}
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}

@@ -60,13 +60,21 @@ Before we launch the stack, you need to define a domain for the entrypoint of yo
 
     $ export CLUSTER_DOMAIN=mydomain.com
 
-If you are just testing locally and don't own one, you can fake it editing your /etc/hosts file to add an entry that points to the IP of any of the nodes of your Swarm Cluster. See the example below.
+If you are just testing locally and don't own one, you can fake it editing your `/etc/hosts` file to add an entry that points to the IP of any of the nodes of your Swarm Cluster (replace 192.168.99.100 with the IP if your cluster entrypoint). See the example below.
 
     # End of /etc/hosts file
     192.168.99.100  mydomain.com
     192.168.99.100  crate.mydomain.com
 
-Note we've included one entry for crate because we'll be accessing the CrateDB cluster UI through the [Traefik](https://traefik.io) proxy.
+Note we've included one entry for `crate.mydomain.com` because we'll be accessing the CrateDB cluster UI through the [Traefik](https://traefik.io) proxy.
+
+You will also need to set the values for the following 3 special environment variables, depending on the structure of your cluster. The default values will assume your cluster has only 1 node, which is not ideal if your cluster has multiple nodes.
+
+- `EXPECTED_NODES`: How many nodes to wait for until the cluster state is recovered. The value should be equal to the number of nodes in the cluster.
+- `RECOVER_AFTER_NODES`: The number of nodes that need to be started before any cluster state recovery will start.
+- `MINIMUM_MASTER_NODES`: It’s highly recommend to set the quorum greater than half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is the maximum number of nodes in the cluster.
+
+For more details, check out [these docs](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10) or the corresponding section in [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
 
 #### Deploy
 
@@ -105,7 +113,7 @@ For a quick test, you can use the *insert.sh* script in this folder.
 
 Otherwise, open your favourite API tester and send the fake notification shown below to QuantumLeap to later see it persisted in the database through the Crate Dashboard.
 
-    # Simple fake payload to send to IP_OF_ANY_SWARM_NODE:8668.
+    # Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
     {
         "subscriptionId": "5947d174793fe6f7eb5e3961",
         "data": [
@@ -125,5 +133,9 @@ Otherwise, open your favourite API tester and send the fake notification shown b
             }
         ]
     }
+
+Remember in the typical scenario is not the client that will be sending payloads directly to the `/notify` endpoint, but rather *Orion Context Broker* in the form of notifications. More info in the [official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
+
+You can use the postman collection available in the [tools section](../../tools/readme.md).
 
 For further information, please refer to the [QuantumLeap's User Manual](https://smartsdk.github.io/ngsi-timeseries-api/).

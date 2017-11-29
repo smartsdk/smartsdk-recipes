@@ -4,7 +4,7 @@ This recipe will show you how to deploy a default cygnus-ngsi configuration with
 
 This recipe in particular requires the use of [docker "configs"](https://docs.docker.com/compose/compose-file/#configs) and hence depends on a docker-compose file version "3.3", supported in docker versions 17.06.0+.
 
-Instructions on how to prepare your environment to test these recipes are given in the [Installation](../../installation.md) section of the docs. Assuming you have created a 3-nodes Swarm setup, this deployment will look as follows...
+Instructions on how to prepare your environment to test these recipes are given in the [Installation](../../../installation.md) section of the docs. Assuming you have created a 3-nodes Swarm setup, this deployment will look as follows...
 
 <img src='http://g.gravizo.com/g?
   digraph G {

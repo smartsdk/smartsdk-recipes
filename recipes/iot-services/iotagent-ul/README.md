@@ -1,6 +1,6 @@
 # IoT Agent (UL)
 
-Official documentation of this IoT Agent: http://fiware-iotagent-ul.readthedocs.io/en/latest/index.html
+Official documentation of this IoT Agent: [here](http://fiware-iotagent-ul.readthedocs.io/en/latest/index.html)
 
 ## HTTP Transport
 
@@ -8,7 +8,7 @@ Official documentation of this IoT Agent: http://fiware-iotagent-ul.readthedocs.
 
 ##### Via ENV variables
 
-For the documentation of the variables please refer to the [global configuration docs]((https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)).
+For the documentation of the variables please refer to the [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
 - IOTA_VERSION: Version number (tag) of the [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-ul/~/dockerfile/).
 - IOTA_LOG_LEVEL: Defaults to *DEBUG*.
@@ -30,7 +30,7 @@ For the documentation of the variables please refer to the [global configuration
 
 ### Deploying this recipe
 
-We assume you have already setup your environment as explained in the [Installation](../installation.md).
+We assume you have already setup your environment as explained in the [Installation](../../installation.md).
 
     docker stack deploy -c docker-compose.yml iota-ul
 

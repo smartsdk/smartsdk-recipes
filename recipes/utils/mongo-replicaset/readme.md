@@ -41,7 +41,7 @@ digraph Cluster {
 
 ## How to use
 
-Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../../tools/readme.md) section for a quick way to setup a local swarm.
+Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../tools/readme.md) section for a quick way to setup a local swarm.
 
     miniswarm start 3
     eval $(docker-machine env ms-manager0)
@@ -54,8 +54,8 @@ Allow some time while images are pulled in the nodes and services are deployed. 
 
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
-    fjxof1n5ce58  mongo-replica_mongo             global      3/3       mongo:latest
-    yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+    fjxof1n5ce58  mongo-rs_mongo             global      3/3       mongo:latest
+    yzsur7rb4mg1  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 
 
 ## A Walkthrough
@@ -66,13 +66,13 @@ The mongo service is deployed in "global" mode, meaning that docker will run one
 
 At the swarm's master node, a python-based controller script will be deployed to configure and maintain the mongodb replica-set.
 
-Let's now check that the controller worked fine inspecting the logs of the mongo-replica_mongo-controller service. This can be done with either...
+Let's now check that the controller worked fine inspecting the logs of the mongo_mongo-controller service. This can be done with either...
 
-    $ docker service logs mongo-replica_mongo-controller
+    $ docker service logs mongo-rs_mongo-controller
 
 or running the following...
 
-    $  docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
+    $  docker logs $(docker ps -f "name=mongo-rs_mongo-controller" -q)
     INFO:__main__:Waiting some time before starting
     INFO:__main__:Initial config: {'version': 1, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}]}
     INFO:__main__:replSetInitiate: {'ok': 1.0}
@@ -104,10 +104,10 @@ Back to the host, some minutes later...
 
     $ docker service ls
     ID            NAME                            MODE        REPLICAS  IMAGE
-    fjxof1n5ce58  mongo-replica_mongo             global      4/4       mongo:latest
-    yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+    fjxof1n5ce58  mongo-rs_mongo             global      4/4       mongo:latest
+    yzsur7rb4mg1  mongo_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 
-    $ docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
+    $ docker logs $(docker ps -f "name=mongo_mongo-controller" -q)
     ...
     INFO:__main__:To add: {'10.0.0.8'}
     INFO:__main__:New config: {'version': 2, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}, {'_id': 3, 'host': '10.0.0.8:27017'}]}
