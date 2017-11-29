@@ -1,7 +1,7 @@
 # SmartSDK Recipes
 [![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
 [![Documentation badge](https://img.shields.io/badge/docs-latest-yellow.svg)](https://smartsdk.github.io/smartsdk-recipes/)
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/e85601cbdbae303f88fd/maintainability)](https://codeclimate.com/github/smartsdk/smartsdk-recipes/maintainability)
 
 ## Introduction
 
