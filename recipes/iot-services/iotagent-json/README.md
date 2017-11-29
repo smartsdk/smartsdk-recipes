@@ -1,6 +1,6 @@
 # IoT Agent (JSON)
 
-Official documentation of this IoT Agent: 
+Official documentation of this IoT Agent:
 [here](http://fiware-iotagent-json.readthedocs.io/en/latest/index.html)
 
 ## MQTT Transport
@@ -74,7 +74,6 @@ The deployed services will be:
 - [IoTAgent-json](https://github.com/telefonicaid/iotagent-json)
 
 - [Mosquitto](http://mosquitto.org/) as MQTT Broker
-
 
 ### Important Things to keep in mind
 

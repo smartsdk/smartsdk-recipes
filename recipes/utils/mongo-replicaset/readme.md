@@ -93,7 +93,10 @@ or running the following...
     INFO:__main__:replSetInitiate: {'ok': 1.0}
 ```
 
-As you can see, the replica-set was configured with 3 replicas represented by containers running in the same overlay network. You can also run a mongo command in any of the mongo containers and execute *rs.status()* to see the same results.
+As you can see, the replica-set was configured with 3 replicas represented by
+containers running in the same overlay network. You can also run a mongo command
+in any of the mongo containers and execute `rs.status()` to see the same
+results.
 
 ```
     $ docker exec -ti d56d17c40f8f mongo rs:SECONDARY> rs.status()
@@ -144,8 +147,8 @@ You can read more about this in
 [this Github issue](https://github.com/docker/docker/issues/26259).
 
 For further details, refer to the [mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm)
-repository, in particular the 
+repository, in particular the
 `[docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)`
-file or the 
+file or the
 `[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)`
 controller script.

@@ -60,7 +60,7 @@ The deployed services will be:
 ``Note``
 
 If you are following the
-[official step-by-step guide](https://fiware-iotagent-lwm2m.readthedocs.io/en/latest/userGuide/index.html), 
+[official step-by-step guide](https://fiware-iotagent-lwm2m.readthedocs.io/en/latest/userGuide/index.html),
 you can quickly launch the lwm2m client as:
 
 ```

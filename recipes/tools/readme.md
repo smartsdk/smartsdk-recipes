@@ -93,7 +93,7 @@ subfolder of the corresponding recipe.
 
 The reference for color names used in `.dot` files.
 
-### [diagramr](http://diagramr.inventage.com) (deprecated).
+### [diagramr](http://diagramr.inventage.com) (deprecated)
 
 To give more docker-related details we could use this tool to create diagrams
 from docker-compose files. The tools gives also the .dot file, which would
