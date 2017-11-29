@@ -2,9 +2,12 @@
 
 
 ## Introduction
-Here you can find recipes aimed at different usages of QuantumLeap. We assume you are already familiar with it, otherwise refer to the [official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
+Here you can find recipes aimed at different usages of QuantumLeap. We assume
+you are already familiar with it, otherwise refer to the
+[official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
 
-Instructions on how to prepare your environment to test these recipes are given in the [installation section](../../installation.md).
+Instructions on how to prepare your environment to test these recipes are given
+in the [installation section](../../installation.md).
 
 
 ## HA Deployment overview
@@ -56,43 +59,73 @@ Instructions on how to prepare your environment to test these recipes are given 
 
 #### Before Starting
 
-Before we launch the stack, you need to define a domain for the entrypoint of your docker cluster. Save that domain in an environment variable like this:
+Before we launch the stack, you need to define a domain for the entrypoint
+of your docker cluster. Save that domain in an environment variable like this:
 
+```
     $ export CLUSTER_DOMAIN=mydomain.com
+```
 
-If you are just testing locally and don't own one, you can fake it editing your `/etc/hosts` file to add an entry that points to the IP of any of the nodes of your Swarm Cluster (replace 192.168.99.100 with the IP if your cluster entrypoint). See the example below.
+If you are just testing locally and don't own one, you can fake it editing your
+`/etc/hosts` file to add an entry that points to the IP of any of the nodes of
+your Swarm Cluster (replace 192.168.99.100 with the IP if your cluster
+entrypoint). See the example below.
 
+```
     # End of /etc/hosts file
     192.168.99.100  mydomain.com
     192.168.99.100  crate.mydomain.com
+```
 
-Note we've included one entry for `crate.mydomain.com` because we'll be accessing the CrateDB cluster UI through the [Traefik](https://traefik.io) proxy.
+Note we've included one entry for `crate.mydomain.com` because we'll be
+accessing the CrateDB cluster UI through the [Traefik](https://traefik.io)
+proxy.
 
-You will also need to set the values for the following 3 special environment variables, depending on the structure of your cluster. The default values will assume your cluster has only 1 node, which is not ideal if your cluster has multiple nodes.
+You will also need to set the values for the following 3 special environment
+variables, depending on the structure of your cluster. The default values will
+assume your cluster has only 1 node, which is not ideal if your cluster has
+multiple nodes.
 
-- `EXPECTED_NODES`: How many nodes to wait for until the cluster state is recovered. The value should be equal to the number of nodes in the cluster.
-- `RECOVER_AFTER_NODES`: The number of nodes that need to be started before any cluster state recovery will start.
-- `MINIMUM_MASTER_NODES`: It’s highly recommend to set the quorum greater than half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is the maximum number of nodes in the cluster.
+- `EXPECTED_NODES`: How many nodes to wait for until the cluster state is
+recovered. The value should be equal to the number of nodes in the cluster.
+- `RECOVER_AFTER_NODES`: The number of nodes that need to be started before any
+cluster state recovery will start.
+- `MINIMUM_MASTER_NODES`: It’s highly recommend to set the quorum greater than
+half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is
+the maximum number of nodes in the cluster.
 
-For more details, check out [these docs](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10) or the corresponding section in [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
+For more details, check out
+[these docs](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10)
+or the corresponding section in
+[elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
 
 #### Deploy
 
-Now, we're ready to launch the stack with the name "ql".
+Now, we're ready to launch the stack with the name `ql`.
 
 If you want to deploy the basic stack of QuantumLeap you can simply run...
 
+```
     $ docker stack deploy -c docker-compose ql
+```
 
-Otherwise, if you'd like to include some extra services such as Grafana for data visualisation, you can integrate the addons present in the *docker-compose-addons.yml*. Unfortunately docker is currently not directly supporting [multiple compose files to do a single deploy](https://github.com/moby/moby/issues/30127). Hence the suggested way to proceed is the following...
+Otherwise, if you'd like to include some extra services such as Grafana for data
+visualisation, you can integrate the addons present in the
+`docker-compose-addons.yml`. Unfortunately docker is currently not directly
+supporting
+[multiple compose files to do a single deploy](https://github.com/moby/moby/issues/30127).
+Hence the suggested way to proceed is the following...
 
+```
     # First we merge the two compose files using docker-compose
     $ docker-compose -f docker-compose.yml -f docker-compose-addons.yml config > ql.yml
     # Now we deploy the "ql" stack from the generated ql.yml file.
     $ docker stack deploy -c ql.yml ql
+```
 
 Wait until you see all instances up and running (this might take some minutes).
 
+```
     $ docker service ls
     ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
     2vbj18blsqje        ql_traefik          global              1/1                 traefik:1.3.5-alpine              *:80->80/tcp,*:443->443/tcp,*:4200->4200/tcp,*:4300->4300/tcp,*:8080->8080/tcp
@@ -100,19 +133,29 @@ Wait until you see all instances up and running (this might take some minutes).
     e8kyp4vylvev        ql_quantumleap      replicated          1/1                 smartsdk/quantumleap:latest       *:8668->8668/tcp
     ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
     tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000->3000/tcp
+```
 
-Now you are ready to scale services according to your needs using simple docker service scale command as explained in [the official docs](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/).
+Now you are ready to scale services according to your needs using simple docker
+service scale command as explained in
+[the official docs](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/).
 
 #### Explore
 
-Now, if you open your explorer to http://crate.mydomain.com you should see the CRATE.IO dashboard. In the "cluster" tab you should see the same number of nodes you have in the swarm cluster.
+Now, if you open your explorer to http://crate.mydomain.com you should see the
+CRATE.IO dashboard. In the "cluster" tab you should see the same number of nodes
+you have in the swarm cluster.
 
-For a quick test, you can use the *insert.sh* script in this folder.
+For a quick test, you can use the `insert.sh` script in this folder.
 
+```
     $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
+```
 
-Otherwise, open your favourite API tester and send the fake notification shown below to QuantumLeap to later see it persisted in the database through the Crate Dashboard.
+Otherwise, open your favourite API tester and send the fake notification shown
+below to QuantumLeap to later see it persisted in the database through the Crate
+Dashboard.
 
+```
     # Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
     {
         "subscriptionId": "5947d174793fe6f7eb5e3961",
@@ -133,9 +176,15 @@ Otherwise, open your favourite API tester and send the fake notification shown b
             }
         ]
     }
+```
 
-Remember in the typical scenario is not the client that will be sending payloads directly to the `/notify` endpoint, but rather *Orion Context Broker* in the form of notifications. More info in the [official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
+Remember in the typical scenario is not the client that will be sending payloads
+directly to the `/notify` endpoint, but rather *Orion Context Broker* in the
+form of notifications. More info in the
+[official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
 
-You can use the postman collection available in the [tools section](../../tools/readme.md).
+You can use the postman collection available in the
+[tools section](../../tools/readme.md).
 
-For further information, please refer to the [QuantumLeap's User Manual](https://smartsdk.github.io/ngsi-timeseries-api/).
+For further information, please refer to the
+[QuantumLeap's User Manual](https://smartsdk.github.io/ngsi-timeseries-api/).

@@ -8,9 +8,11 @@ Official documentation of this IoT Agent: [here](http://fiware-iotagent-ul.readt
 
 ##### Via ENV variables
 
-For the documentation of the variables please refer to the [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
+For the documentation of the variables please refer to the
+[global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
-- IOTA_VERSION: Version number (tag) of the [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-ul/~/dockerfile/).
+- IOTA_VERSION: Version number (tag) of the
+  [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-ul/~/dockerfile/).
 - IOTA_LOG_LEVEL: Defaults to *DEBUG*.
 - IOTA_TIMESTAMP: Defaults to *true*.
 - IOTA_CB_HOST: Defaults to *orion*.
@@ -25,15 +27,19 @@ For the documentation of the variables please refer to the [global configuration
 - IOTA_PROVIDER_URL: Defaults to *http://iotagent:4041*.
 
 ##### Via Files
-- config.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a [config](https://docs.docker.com/compose/compose-file/#configs).
+- config.js: Feel free to edit this file before deployment, it will be used by
+  the agent as its config file. It is treated by docker as a 
+  [config](https://docs.docker.com/compose/compose-file/#configs).
 
 
 ### Deploying this recipe
 
-We assume you have already setup your environment as explained in the [Installation](../../installation.md).
+We assume you have already setup your environment as explained in the
+[Installation](../../installation.md).
 
+```
     docker stack deploy -c docker-compose.yml iota-ul
+```
 
 The deployed services will be:
-
 - [IoTAgent-ul](https://github.com/telefonicaid/iotagent-ul)

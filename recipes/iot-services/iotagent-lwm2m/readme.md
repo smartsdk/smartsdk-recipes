@@ -1,6 +1,7 @@
 # IoT Agent (LWM2M)
 
-Official documentation of this IoT Agent: [here](https://fiware-iotagent-lwm2m.readthedocs.io/)
+Official documentation of this IoT Agent:
+[here](https://fiware-iotagent-lwm2m.readthedocs.io/)
 
 ## HTTP Transport
 
@@ -8,7 +9,8 @@ Official documentation of this IoT Agent: [here](https://fiware-iotagent-lwm2m.r
 
 ##### Via ENV variables
 
-- IOTA_VERSION: Version number (tag) of the [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/). Defaults to *latest*.
+- IOTA_VERSION: Version number (tag) of the [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/).
+Defaults to *latest*.
 - IOTA_LWM2M_PORT: Defaults to *5684*.
 
 - IOTA_LOG_LEVEL: Defaults to *DEBUG*.
@@ -22,17 +24,23 @@ Official documentation of this IoT Agent: [here](https://fiware-iotagent-lwm2m.r
 - IOTA_MONGO_REPLICASET: Defaults to *rs*. Unset to disable replicaset option.
 - IOTA_PROVIDER_URL: Defaults to *http://iotagent:4041*.
 
-For the documentation of the variables please refer to the [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
+For the documentation of the variables please refer to the
+[global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
 ##### Via Files
-- config.js: Feel free to edit this file before deployment, it will be used by the agent as its config file. It is treated by docker as a [config](https://docs.docker.com/compose/compose-file/#configs).
+- config.js: Feel free to edit this file before deployment, it will be used by
+the agent as its config file. It is treated by docker as a
+[config](https://docs.docker.com/compose/compose-file/#configs).
 
 
 ### Deploying this recipe
 
-We assume you have already setup your environment as explained in the [Installation](../../installation.md).
+We assume you have already setup your environment as explained in the
+[Installation](../../installation.md).
 
+```
     docker stack deploy -c docker-compose.yml iota-lwm2m
+```
 
 The deployed services will be:
 
@@ -41,6 +49,10 @@ The deployed services will be:
 
 **Note**
 
-If you are following the [official step-by-step guide](https://fiware-iotagent-lwm2m.readthedocs.io/en/latest/userGuide/index.html), you can quickly launch the lwm2m client as:
+If you are following the
+[official step-by-step guide](https://fiware-iotagent-lwm2m.readthedocs.io/en/latest/userGuide/index.html), 
+you can quickly launch the lwm2m client as:
 
+```
     docker exec -ti [AGENT_CONTAINER_ID_HERE] node_modules/lwm2m-node-lib/bin/iotagent-lwm2m-client.js
+```

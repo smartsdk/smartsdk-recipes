@@ -1,7 +1,9 @@
 # Single Host Scenario
 
-##### Introduction
-This simple recipe triggers an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md) instance backed with a [MongoDB](https://docs.mongodb.com) instance everything running **on an single host**.
+## Introduction
+This simple recipe triggers an [Orion Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)
+instance backed with a [MongoDB](https://docs.mongodb.com) instance everything
+running **on an single host**.
 
 <img src='http://g.gravizo.com/g?
     digraph G {
@@ -50,32 +52,43 @@ This simple recipe triggers an [Orion Context Broker](https://github.com/telefon
     }
 '>
 
-Both services will be running in docker containers, defined in the _[./docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml) file._
+Both services will be running in docker containers, defined in the [./docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml) file.
 
-Data will be persisted in a local folder defined by the value of *DATA_PATH* variable in the _[.env](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env)_ file.
+Data will be persisted in a local folder defined by the value of `DATA_PATH`
+variable in the [.env](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env) file.
 
-##### How to use
+## How to use
 
-This recipes has some default values, but optionally you can explore different configurations by modifying the *.env* file, the _docker-compose.yml_ or even the *scripts/setup.sh*.
+This recipes has some default values, but optionally you can explore different
+configurations by modifying the `.env` file, the `docker-compose.yml` or even
+the `scripts/setup.sh`.
 
 Then, from this folder simply run:
 
+```
     $ docker-compose up -d
+```
 
-##### How to validate
+## How to validate
 
-Before testing make sure docker finished downloading the images and spinning-off the containers. You can check that by running:
+Before testing make sure docker finished downloading the images and spinning-off
+the containers. You can check that by running:
 
+```
     $ docker ps
+```
 
 You should see the two containers listed and with status "up".
 
 Then, to test if orion is truly up and running run:
 
+```
     $ sh ../query.sh
+```
 
 It should return something like:
 
+```
     {
     "orion" : {
       "version" : "1.6.0-next",
@@ -87,3 +100,4 @@ It should return something like:
     }
     }
     []
+```

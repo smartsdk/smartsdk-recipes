@@ -5,19 +5,25 @@
 
 ## Introduction
 
-This repository is part of the [SmartSDK](http://smartsdk.eu/) project and contains recipes to deploy different [FIWARE Generic Enablers](https://catalogue.fiware.org) on [Docker Swarm](https://docs.docker.com/engine/swarm/) clusters.
+This repository is part of the [SmartSDK](http://smartsdk.eu/) project and
+contains recipes to deploy different
+[FIWARE Generic Enablers](https://catalogue.fiware.org) on [Docker Swarm](https://docs.docker.com/engine/swarm/) clusters.
 
-For more info, refer to the **[docs](https://smartsdk.github.io/smartsdk-recipes/)**.
+For more info, refer to the
+ **[docs](https://smartsdk.github.io/smartsdk-recipes/)**.
 
 
 ## Requirements
 
-See the [Installation](https://smartsdk.github.io/smartsdk-recipes/installation/) section of the docs.
+See the
+[Installation](https://smartsdk.github.io/smartsdk-recipes/installation/)
+section of the docs.
 
 
 ## How to use
 
-See the [Home](https://smartsdk.github.io/smartsdk-recipes/) section of the docs.
+See the [Home](https://smartsdk.github.io/smartsdk-recipes/) section of the
+docs.
 
 
 ## License
@@ -26,4 +32,5 @@ This repository is licensed under Affero General Public License (GPL) version 3.
 
 ## Contributing
 
-See the [Contributing](https://smartsdk.github.io/smartsdk-recipes/) section of the docs.
+See the [Contributing](https://smartsdk.github.io/smartsdk-recipes/) section of
+the docs.
