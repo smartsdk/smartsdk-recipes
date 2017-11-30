@@ -87,14 +87,14 @@ assume your cluster has only 1 node, which is not ideal if your cluster has
 multiple nodes.
 
 - `EXPECTED_NODES`: How many nodes to wait for until the cluster state is
-recovered. The value should be equal to the number of nodes in the cluster.
+  recovered. The value should be equal to the number of nodes in the cluster.
 
 - `RECOVER_AFTER_NODES`: The number of nodes that need to be started before any
-cluster state recovery will start.
+  cluster state recovery will start.
 
 - `MINIMUM_MASTER_NODES`: It’s highly recommend to set the quorum greater than
-half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is
-the maximum number of nodes in the cluster.
+  half the maximum number of nodes in the cluster. I.e, (N / 2) + 1, where N is
+  the maximum number of nodes in the cluster.
 
 For more details, check out
 [these docs](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10)

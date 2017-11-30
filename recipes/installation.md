@@ -28,7 +28,7 @@ Therefore, you will need to consider compatible workarounds from time to time.
 
 ## Creating the Cluster
 
-Although you can run most (if not all) of the recipes using 
+Although you can run most (if not all) of the recipes using
 [docker-compose](https://docs.docker.com/compose/install/), the recipes are
 tailored to be deployed as services on Docker Swarm Clusters.
 

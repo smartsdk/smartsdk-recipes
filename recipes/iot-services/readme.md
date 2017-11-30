@@ -15,7 +15,7 @@ For more info about this GE, see
 - Request data from the IoT Device at some intervals (a.k.a Lazy attributes)
 
 - Execute commands on the IoT Device communication based on context in the
-Broker.
+  Broker.
 
 Explore the subfolders of each of the available IoT Agent recipes. The Agents
 can be considered stateless services and hence be deployed in the replicated

@@ -54,7 +54,7 @@ running **on an single host**.
     }
 '>
 
-Both services will be running in docker containers, defined in the 
+Both services will be running in docker containers, defined in the
 `[./docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml)`
 file.
 

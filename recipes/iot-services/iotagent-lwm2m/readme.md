@@ -41,8 +41,8 @@ For the documentation of the variables please refer to the
 ##### Via Files
 
 - `config.js`: Feel free to edit this file before deployment, it will be used by
-the agent as its config file. It is treated by docker as a
-[config](https://docs.docker.com/compose/compose-file/#configs).
+  the agent as its config file. It is treated by docker as a
+  [config](https://docs.docker.com/compose/compose-file/#configs).
 
 ### Deploying this recipe
 
