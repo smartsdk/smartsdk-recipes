@@ -13,7 +13,7 @@ in the [Installation](../../installation.md) section of the docs.
 The first thing to note is that when we talk about high availability while using
 cygnus, we refer to the availability of data processed by cygnus agents before
 it's dropped to the final storage solution. So, as you can read from the
-[official documentation](http://fiware-cygnus.readthedocs.io/en/latest/index.html), 
+[official documentation](http://fiware-cygnus.readthedocs.io/en/latest/index.html),
 different sinks can give you persistence in different storage solutions
 (mongodb, mysql, hdfs, etc). Keeping the persisted data in HA mode is a
 different challenge and the implementation will depend on the used solution.
