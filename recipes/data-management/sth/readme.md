@@ -1,6 +1,8 @@
 # Comet
 
-Here you can find recipes aimed at different usages of Comet, the Reference Implementation of the STH Generic Enabler. We assume you are already familiar with Comet. If not, refer to the
+Here you can find recipes aimed at different usages of Comet, the Reference
+Implementation of the STH Generic Enabler. We assume you are already familiar
+with Comet. If not, refer to the
 [official documentation](http://fiware-sth-comet.readthedocs.io/en/latest/index.html).
 
 The easiest and simplest way to try Comet is to follow the
