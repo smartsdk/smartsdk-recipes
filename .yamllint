@@ -1,0 +1,4 @@
+# For all rules
+ignore: |
+  *.travis.yml
+  _build

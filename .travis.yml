@@ -1,0 +1,30 @@
+language: python
+cache: pip
+python:
+  - 2.7
+  - 3.6
+install:
+  - pip install Pygments setuptools docutils mock pillow alabaster commonmark recommonmark mkdocs
+  - pip install yamllint
+script:
+  - mkdocs build --clean --site-dir _build/html --theme readthedocs # check documentation
+  - yamllint . # check yaml files
+  - true # add other tests here
+
+matrix:
+  include:
+  ## linters for markdown
+    - language: node_js
+      node_js:
+        - 8
+      python:
+      install:
+        - npm install -g markdownlint-cli --save-dev
+      before_script:
+        - markdownlint .
+      script:
+        - true  # add other tests here
+
+notifications:
+  on_success: change
+  on_failure: always

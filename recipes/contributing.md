@@ -1,9 +1,22 @@
 # Contributing
 
-Contributions are more than welcome in the form of [Pull Requests](https://help.github.com/articles/about-pull-requests/).
+Contributions are more than welcome in the form of
+[Pull Requests](https://help.github.com/articles/about-pull-requests/).
 
 Feel free to [open issues](https://github.com/smartsdk/smartsdk-recipes/issues)
 if something looks wrong.
+
+Be aware that during the CI process, a number of linters are run:
+
+* To ensure correctness of yml files, we recommend you to check
+  [yaml linting rules](https://yamllint.readthedocs.io/en/latest/rules.html).
+
+* To ensure consistency of the documentation style, we recommend you to adhere
+  to the MD [linting rules](https://github.com/markdownlint/markdownlint/blob/master/docs/RULES.md).
+
+Once you make a pull request to the repository, you will be able to observe
+the results of the compliancy verification in your PR. Merge will be only possible
+if CI process is passed successfully.
 
 ## Documentation
 
