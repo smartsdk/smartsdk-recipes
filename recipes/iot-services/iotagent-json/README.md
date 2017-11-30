@@ -13,17 +13,17 @@ For the documentation of the variables please refer to the
 [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
 - `MOSQUITTO_VERSION`: Version number (tag) of the
-[Mosquitto Docker Image](https://hub.docker.com/\_/eclipse-mosquitto/).
-Defaults to `1.4.12`.
+  [Mosquitto Docker Image](https://hub.docker.com/\_/eclipse-mosquitto/).
+  Defaults to `1.4.12`.
 
 - `IOTA_MQTT_HOST`: Defaults to `mosquitto`, which is the name of the docker
-service.
+  service.
 
 - `IOTA_MQTT_PORT`: Defaults to `1883`.
 
 - `IOTA_VERSION`: Version number (tag) of the
-[Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-json/~/dockerfile/).
-Defaults to `1.6.0`.
+  [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-json/~/dockerfile/).
+  Defaults to `1.6.0`.
 
 - `IOTA_LOG_LEVEL`: Defaults to `DEBUG`.
 
@@ -52,13 +52,13 @@ Defaults to `1.6.0`.
 ##### Via Files
 
 - `config.js`: Feel free to edit this file before deployment, it will be used by
-the agent as its config file. It is treated by docker as a
-[config](https://docs.docker.com/compose/compose-file/#configs). Remember that
-values specified via ENV variables will override those set in the file.
+  the agent as its config file. It is treated by docker as a
+  [config](https://docs.docker.com/compose/compose-file/#configs). Remember that
+  values specified via ENV variables will override those set in the file.
 
 - `mosquitto.conf`: Feel free to edit this file before deployment, it will be
-used by mosquitto as its config file. It is treated by docker as a
-[config](https://docs.docker.com/compose/compose-file/#configs).
+  used by mosquitto as its config file. It is treated by docker as a
+  [config](https://docs.docker.com/compose/compose-file/#configs).
 
 ### Deploying this recipe
 

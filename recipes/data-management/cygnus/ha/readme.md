@@ -112,15 +112,15 @@ If you wanted to try a different backend for your cygnus deployment, there are 3
 steps you need to follow.
 
 1. Configure your `cygnus_agent.conf` according to your needs. More info
-[in the docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html).
+  [in the docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html).
 
 1. Update the `docker-compose.yml`, specifically the environment variables
-configured for the cygnus service.
-For example, if you wanted to use MongoDB instead of MySQL, you'll need to
-use variables CYGNUS_MONGO_USER and CYGNUS_MONGO_PASS. For a complete list
-of required variables, refer to the
-[cygnus docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2).
+  configured for the cygnus service.
+  For example, if you wanted to use MongoDB instead of MySQL, you'll need to
+  use variables CYGNUS_MONGO_USER and CYGNUS_MONGO_PASS. For a complete list
+  of required variables, refer to the
+  [cygnus docs](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2).
 
 1. Update the `docker-compose.yml`, removing the definition of the mysql service
-and introducing the one of your preference. Also, don't forget to update the
-`depends_on:` section of cygnus with the name of your new service.
+  and introducing the one of your preference. Also, don't forget to update the
+  `depends_on:` section of cygnus with the name of your new service.
