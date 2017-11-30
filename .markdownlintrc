@@ -10,5 +10,8 @@
   "no-hard-tabs": false,
   "whitespace": false,
   "fenced-code-language": false,
-  "commands-show-output": false
+  "commands-show-output": false,
+  "no-trailing-punctuation": {
+    "punctuation": ".,;:!"
+  }
 }
