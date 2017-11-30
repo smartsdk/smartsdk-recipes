@@ -7,7 +7,7 @@ Official documentation of this IoT Agent:
 
 ### What you can customise
 
-##### Via ENV variables
+#### Via ENV variables
 
 - `IOTA_VERSION:` Version number (tag) of the
   [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/).
@@ -38,7 +38,7 @@ Official documentation of this IoT Agent:
 For the documentation of the variables please refer to the
 [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
 
-##### Via Files
+#### Via Files
 
 - `config.js`: Feel free to edit this file before deployment, it will be used by
   the agent as its config file. It is treated by docker as a

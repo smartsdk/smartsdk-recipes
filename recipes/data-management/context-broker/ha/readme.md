@@ -300,7 +300,7 @@ In the walkthrough, we queried orion through one of the swarm nodes because we
 rely on docker ingress network routing the traffic all the way to one of the
 containerized orion services.
 
-## Open interesting issues:
+## Open interesting issues
 
 - [https://github.com/docker/swarm/issues/1106](https://github.com/docker/swarm/issues/1106)
 

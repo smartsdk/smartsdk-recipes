@@ -7,7 +7,7 @@ Official documentation of this IoT Agent:
 
 ### What you can customise
 
-##### Via ENV variables
+#### Via ENV variables
 
 For the documentation of the variables please refer to the
 [global configuration docs](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md).
@@ -49,7 +49,7 @@ For the documentation of the variables please refer to the
 
 - `IOTA_PROVIDER_URL`: Defaults to `http://iotagent:4041`.
 
-##### Via Files
+#### Via Files
 
 - `config.js`: Feel free to edit this file before deployment, it will be used by
   the agent as its config file. It is treated by docker as a
@@ -92,7 +92,7 @@ The deployed services will be:
        docker exec -ti mosquitto_container sh -c "apk --no-cache add mosquitto-clients"    
 ```
 
-### TODO
+## TODO
 
 - Complete testing of the step-by-step guide to make sure this recipe provides
   all the minimum requirements for a first successful walkthrough with

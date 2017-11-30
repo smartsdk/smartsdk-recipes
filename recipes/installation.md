@@ -6,7 +6,7 @@ Get the latest version from the git repository.
     $ git clone https://github.com/smartsdk/smartsdk-recipes
 ```
 
-# Requirements
+## Requirements
 
 The recipes are prepared to run using the latest
 [Docker](https://docs.docker.com) version (minimum 1.13+, ideally >= 17.06.0+).
@@ -24,9 +24,9 @@ Note For Windows Users: Many of the walkthroughs and verification steps are
 designed to run tools typically found in a Linux/macOS environment.
 Therefore, you will need to consider compatible workarounds from time to time.
 
-# Preparing a Local Swarm Cluster
+## Preparing a Local Swarm Cluster
 
-## Creating the Cluster
+### Creating the Cluster
 
 Although you can run most (if not all) of the recipes using
 [docker-compose](https://docs.docker.com/compose/install/), the recipes are
@@ -59,7 +59,7 @@ Getting started is as simple as:
 Otherwise, you can create your own using
 [docker-machine](https://docs.docker.com/machine/overview/).
 
-## Creating the networks
+### Creating the networks
 
 For convenience reasons, most if not all of the recipes will be using overlay
 networks to connect the services. We have agreed-upon the convention of having
@@ -86,7 +86,7 @@ In the end, you may want to edit the recipes to adapt to your specific
 networking needs.
 
 
-### On virtualised environments
+#### On virtualised environments
 
 If you are running the recipes in a virtualised environment such as your FIWARE
 Lab, if at some point you experience problems with the connectivity of

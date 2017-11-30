@@ -1,7 +1,7 @@
 # QuantumLeap
 
-
 ## Introduction
+
 Here you can find recipes aimed at different usages of QuantumLeap. We assume
 you are already familiar with it, otherwise refer to the
 [official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
@@ -57,7 +57,7 @@ in the [installation section](../../installation.md).
 
 ## A Simple Walkthrough
 
-#### Before Starting
+### Before Starting
 
 Before we launch the stack, you need to define a domain for the entrypoint
 of your docker cluster. Save that domain in an environment variable like this:
@@ -101,7 +101,7 @@ For more details, check out
 or the corresponding section in
 [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
 
-#### Deploy
+### Deploy
 
 Now, we're ready to launch the stack with the name `ql`.
 
@@ -141,7 +141,7 @@ Now you are ready to scale services according to your needs using simple docker
 service scale command as explained in
 [the official docs](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/).
 
-#### Explore
+### Explore
 
 Now, if you open your explorer to
 [http://crate.mydomain.com](http://crate.mydomain.com) you should see the

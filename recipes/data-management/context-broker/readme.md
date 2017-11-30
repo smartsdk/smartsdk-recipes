@@ -14,4 +14,5 @@ If you are new to docker as well you probably want to start looking at the
 [simple recipe](./simple/readme.md) to have a first view of how a single-host
 simple scenario looks like.
 
-Instructions on how to prepare your environment to test these recipes are given in [https://github.com/smartsdk/smartsdk-recipes](https://github.com/smartsdk/smartsdk-recipes).
+Instructions on how to prepare your environment to test these recipes are given
+in [https://github.com/smartsdk/smartsdk-recipes](https://github.com/smartsdk/smartsdk-recipes).

@@ -1,7 +1,10 @@
 # Standalone
 
-### Introduction
-The idea of this standalone walkthrough is to test and showcase the Comet Generic Enabler within a simple notification-based scenario, like the one illustrated below.
+## Introduction
+
+The idea of this standalone walkthrough is to test and showcase the Comet
+Generic Enabler within a simple notification-based scenario, like the one
+illustrated below.
 
 <img src='http://g.gravizo.com/g?
 digraph Cluster {
@@ -32,34 +35,48 @@ digraph Cluster {
 }
 '>
 
-### A walkthrough
+## A walkthrough
 
-Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you don't have one, checkout the [tools](../../../tools/readme.md) section for a quick way to setup a local swarm.
+Firstly, you need to have a Docker Swarm (docker >= 1.13) already setup. If you
+don't have one, checkout the [tools](../../../tools/readme.md) section for a
+quick way to setup a local swarm.
 
-    miniswarm start 3
-    eval $(docker-machine env ms-manager0)
+```
+    $ miniswarm start 3
+    $ eval $(docker-machine env ms-manager0)
+```
 
 To start the whole stack simply run, as usual:
 
-    docker stack deploy -c docker-compose.yml comet
+```
+    $ docker stack deploy -c docker-compose.yml comet
+```
 
 Then, wait until you see all the replicas up and running:
 
-    docker service ls
+```
+    $ docker service ls
     ID            NAME               MODE        REPLICAS  IMAGE
     1ysxmrxrqvp4  comet_comet-mongo  replicated  1/1       mongo:3.2
     8s9acybjxo0m  comet_orion        replicated  1/1       fiware/orion:latest
     ra84eex0zsd0  comet_comet        replicated  3/3       telefonicaiot/fiware-sth-comet:latest
     xg8ds3szkoi7  comet_orion-mongo  replicated  1/1       mongo:3.2
+```
 
-Now let's start some checkups. For convenience, let's save the IP address of the Orion and Comet services. In this scenario, since both are deployed on Swarm exposing their services ports, only one entry-point to the Swarm's ingress network will suffice.
+Now let's start some checkups. For convenience, let's save the IP address of
+the Orion and Comet services. In this scenario, since both are deployed on
+Swarm exposing their services ports, only one entry-point to the Swarm's
+ingress network will suffice.
 
+```
     ORION=http://$(docker-machine ip ms-manager0)
     COMET=http://$(docker-machine ip ms-manager0)
+```
 
 Let's start some checkups, first making sure Orion is up and running.
 
-    sh ../../context-broker/query.sh $ORION
+```
+    $ sh ../../context-broker/query.sh $ORION
     {
     "orion" : {
       "version" : "1.7.0-next",
@@ -71,28 +88,37 @@ Let's start some checkups, first making sure Orion is up and running.
     }
     }
     []
+```
 
 Let's insert some simple data (Room1 measurements):
 
-    sh ../../context-broker/insert.sh $ORION
+```
+    $ sh ../../context-broker/insert.sh $ORION
+```
 
-Now, let's subscribe Comet to the notifications of changes in temperature of Room1.
+Now, let's subscribe Comet to the notifications of changes in temperature
+of Room1.
 
-    sh ../subscribe.sh $COMET
+```
+    $ sh ../subscribe.sh $COMET
     {
       "subscribeResponse" : {
         "subscriptionId" : "58b98c0cdb69948641065907",
         "duration" : "PT24H"
       }
     }
+```
 
 Let's update the temperature value in Orion...
 
-    sh ../../context-broker/update.sh $ORION
+```
+    $ sh ../../context-broker/update.sh $ORION
+```
 
 And check you can see the Short-Term-Historical view of both measurements.
 
-    sh ../query_sth.sh $COMET
+```
+    $ sh ../query_sth.sh $COMET
     {
         "contextResponses": [
             {
@@ -125,3 +151,4 @@ And check you can see the Short-Term-Historical view of both measurements.
             }
         ]
     }
+```

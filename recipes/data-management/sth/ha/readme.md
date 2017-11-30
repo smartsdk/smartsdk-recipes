@@ -1,6 +1,6 @@
 # HA
 
-### Introduction
+## Introduction
 
 Let's test a deployment of Comet with multiple replicas in both its front-end
 and backend. The idea now is to get the scenario illustrated below.
@@ -37,7 +37,7 @@ digraph Cluster {
 Later, this could be combined for example with an
 [HA deployment of Orion Context Broker](../../context-broker/ha/readme.md).
 
-### A walkthrough
+## A walkthrough
 
 First, you need to have a Docker Swarm (docker >= 1.13) already setup. If you
 don't have one, checkout the [tools](../../../tools/readme.md) section for
