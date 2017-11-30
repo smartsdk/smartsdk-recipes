@@ -14,9 +14,9 @@ services:
       - "5050:5050"
     configs:
       - source: cygnus_agent
-          target: /opt/apache-flume/conf/cygnus_agent.conf
+        target: /opt/apache-flume/conf/cygnus_agent.conf
       - source: cartodb_keys
-          target: /opt/apache-flume/conf/cartodb_keys.conf
+        target: /opt/apache-flume/conf/cartodb_keys.conf
     networks:
       - frontend
       - backend
