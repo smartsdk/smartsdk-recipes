@@ -3,6 +3,10 @@
 Official documentation of this IoT Agent:
 [here](http://fiware-iotagent-json.readthedocs.io/en/latest/index.html)
 
+## Requirements
+
+Please make sure you read the [welcome page](../../index.md) and followed the steps explained in the [installation guide](../../installation.md).
+
 ## MQTT Transport
 
 ### What you can customise

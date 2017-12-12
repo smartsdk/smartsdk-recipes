@@ -1,8 +1,14 @@
-# Getting started
+# Cygnus
 
+## Requirements
+
+Please make sure you read the [welcome page](../../../index.md) and followed the
+ steps explained in the [installation guide](../../../installation.md).
+
+## Getting started
 This recipe will show you how to deploy a default cygnus-ngsi configuration with
-a MySQL backend. Note that this generic enabler can actually be deployed with
-[many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
+ a MySQL backend. Note that this generic enabler can actually be deployed with
+ [many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
 
 This recipe in particular requires the use of
 [docker "configs"](https://docs.docker.com/compose/compose-file/#configs)
@@ -63,12 +69,13 @@ To launch the example as it is, simply run:
     docker stack deploy -c docker-compose.yml cygnus
 ```
 
-After a couple of minutes you should be able to see the two services up and running.
+After a couple of minutes you should be able to see the two services up and
+running.
 
 ```
     $ docker service ls
     ID                  NAME                   MODE                REPLICAS            IMAGE                       PORTS
-    l3h1fsk36v35        cygnus_mysql           replicated          3/3                 mysql:latest                *:3306->3306/tcp
+    l3h1fsk36v35        cygnus_mysql           replicated          1/1                 mysql:latest                *:3306->3306/tcp
     vmju1turlizr        cygnus_cygnus-common   replicated          3/3                 fiware/cygnus-ngsi:latest   *:5050->5050/tcp
 ```
 
@@ -106,7 +113,9 @@ achieved as with any other docker service. For more details, refer to the
 with Docker. Otherwise, refer to the
 [Docker service docs](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/).
 
-## What if I wanted a different backend?
+## Customisations
+
+### What if I wanted a different backend?
 
 If you wanted to try a different backend for your cygnus deployment, there are 3
 steps you need to follow.
@@ -124,3 +133,15 @@ steps you need to follow.
 1. Update the `docker-compose.yml`, removing the definition of the mysql service
   and introducing the one of your preference. Also, don't forget to update the
   `depends_on:` section of cygnus with the name of your new service.
+
+### Using a different channel
+
+If you take a look at the configuration file in `conf/cygnus_agent.conf`, you
+can choose between a Memory-based or a File-based channel. Feel free to
+comment/uncomment (i.e, leave/remove the `#` character) from the channel type
+configuration.
+
+    cygnus-ngsi.channels.main-channel.type = memory
+    #cygnus-ngsi.channels.main-channel.type = file
+
+For more info on channels, checkout the [channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations) in the official docs.

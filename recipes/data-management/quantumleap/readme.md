@@ -9,6 +9,9 @@ you are already familiar with it, otherwise refer to the
 Instructions on how to prepare your environment to test these recipes are given
 in the [installation section](../../installation.md).
 
+## Requirements
+
+Please make sure you read the [welcome page](../../index.md) and followed the steps explained in the [installation guide](../../installation.md).
 
 ## HA Deployment overview
 
