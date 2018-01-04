@@ -11,14 +11,21 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
     deploy:
-      replicas: 2
+      replicas: 1
       restart_policy:
         condition: on-failure
       update_config:
         parallelism: 1
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - grafanaconfig:/etc/grafana
     networks:
       - backend  # To access Crate DB
       - frontend
+
+volumes:
+  grafanadata:
+  grafanaconfig:
 
 networks:
   backend:

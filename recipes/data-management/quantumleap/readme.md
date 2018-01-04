@@ -105,6 +105,12 @@ For more details, check out
 or the corresponding section in
 [elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html).
 
+In addition to those, you can also customise your deployment with the following
+environment variables:
+
+- `QL_VERSION`: The docker tag of the [Quantumleap image](https://hub.docker.com/r/smartsdk/quantumleap/)
+ you want to deploy.
+
 ### Deploy
 
 Now, we're ready to launch the stack with the name `ql`.
