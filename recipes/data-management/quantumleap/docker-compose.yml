@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
   quantumleap:
-    image: smartsdk/quantumleap
+    image: smartsdk/quantumleap:${QL_VERSION:-latest}
     ports:
       - 8668:8668
     depends_on:
