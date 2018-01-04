@@ -6,6 +6,7 @@ Please make sure you read the [welcome page](../../../index.md) and followed the
  steps explained in the [installation guide](../../../installation.md).
 
 ## Getting started
+
 This recipe will show you how to deploy a default cygnus-ngsi configuration with
  a MySQL backend. Note that this generic enabler can actually be deployed with
  [many other backends](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html).
@@ -144,4 +145,6 @@ configuration.
     cygnus-ngsi.channels.main-channel.type = memory
     #cygnus-ngsi.channels.main-channel.type = file
 
-For more info on channels, checkout the [channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations) in the official docs.
+For more info on channels, checkout the
+[channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations)
+in the official docs.
