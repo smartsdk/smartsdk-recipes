@@ -192,7 +192,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -206,7 +206,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -290,20 +290,42 @@
             <div class="section">
               
                 <h1 id="backend-device-management-idas">Backend Device Management (IDAS)</h1>
-<p>For more info about this Chapter, see <a href="https://catalogue.fiware.org/chapter/internet-things-services-enablement">here</a>.</p>
-<p>For more info about this GE, see <a href="https://catalogue.fiware.org/enablers/backend-device-management-idas">here</a>.</p>
+<p>For more info about this Chapter, see
+<a href="https://catalogue.fiware.org/chapter/internet-things-services-enablement">here</a>.</p>
+<p>For more info about this GE, see
+<a href="https://catalogue.fiware.org/enablers/backend-device-management-idas">here</a>.</p>
 <h2 id="iot-agents">IoT Agents</h2>
-<p><strong>Why using an IoT Agent?</strong></p>
+<h3 id="why-using-an-iot-agent">Why using an IoT Agent?</h3>
 <ul>
-<li>Transform IoT Device specific protocol to NGSI (a.k.a Active attributes)</li>
-<li>Request data from the IoT Device at some intervals (a.k.a Lazy attributes)</li>
-<li>Execute commands on the IoT Device communication based on context in the Broker (see Commands).</li>
+<li>
+<p>Transform IoT Device specific protocol to NGSI (a.k.a Active attributes)</p>
+</li>
+<li>
+<p>Request data from the IoT Device at some intervals (a.k.a Lazy attributes)</p>
+</li>
+<li>
+<p>Execute commands on the IoT Device communication based on context in the
+  Broker.</p>
+</li>
 </ul>
-<p>Explore the subfolders of each of the available IoT Agent recipes. The Agents can be considered stateless services and hence be deployed in the replicated mode of swarm with any required amount of replicas, provided that you keep your configurations using the service name of the agent for routing purposes.</p>
-<p>For good scalability, when deploying the mongo databases that your agents may use in case of persistence need, make sure you deploy with the provided recipe for mongo replica sets. More info <a href="../../utils/mongo-replicaset/readme/">here</a>.</p>
-<p><strong>Testing</strong></p>
-<p>If you would like to try the IoT Agents in a local development environment, you can deploy the complementary services (Orion and Mongo) by using their corresponding recipes. See <a href="../../data-management/context-broker/ha/readme/">Orion's</a> and <a href="../../utils/mongo-replicaset/readme/">Mongo's</a></p>
-<p>If you are following the step-by-step of the official documentation guides, you may find the scripts in the <code>test</code> subfolders useful. Remember you no longer have everything running in local host so you will have to adjust the urls sometimes. You can use the service names if you are inside the docker network or the IP of your docker swarm node (any of them) if you are outside the cluster. Checkout the setup.sh.</p>
+<p>Explore the subfolders of each of the available IoT Agent recipes. The Agents
+can be considered stateless services and hence be deployed in the replicated
+mode of swarm with any required amount of replicas, provided that you keep your
+configurations using the service name of the agent for routing purposes.</p>
+<p>For good scalability, when deploying the mongo databases that your agents may
+use in case of persistence need, make sure you deploy with the provided recipe
+for mongo replica sets. More info <a href="../../utils/mongo-replicaset/readme/">here</a>.</p>
+<h3 id="testing">Testing</h3>
+<p>If you would like to try the IoT Agents in a local development environment,
+you can deploy the complementary services (Orion and Mongo) by using their
+corresponding recipes.
+See <a href="../../data-management/context-broker/ha/readme/">Orion's</a> and <a href="../../utils/mongo-replicaset/readme/">Mongo's</a></p>
+<p>If you are following the step-by-step of the official documentation guides,
+you may find the scripts in the <code>test</code> subfolders useful. Remember you no longer
+have everything running in local host so you will have to adjust the urls
+sometimes. You can use the service names if you are inside the docker network or
+the IP of your docker swarm node (any of them) if you are outside the cluster.
+Checkout the <code>setup.sh</code>.</p>
               
             </div>
           </div>
@@ -311,7 +333,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../iotagent-json/readme/" class="btn btn-neutral float-right" title="IoT Agent JSON">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../iotagent-json/README/" class="btn btn-neutral float-right" title="IoT Agent JSON">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../../data-management/quantumleap/readme/" class="btn btn-neutral" title="Intro"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -345,7 +367,7 @@
         <span><a href="../../data-management/quantumleap/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../iotagent-json/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../iotagent-json/README/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

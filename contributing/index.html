@@ -183,7 +183,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../iot-services/iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../iot-services/iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -197,7 +197,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../iot-services/iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../iot-services/iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -236,10 +236,9 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#contributions">Contributions</a></li>
+                <li class="toctree-l3"><a href="#contributing">Contributing</a></li>
                 
-            
-                <li class="toctree-l3"><a href="#documentation">Documentation</a></li>
+                    <li><a class="toctree-l4" href="#documentation">Documentation</a></li>
                 
             
             </ul>
@@ -282,20 +281,41 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="contributions">Contributions</h2>
-<p>Contributions are more than welcome in the form of <a href="https://help.github.com/articles/about-pull-requests/">Pull Requests</a>.</p>
-<p>Feel free to <a href="https://github.com/smartsdk/smartsdk-recipes/issues">open issues</a> if something looks wrong.</p>
+                <h1 id="contributing">Contributing</h1>
+<p>Contributions are more than welcome in the form of
+<a href="https://help.github.com/articles/about-pull-requests/">Pull Requests</a>.</p>
+<p>Feel free to <a href="https://github.com/smartsdk/smartsdk-recipes/issues">open issues</a>
+if something looks wrong.</p>
+<p>Be aware that during the CI process, a number of linters are run:</p>
+<ul>
+<li>
+<p>To ensure correctness of yml files, we recommend you to check
+  <a href="https://yamllint.readthedocs.io/en/latest/rules.html">yaml linting rules</a>.</p>
+</li>
+<li>
+<p>To ensure consistency of the documentation style, we recommend you to adhere
+  to the MD <a href="https://github.com/markdownlint/markdownlint/blob/master/docs/RULES.md">linting rules</a>.</p>
+</li>
+</ul>
+<p>Once you make a pull request to the repository, you will be able to observe
+the results of the compliancy verification in your PR. Merge will be only possible
+if CI process is passed successfully.</p>
 <h2 id="documentation">Documentation</h2>
-<p>For now we are using <a href="http://www.mkdocs.org">Mkdocs</a> deploying on <a href="https://pages.github.com">Github Pages</a>.</p>
-<p>You will also notice that instead of having a separate <em>docs</em> folder, the documentation is composed of the README's content of all subfolders so as to keep docs as close to the respective recipes as possible.</p>
-<p>If you change the structure of the index or add new pages, remember to update <em>mkdocs.yml</em> accordingly.</p>
+<p>For now we are using <a href="http://www.mkdocs.org">Mkdocs</a> deploying on
+<a href="https://pages.github.com">Github Pages</a>.</p>
+<p>You will also notice that instead of having a separate <code>docs</code> folder,
+the documentation is composed of the README's content of all subfolders so as
+to keep docs as close to the respective recipes as possible.</p>
+<p>If you change the structure of the index or add new pages, remember to update
+<code>mkdocs.yml</code> accordingly.</p>
 <p>Note you can preview your changes locally by running</p>
-<pre><code># from the location of mkdocs.yml
-$ mkdocs serve
+<pre><code>    # from the location of mkdocs.yml
+    $ mkdocs serve
 </code></pre>
+
 <p>After all your changes, remember to run</p>
-<pre><code># from the location of mkdocs.yml
-$ mkdocs gh-deploy
+<pre><code>    # from the location of mkdocs.yml
+    $ mkdocs gh-deploy
 </code></pre>
               
             </div>

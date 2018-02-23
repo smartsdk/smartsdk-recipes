@@ -16,6 +16,20 @@ services:
         condition: on-failure
       update_config:
         parallelism: 1
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - grafanaconfig:/etc/grafana
     networks:
       - backend  # To access Crate DB
       - frontend
+
+volumes:
+  grafanadata:
+  grafanaconfig:
+
+networks:
+  backend:
+    external: true
+  frontend:
+    external: true
+

@@ -11,7 +11,7 @@ services:
     volumes:
       - mongodata:/data/db
     networks:
-      - backend
+      - ${BACKEND_NAME:-barnetwork}
     secrets:
     # to avoid changes to the original mongo image, we import the healthcheck script using secrets
       - mongo-healthcheck
@@ -35,14 +35,14 @@ services:
       # TODO: Avoid exposing the docker socket (security issue)
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - OVERLAY_NETWORK_NAME=${OVERLAY_NETWORK_NAME:-backend}
+      - OVERLAY_NETWORK_NAME=${BACKEND_NAME:-barnetwork}
       - MONGO_SERVICE_NAME=${STACK_NAME:-mongo}_mongo
       - REPLICASET_NAME=${REPLICASET_NAME:-rs}
       - MONGO_PORT=27017
           # - DEBUG=1 #uncomment to debug the script
     entrypoint: python /src/replica_ctrl.py
     networks:
-        - backend
+        - ${BACKEND_NAME:-barnetwork}
     depends_on:
         - "mongo"
     deploy:
@@ -65,4 +65,5 @@ volumes:
 
 networks:
   backend:
-    external: true
+    driver: overlay
+    name: ${BACKEND_NAME:-barnetwork}

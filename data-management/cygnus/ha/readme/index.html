@@ -147,9 +147,13 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#getting-started">Getting started</a></li>
+                <li class="toctree-l3"><a href="#cygnus">Cygnus</a></li>
                 
-                    <li><a class="toctree-l4" href="#what-if-i-wanted-a-different-backend">What if I wanted a different backend?</a></li>
+                    <li><a class="toctree-l4" href="#requirements">Requirements</a></li>
+                
+                    <li><a class="toctree-l4" href="#getting-started">Getting started</a></li>
+                
+                    <li><a class="toctree-l4" href="#customisations">Customisations</a></li>
                 
             
             </ul>
@@ -192,7 +196,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../../iot-services/iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../../../../iot-services/iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -206,7 +210,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../../iot-services/iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../../../../iot-services/iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -289,10 +293,21 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="getting-started">Getting started</h1>
-<p>This recipe will show you how to deploy a default cygnus-ngsi configuration with a MySQL backend. Note that this generic enabler can actually be deployed with <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html">many other backends</a>.</p>
-<p>This recipe in particular requires the use of <a href="https://docs.docker.com/compose/compose-file/#configs">docker "configs"</a> and hence depends on a docker-compose file version "3.3", supported in docker versions 17.06.0+.</p>
-<p>Instructions on how to prepare your environment to test these recipes are given in the <a href="../../installation.md">Installation</a> section of the docs. Assuming you have created a 3-nodes Swarm setup, this deployment will look as follows...</p>
+                <h1 id="cygnus">Cygnus</h1>
+<h2 id="requirements">Requirements</h2>
+<p>Please make sure you read the <a href="../../../..">welcome page</a> and followed the
+ steps explained in the <a href="../../../../installation/">installation guide</a>.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>This recipe will show you how to deploy a default cygnus-ngsi configuration with
+ a MySQL backend. Note that this generic enabler can actually be deployed with
+ <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html">many other backends</a>.</p>
+<p>This recipe in particular requires the use of
+<a href="https://docs.docker.com/compose/compose-file/#configs">docker "configs"</a>
+and hence depends on a docker-compose file version "3.3", supported in docker
+versions 17.06.0+.</p>
+<p>Instructions on how to prepare your environment to test these recipes are given
+in the <a href="../../../../installation/">Installation</a> section of the docs. Assuming
+you have created a 3-nodes Swarm setup, this deployment will look as follows...</p>
 <p><img src='http://g.gravizo.com/g?
   digraph G {
       rankdir=LR;
@@ -324,48 +339,92 @@
         "Cygnus Agent 3" -&gt; MySQL [lhead=cluster_1];
   }
 '&gt;</p>
-<p>As you may already know <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html">from the docs</a>, in order to configure cygnus, you need to provide a specific agent configuration file. In this case, you can customize the <code>cygnus_agent.conf</code> and <code>cartodb_keys.conf</code> files within the <code>conf</code> folder. The content of these files will be loaded by docker into their corresponding configs, which will be available for all the replicas of the cygnus service.</p>
-<p>If you inspect the <code>docker-compose.yml</code> you will realize that you can customize the values of the MySQL user and password by setting the environment varialbes <code>CYGNUS_MYSQL_USER</code> and <code>CYGNUS_MYSQL_PASS</code>.</p>
+<p>As you may already know
+<a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html">from the docs</a>,
+in order to configure cygnus, you need to provide a
+specific agent configuration file. In this case, you can customize the
+<code>cygnus_agent.conf</code> and <code>cartodb_keys.conf</code> files within the <code>conf</code> folder.
+The content of these files will be loaded by docker into their corresponding
+configs, which will be available for all the replicas of the cygnus service.</p>
+<p>If you inspect the <code>docker-compose.yml</code> you will realize that you can
+customize the values of the MySQL user and password by setting the environment
+variables <code>CYGNUS_MYSQL_USER</code> and <code>CYGNUS_MYSQL_PASS</code>.</p>
 <p>To launch the example as it is, simply run:</p>
-<pre><code>docker stack deploy -c docker-compose.yml cygnus
+<pre><code>    docker stack deploy -c docker-compose.yml cygnus
 </code></pre>
-<p>After a couple of minutes you should be able to see the two services up and running.</p>
-<pre><code>$ docker service ls
-ID                  NAME                   MODE                REPLICAS            IMAGE                       PORTS
-l3h1fsk36v35        cygnus_mysql           replicated          3/3                 mysql:latest                *:3306-&gt;3306/tcp
-vmju1turlizr        cygnus_cygnus-common   replicated          3/3                 fiware/cygnus-ngsi:latest   *:5050-&gt;5050/tcp
+
+<p>After a couple of minutes you should be able to see the two services up and
+running.</p>
+<pre><code>    $ docker service ls
+    ID                  NAME                   MODE                REPLICAS            IMAGE                       PORTS
+    l3h1fsk36v35        cygnus_mysql           replicated          1/1                 mysql:latest                *:3306-&gt;3306/tcp
+    vmju1turlizr        cygnus_cygnus-common   replicated          3/3                 fiware/cygnus-ngsi:latest   *:5050-&gt;5050/tcp
 </code></pre>
-<p>For illustration purposes, let's send an NGSI notification to cygnu's entrypoint using the simple <code>notification.sh</code> script.</p>
-<pre><code>$ sh notification.sh http://0.0.0.0:5050/notify
-*   Trying 0.0.0.0...
-* TCP_NODELAY set
-* Connected to 0.0.0.0 (127.0.0.1) port 5050 (#0)
-&gt; POST /notify HTTP/1.1
-&gt; Host: 0.0.0.0:5050
-&gt; User-Agent: curl/7.54.0
-&gt; Content-Type: application/json; charset=utf-8
-&gt; Accept: application/json
-&gt; Fiware-Service: default
-&gt; Fiware-ServicePath: /
-&gt; Content-Length: 607
-&gt;
-* upload completely sent off: 607 out of 607 bytes
-&lt; HTTP/1.1 200 OK
-&lt; Transfer-Encoding: chunked
-&lt; Server: Jetty(6.1.26)
-&lt;
-* Connection #0 to host 0.0.0.0 left intact
+
+<p>For illustration purposes, let's send an NGSI notification to cygnus' entrypoint
+using the simple <code>notification.sh</code> script.</p>
+<pre><code>    $ sh notification.sh http://0.0.0.0:5050/notify
+    *   Trying 0.0.0.0...
+    * TCP_NODELAY set
+    * Connected to 0.0.0.0 (127.0.0.1) port 5050 (#0)
+    &gt; POST /notify HTTP/1.1
+    &gt; Host: 0.0.0.0:5050
+    &gt; User-Agent: curl/7.54.0
+    &gt; Content-Type: application/json; charset=utf-8
+    &gt; Accept: application/json
+    &gt; Fiware-Service: default
+    &gt; Fiware-ServicePath: /
+    &gt; Content-Length: 607
+    &gt;
+    * upload completely sent off: 607 out of 607 bytes
+    &lt; HTTP/1.1 200 OK
+    &lt; Transfer-Encoding: chunked
+    &lt; Server: Jetty(6.1.26)
+    &lt;
+    * Connection #0 to host 0.0.0.0 left intact
 </code></pre>
-<p>By now, the data sent by the script has been processed by cygnus and will be available in the configured sink (MySQL in this case).</p>
-<p>Having cygnus running as a service on a Docker Swarm cluster, scaling it can be achieved as with any other docker service. For more details, refer to the <a href="../../../context-broker/ha/readme/">Orion recipe</a> to see how this can be done with Docker. Otherwise, refer to the <a href="https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/">Docker service docs</a>.</p>
-<h2 id="what-if-i-wanted-a-different-backend">What if I wanted a different backend?</h2>
-<p>If you wanted to try a different backend for your cygnus deployment, there are 3 steps you need to follow.</p>
+
+<p>By now, the data sent by the script has been processed by cygnus and will be
+available in the configured sink (MySQL in this case).</p>
+<p>Having cygnus running as a service on a Docker Swarm cluster, scaling it can be
+achieved as with any other docker service. For more details, refer to the
+<a href="../../../context-broker/ha/readme/">Orion recipe</a> to see how this can be done
+with Docker. Otherwise, refer to the
+<a href="https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/">Docker service docs</a>.</p>
+<h2 id="customisations">Customisations</h2>
+<h3 id="what-if-i-wanted-a-different-backend">What if I wanted a different backend?</h3>
+<p>If you wanted to try a different backend for your cygnus deployment, there are 3
+steps you need to follow.</p>
 <ol>
-<li>Configure your <code>cygnus_agent.conf</code> according to your needs. More info <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html">in the docs</a>.</li>
-<li>Update the <code>docker-compose.yml</code>, specifically the environment variables configured for the cygnus service.
-    For example, if you wanted to use MongoDB instead of MySQL, you'll need to use variables CYGNUS_MONGO_USER and CYGNUS_MONGO_PASS. For a complete list of required variables, refer to the <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2">cygnus docs</a>.</li>
-<li>Update the <code>docker-compose.yml</code>, removing the definition of the mysql service and introducing the one of your preference. Also, don't forget to update the <code>depends_on:</code> section of cygnus with the name of your new service.</li>
+<li>
+<p>Configure your <code>cygnus_agent.conf</code> according to your needs. More info
+  <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html">in the docs</a>.</p>
+</li>
+<li>
+<p>Update the <code>docker-compose.yml</code>, specifically the environment variables
+  configured for the cygnus service.
+  For example, if you wanted to use MongoDB instead of MySQL, you'll need to
+  use variables CYGNUS_MONGO_USER and CYGNUS_MONGO_PASS. For a complete list
+  of required variables, refer to the
+  <a href="http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2">cygnus docs</a>.</p>
+</li>
+<li>
+<p>Update the <code>docker-compose.yml</code>, removing the definition of the mysql service
+  and introducing the one of your preference. Also, don't forget to update the
+  <code>depends_on:</code> section of cygnus with the name of your new service.</p>
+</li>
 </ol>
+<h3 id="using-a-different-channel">Using a different channel</h3>
+<p>If you take a look at the configuration file in <code>conf/cygnus_agent.conf</code>, you
+can choose between a Memory-based or a File-based channel. Feel free to
+comment/uncomment (i.e, leave/remove the <code>#</code> character) from the channel type
+configuration.</p>
+<pre><code>cygnus-ngsi.channels.main-channel.type = memory
+#cygnus-ngsi.channels.main-channel.type = file
+</code></pre>
+<p>For more info on channels, checkout the
+<a href="https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations">channels considerations</a>
+in the official docs.</p>
               
             </div>
           </div>

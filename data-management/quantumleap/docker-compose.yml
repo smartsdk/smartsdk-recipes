@@ -3,13 +3,13 @@ version: '3.3'
 services:
 
   quantumleap:
-    image: smartsdk/quantumleap
+    image: smartsdk/quantumleap:${QL_VERSION:-latest}
     ports:
       - 8668:8668
     depends_on:
       - crate
     environment:
-      - CRATE_HOST=crate
+      - CRATE_HOST=${CRATE_HOST:-crate}
     deploy:
       replicas: 2
       restart_policy:
@@ -70,11 +70,11 @@ services:
     #   - 4300:4300
     command: ["crate",
         "-Clicense.enterprise=false",
-        "-Cgateway.expected_nodes=3",
-        "-Cgateway.recover_after_nodes=2",
+        "-Cgateway.expected_nodes=${EXPECTED_NODES:-1}",
+        "-Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}",
         "-Cgateway.recover_after_time=5m",
-        "-Cdiscovery.zen.minimum_master_nodes=2",
-        "-Cdiscovery.zen.ping.unicast.hosts=crate",
+        "-Cdiscovery.zen.minimum_master_nodes=${MINIMUM_MASTER_NODES:-1}",
+        "-Cdiscovery.zen.ping.unicast.hosts=${CRATE_HOST:-crate}",
         "-Cnetwork.host=0.0.0.0",
         "-Ccluster.name=quantumleap",
         "-Chttp.cors.enabled=true",
@@ -90,7 +90,7 @@ services:
         - "traefik.port=4200"
         - "traefik.frontend.rule=Host:crate.${CLUSTER_DOMAIN:-mydomain.com}"
         - "traefik.backend.loadbalancer.sticky=true"
-        - "traefik.backend=crate"
+        - "traefik.backend=${CRATE_HOST:-crate}"
         - "traefik.backend.loadbalancer.swarm=false"
         - "traefik.frontend.passHostHeader=true"
         - "traefik.backend.circuitbreaker.expression=NetworkErrorRatio() > 0.5"

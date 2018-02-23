@@ -194,7 +194,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../../iot-services/iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../../../../iot-services/iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -208,7 +208,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../../iot-services/iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../../../../iot-services/iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -292,8 +292,10 @@
             <div class="section">
               
                 <h1 id="standalone">Standalone</h1>
-<h3 id="introduction">Introduction</h3>
-<p>The idea of this standalone walkthrough is to test and showcase the Comet Generic Enabler within a simple notification-based scenario, like the one illustrated below.</p>
+<h2 id="introduction">Introduction</h2>
+<p>The idea of this standalone walkthrough is to test and showcase the Comet
+Generic Enabler within a simple notification-based scenario, like the one
+illustrated below.</p>
 <p><img src='http://g.gravizo.com/g?
 digraph Cluster {
     label="Docker Swarm"
@@ -322,89 +324,103 @@ digraph Cluster {
     {rank=same; "Orion"; "Orion DB";}
 }
 '&gt;</p>
-<h3 id="a-walkthrough">A walkthrough</h3>
-<p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you don't have one, checkout the <a href="../../../../tools/readme/">tools</a> section for a quick way to setup a local swarm.</p>
-<pre><code>miniswarm start 3
-eval $(docker-machine env ms-manager0)
+<h2 id="a-walkthrough">A walkthrough</h2>
+<p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you
+don't have one, checkout the <a href="../../../../tools/readme/">tools</a> section for a
+quick way to setup a local swarm.</p>
+<pre><code>    $ miniswarm start 3
+    $ eval $(docker-machine env ms-manager0)
 </code></pre>
+
 <p>To start the whole stack simply run, as usual:</p>
-<pre><code>docker stack deploy -c docker-compose.yml comet
+<pre><code>    $ docker stack deploy -c docker-compose.yml comet
 </code></pre>
+
 <p>Then, wait until you see all the replicas up and running:</p>
-<pre><code>docker service ls
-ID            NAME               MODE        REPLICAS  IMAGE
-1ysxmrxrqvp4  comet_comet-mongo  replicated  1/1       mongo:3.2
-8s9acybjxo0m  comet_orion        replicated  1/1       fiware/orion:latest
-ra84eex0zsd0  comet_comet        replicated  3/3       telefonicaiot/fiware-sth-comet:latest
-xg8ds3szkoi7  comet_orion-mongo  replicated  1/1       mongo:3.2
+<pre><code>    $ docker service ls
+    ID            NAME               MODE        REPLICAS  IMAGE
+    1ysxmrxrqvp4  comet_comet-mongo  replicated  1/1       mongo:3.2
+    8s9acybjxo0m  comet_orion        replicated  1/1       fiware/orion:latest
+    ra84eex0zsd0  comet_comet        replicated  3/3       telefonicaiot/fiware-sth-comet:latest
+    xg8ds3szkoi7  comet_orion-mongo  replicated  1/1       mongo:3.2
 </code></pre>
-<p>Now let's start some checkups. For convenience, let's save the IP address of the Orion and Comet services. In this scenario, since both are deployed on Swarm exposing their services ports, only one entry-point to the Swarm's ingress network will suffice.</p>
-<pre><code>ORION=http://$(docker-machine ip ms-manager0)
-COMET=http://$(docker-machine ip ms-manager0)
+
+<p>Now let's start some checkups. For convenience, let's save the IP address of
+the Orion and Comet services. In this scenario, since both are deployed on
+Swarm exposing their services ports, only one entry-point to the Swarm's
+ingress network will suffice.</p>
+<pre><code>    ORION=http://$(docker-machine ip ms-manager0)
+    COMET=http://$(docker-machine ip ms-manager0)
 </code></pre>
+
 <p>Let's start some checkups, first making sure Orion is up and running.</p>
-<pre><code>sh ../../context-broker/query.sh $ORION
-{
-"orion" : {
-  "version" : "1.7.0-next",
-  "uptime" : "0 d, 0 h, 1 m, 39 s",
-  "git_hash" : "f710ee525f0fa55f665e578e309fc716c12cfd99",
-  "compile_time" : "Wed Feb 22 10:14:18 UTC 2017",
-  "compiled_by" : "root",
-  "compiled_in" : "b99744612d0b"
-}
-}
-[]
+<pre><code>    $ sh ../../context-broker/query.sh $ORION
+    {
+    &quot;orion&quot; : {
+      &quot;version&quot; : &quot;1.7.0-next&quot;,
+      &quot;uptime&quot; : &quot;0 d, 0 h, 1 m, 39 s&quot;,
+      &quot;git_hash&quot; : &quot;f710ee525f0fa55f665e578e309fc716c12cfd99&quot;,
+      &quot;compile_time&quot; : &quot;Wed Feb 22 10:14:18 UTC 2017&quot;,
+      &quot;compiled_by&quot; : &quot;root&quot;,
+      &quot;compiled_in&quot; : &quot;b99744612d0b&quot;
+    }
+    }
+    []
 </code></pre>
+
 <p>Let's insert some simple data (Room1 measurements):</p>
-<pre><code>sh ../../context-broker/insert.sh $ORION
+<pre><code>    $ sh ../../context-broker/insert.sh $ORION
 </code></pre>
-<p>Now, let's subscribe Comet to the notifications of changes in temperature of Room1.</p>
-<pre><code>sh ../subscribe.sh $COMET
-{
-  "subscribeResponse" : {
-    "subscriptionId" : "58b98c0cdb69948641065907",
-    "duration" : "PT24H"
-  }
-}
+
+<p>Now, let's subscribe Comet to the notifications of changes in temperature
+of Room1.</p>
+<pre><code>    $ sh ../subscribe.sh $COMET
+    {
+      &quot;subscribeResponse&quot; : {
+        &quot;subscriptionId&quot; : &quot;58b98c0cdb69948641065907&quot;,
+        &quot;duration&quot; : &quot;PT24H&quot;
+      }
+    }
 </code></pre>
+
 <p>Let's update the temperature value in Orion...</p>
-<pre><code>sh ../../context-broker/update.sh $ORION
+<pre><code>    $ sh ../../context-broker/update.sh $ORION
 </code></pre>
+
 <p>And check you can see the Short-Term-Historical view of both measurements.</p>
-<pre><code>sh ../query_sth.sh $COMET
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "attributes": [
-                    {
-                        "name": "temperature",
-                        "values": [
-                            {
-                                "attrType": "Float",
-                                "attrValue": 23,
-                                "recvTime": "2017-03-03T15:30:20.650Z"
-                            },
-                            {
-                                "attrType": "Float",
-                                "attrValue": 29.3,
-                                "recvTime": "2017-03-03T15:32:48.741Z"
-                            }
-                        ]
-                    }
-                ],
-                "id": "Room1",
-                "isPattern": false,
-                "type": "Room"
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
+<pre><code>    $ sh ../query_sth.sh $COMET
+    {
+        &quot;contextResponses&quot;: [
+            {
+                &quot;contextElement&quot;: {
+                    &quot;attributes&quot;: [
+                        {
+                            &quot;name&quot;: &quot;temperature&quot;,
+                            &quot;values&quot;: [
+                                {
+                                    &quot;attrType&quot;: &quot;Float&quot;,
+                                    &quot;attrValue&quot;: 23,
+                                    &quot;recvTime&quot;: &quot;2017-03-03T15:30:20.650Z&quot;
+                                },
+                                {
+                                    &quot;attrType&quot;: &quot;Float&quot;,
+                                    &quot;attrValue&quot;: 29.3,
+                                    &quot;recvTime&quot;: &quot;2017-03-03T15:32:48.741Z&quot;
+                                }
+                            ]
+                        }
+                    ],
+                    &quot;id&quot;: &quot;Room1&quot;,
+                    &quot;isPattern&quot;: false,
+                    &quot;type&quot;: &quot;Room&quot;
+                },
+                &quot;statusCode&quot;: {
+                    &quot;code&quot;: &quot;200&quot;,
+                    &quot;reasonPhrase&quot;: &quot;OK&quot;
+                }
             }
-        }
-    ]
-}
+        ]
+    }
 </code></pre>
               
             </div>

@@ -62,15 +62,9 @@
             
                 <li class="toctree-l3"><a href="#getting-the-recipes">Getting the Recipes</a></li>
                 
-            
-                <li class="toctree-l3"><a href="#requirements">Requirements</a></li>
+                    <li><a class="toctree-l4" href="#requirements">Requirements</a></li>
                 
-            
-                <li class="toctree-l3"><a href="#preparing-a-local-swarm-cluster">Preparing a Local Swarm Cluster</a></li>
-                
-                    <li><a class="toctree-l4" href="#creating-the-cluster">Creating the Cluster</a></li>
-                
-                    <li><a class="toctree-l4" href="#creating-the-networks">Creating the networks</a></li>
+                    <li><a class="toctree-l4" href="#preparing-a-local-swarm-cluster">Preparing a Local Swarm Cluster</a></li>
                 
             
             </ul>
@@ -200,7 +194,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../iot-services/iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../iot-services/iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -214,7 +208,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../iot-services/iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../iot-services/iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -291,44 +285,78 @@
               
                 <h1 id="getting-the-recipes">Getting the Recipes</h1>
 <p>Get the latest version from the git repository.</p>
-<pre><code>$ git clone https://github.com/smartsdk/smartsdk-recipes
+<pre><code>    $ git clone https://github.com/smartsdk/smartsdk-recipes
 </code></pre>
-<h1 id="requirements">Requirements</h1>
-<p>The recipes are prepared to run using the latest <a href="https://docs.docker.com">Docker</a> version (minimum 1.13+, ideally 17.06.0+). To install Docker refer to the <a href="https://docs.docker.com/engine/installation/">Installation instructions</a>.</p>
-<p>For some testing and walkthroughs, you may also need to install <a href="https://curl.haxx.se/">curl</a> if it's not already available in your system.</p>
-<p>Finally, you should install <a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a> if you want to create clusters in your local environment to test the recipes (see next section).</p>
-<p>Note For Windows Users: Many of the walkthroughs and verification steps are designed to run tools typically found in a Linux/macOS environment. Therefore, you will need to consider compatible workarounds from time to time.</p>
-<h1 id="preparing-a-local-swarm-cluster">Preparing a Local Swarm Cluster</h1>
-<h2 id="creating-the-cluster">Creating the Cluster</h2>
-<p>Although you can run most (if not all) of the recipes using <a href="https://docs.docker.com/compose/install/">docker-compose</a>, the recipes are tailored to be deployed as services on Docker Swarm Clusters.</p>
-<p>You can turn your local Docker client into a single-node Swarm cluster by simply running</p>
-<pre><code>$ docker swarm init
-</code></pre>
-<p>However, things get more interesting when you're actually working on a multi-node cluster.</p>
-<p>The fastest way to create one is using <a href="https://github.com/aelsabbahy/miniswarm">miniswarm</a>. Getting started is as simple as:</p>
-<pre><code># First-time only to install miniswarm
-$ curl -sSL https://raw.githubusercontent.com/aelsabbahy/miniswarm/master/miniswarm -o /usr/local/bin/miniswarm
-$ chmod +rx /usr/local/bin/miniswarm
 
-# Every time you create/destroy a swarm
-$ miniswarm start 3
-$ miniswarm delete
+<h2 id="requirements">Requirements</h2>
+<p>The recipes are prepared to run using the latest
+<a href="https://docs.docker.com">Docker</a> version (minimum 1.13+, ideally &gt;= 17.06.0+).
+To install Docker refer to the
+<a href="https://docs.docker.com/engine/installation/">Installation instructions</a>.</p>
+<p>For some testing and walkthroughs, you may also need to install
+<a href="https://curl.haxx.se/">curl</a> if it's not already available in your system.</p>
+<p>Finally, you should install
+<a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a> if you want to create
+clusters in your local environment to test the recipes (see next section).</p>
+<p>Note For Windows Users: Many of the walkthroughs and verification steps are
+designed to run tools typically found in a Linux/macOS environment.
+Therefore, you will need to consider compatible workarounds from time to time.</p>
+<h2 id="preparing-a-local-swarm-cluster">Preparing a Local Swarm Cluster</h2>
+<h3 id="creating-the-cluster">Creating the Cluster</h3>
+<p>Although you can run most (if not all) of the recipes using
+<a href="https://docs.docker.com/compose/install/">docker-compose</a>, the recipes are
+tailored to be deployed as services on Docker Swarm Clusters.</p>
+<p>You can turn your local Docker client into a single-node Swarm cluster by simply
+running</p>
+<pre><code>    $ docker swarm init
 </code></pre>
-<p>Otherwise, you can create your own using <a href="https://docs.docker.com/machine/overview/">docker-machine</a>.</p>
-<h2 id="creating-the-networks">Creating the networks</h2>
-<p>For convenience reasons, most if not all of the recipes will be using overlay networks to connect the services. We have agreed-upon the convention of having at least two overlay networks available: "backend" and "frontend". The latest typically connects services that need some exposure to the outside world.</p>
-<p>If you want to buy you some time, you can now create the two networks before starting the trials with the recipes. This can be done by running the following commands:</p>
-<pre><code>$ docker network create -d overlay --opt com.docker.network.driver.mtu=${DOCKER_MTU:-1400} backend
-$ docker network create -d overlay --opt com.docker.network.driver.mtu=${DOCKER_MTU:-1400} frontend
+
+<p>However, things get more interesting when you're actually working on
+a multi-node cluster.</p>
+<p>The fastest way to create one is using
+<a href="https://github.com/aelsabbahy/miniswarm">miniswarm</a>.
+Getting started is as simple as:</p>
+<pre><code>    # First-time only to install miniswarm
+    $ curl -sSL https://raw.githubusercontent.com/aelsabbahy/miniswarm/master/miniswarm -o /usr/local/bin/miniswarm
+    $ chmod +rx /usr/local/bin/miniswarm
+
+    # Every time you create/destroy a swarm
+    $ miniswarm start 3
+    $ miniswarm delete
 </code></pre>
-<p>Or, if you are lazy, there is a script in the <em>tools</em> folder.</p>
-<pre><code>$ sh tools/create_networks.sh
+
+<p>Otherwise, you can create your own using
+<a href="https://docs.docker.com/machine/overview/">docker-machine</a>.</p>
+<h3 id="creating-the-networks">Creating the networks</h3>
+<p>For convenience reasons, most if not all of the recipes will be using overlay
+networks to connect the services. We have agreed-upon the convention of having
+at least two overlay networks available: "backend" and "frontend". The latest
+typically connects services that need some exposure to the outside world.</p>
+<p>If you want to buy you some time, you can now create the two networks before
+starting the trials with the recipes. This can be done by running the following
+commands:</p>
+<pre><code>    $ docker network create -d overlay --opt com.docker.network.driver.mtu=${DOCKER_MTU:-1400} backend
+    $ docker network create -d overlay --opt com.docker.network.driver.mtu=${DOCKER_MTU:-1400} frontend
 </code></pre>
-<p>Again, this is a convention to simplify the experimentation with the recipes. In the end, you may want to edit the recipes to adapt to your specific networking needs.</p>
-<h3 id="on-virtualised-environments">On virtualised environments</h3>
+
+<p>Or, if you are lazy, there is a script in the <code>tools</code> folder.</p>
+<pre><code>    $ sh tools/create_networks.sh
+</code></pre>
+
+<p>Again, this is a convention to simplify the experimentation with the recipes.
+In the end, you may want to edit the recipes to adapt to your specific
+networking needs.</p>
+<h4 id="on-virtualised-environments">On virtualised environments</h4>
 <p>If you are running the recipes in a virtualised environment such as your FIWARE
-Lab, if at some point you experience problems with the connectivity of the containers to the outside world, chances are that the cause of the package dropping is due to a mismatch of the <a href="https://en.wikipedia.org/wiki/Maximum_transmission_unit">MTU</a> settings.</p>
-<p>In FIWARE Lab, the default MTU for the vm's bridge is set to 1400, hence you will notice that this is the default MTU for the networks used in the recipes. If you need to change that value, feel free to set a <em>DOCKER_MTU</em> env variable with the value you want before you create the networks.</p>
+Lab, if at some point you experience problems with the connectivity of
+the containers to the outside world, chances are that the cause of the package
+dropping is due to a mismatch of the
+<a href="https://en.wikipedia.org/wiki/Maximum_transmission_unit">MTU</a> settings.</p>
+<p>In FIWARE Lab, the default MTU for the vm's bridge is set to <code>1400</code>,
+hence you will notice that this is the default MTU for the networks used
+in the recipes.
+If you need to change that value, feel free to set a <code>DOCKER_MTU</code> env variable
+with the value you want before you create the networks.</p>
               
             </div>
           </div>

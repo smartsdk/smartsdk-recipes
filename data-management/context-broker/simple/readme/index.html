@@ -196,7 +196,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../../iot-services/iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../../../../iot-services/iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -210,7 +210,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../../iot-services/iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../../../../iot-services/iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -294,8 +294,11 @@
             <div class="section">
               
                 <h1 id="single-host-scenario">Single Host Scenario</h1>
-<h5 id="introduction">Introduction</h5>
-<p>This simple recipe triggers an <a href="https://github.com/telefonicaid/fiware-orion/blob/master/README.md">Orion Context Broker</a> instance backed with a <a href="https://docs.mongodb.com">MongoDB</a> instance everything running <strong>on an single host</strong>.</p>
+<h2 id="introduction">Introduction</h2>
+<p>This simple recipe triggers an
+<a href="https://github.com/telefonicaid/fiware-orion/blob/master/README.md">Orion Context Broker</a>
+instance backed with a <a href="https://docs.mongodb.com">MongoDB</a> instance everything
+running <strong>on an single host</strong>.</p>
 <p><img src='http://g.gravizo.com/g?
     digraph G {
       compound=true;
@@ -342,33 +345,44 @@
       "orion_/scripts" -&gt; "host_./scripts";
     }
 '&gt;</p>
-<p>Both services will be running in docker containers, defined in the <em><a href="https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml">./docker-compose.yml</a> file.</em></p>
-<p>Data will be persisted in a local folder defined by the value of <em>DATA_PATH</em> variable in the <em><a href="https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env">.env</a></em> file.</p>
-<h5 id="how-to-use">How to use</h5>
-<p>This recipes has some default values, but optionally you can explore different configurations by modifying the <em>.env</em> file, the <em>docker-compose.yml</em> or even the <em>scripts/setup.sh</em>.</p>
+<p>Both services will be running in docker containers, defined in the
+<code>[./docker-compose.yml](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/docker-compose.yml)</code>
+file.</p>
+<p>Data will be persisted in a local folder defined by the value of <code>DATA_PATH</code>
+variable in the
+<code>[.env](https://github.com/smartsdk/smartsdk-recipes/blob/master/recipes/data-management/context-broker/simple/.env)</code>
+file.</p>
+<h2 id="how-to-use">How to use</h2>
+<p>This recipes has some default values, but optionally you can explore different
+configurations by modifying the <code>.env</code> file, the <code>docker-compose.yml</code> or even
+the <code>scripts/setup.sh</code>.</p>
 <p>Then, from this folder simply run:</p>
-<pre><code>$ docker-compose up -d
+<pre><code>    $ docker-compose up -d
 </code></pre>
-<h5 id="how-to-validate">How to validate</h5>
-<p>Before testing make sure docker finished downloading the images and spinning-off the containers. You can check that by running:</p>
-<pre><code>$ docker ps
+
+<h2 id="how-to-validate">How to validate</h2>
+<p>Before testing make sure docker finished downloading the images and spinning-off
+the containers. You can check that by running:</p>
+<pre><code>    $ docker ps
 </code></pre>
+
 <p>You should see the two containers listed and with status "up".</p>
 <p>Then, to test if orion is truly up and running run:</p>
-<pre><code>$ sh ../query.sh
+<pre><code>    $ sh ../query.sh
 </code></pre>
+
 <p>It should return something like:</p>
-<pre><code>{
-"orion" : {
-  "version" : "1.6.0-next",
-  "uptime" : "0 d, 0 h, 5 m, 24 s",
-  "git_hash" : "61be6c26c59469621a664d7aeb1490d6363cad38",
-  "compile_time" : "Tue Jan 24 10:52:30 UTC 2017",
-  "compiled_by" : "root",
-  "compiled_in" : "b99744612d0b"
-}
-}
-[]
+<pre><code>    {
+    &quot;orion&quot; : {
+      &quot;version&quot; : &quot;1.6.0-next&quot;,
+      &quot;uptime&quot; : &quot;0 d, 0 h, 5 m, 24 s&quot;,
+      &quot;git_hash&quot; : &quot;61be6c26c59469621a664d7aeb1490d6363cad38&quot;,
+      &quot;compile_time&quot; : &quot;Tue Jan 24 10:52:30 UTC 2017&quot;,
+      &quot;compiled_by&quot; : &quot;root&quot;,
+      &quot;compiled_in&quot; : &quot;b99744612d0b&quot;
+    }
+    }
+    []
 </code></pre>
               
             </div>

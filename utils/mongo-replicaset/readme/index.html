@@ -183,7 +183,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../iot-services/iotagent-json/readme/">IoT Agent JSON</a>
+        <a class="" href="../../../iot-services/iotagent-json/README/">IoT Agent JSON</a>
         
     </li>
 
@@ -197,7 +197,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../iot-services/iotagent-ul/readme/">IoT Agent UL</a>
+        <a class="" href="../../../iot-services/iotagent-ul/README/">IoT Agent UL</a>
         
     </li>
 
@@ -217,6 +217,8 @@
             <ul>
             
                 <li class="toctree-l3"><a href="#mongodb-replica-set">MongoDB Replica Set</a></li>
+                
+                    <li><a class="toctree-l4" href="#requirements">Requirements</a></li>
                 
                     <li><a class="toctree-l4" href="#how-to-use">How to use</a></li>
                 
@@ -294,7 +296,9 @@
             <div class="section">
               
                 <h1 id="mongodb-replica-set">MongoDB Replica Set</h1>
-<p>This recipe aims to deploy and control a <a href="https://docs.mongodb.com/manual/replication/">replica set</a> of MongoDB instances in a Docker Swarm.</p>
+<p>This recipe aims to deploy and control a
+<a href="https://docs.mongodb.com/manual/replication/">replica set</a> of MongoDB
+instances in a Docker Swarm.</p>
 <p><img src='http://g.gravizo.com/g?
 digraph Cluster {
     rankdir=LR;
@@ -328,68 +332,99 @@ digraph Cluster {
     Controller -&gt; Mongo1;
 }
 '&gt;</p>
-<p><strong>IMPORTANT:</strong> This recipe is not yet ready for production environments. See <em>further improvements</em> section for more details.</p>
+<h2 id="requirements">Requirements</h2>
+<p>Please make sure you read the <a href="../../..">welcome page</a> and followed the
+steps explained in the <a href="../../../installation/">installation guide</a>.</p>
 <h2 id="how-to-use">How to use</h2>
-<p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup. If you don't have one, checkout the <a href="../../../tools/readme.md">tools</a> section for a quick way to setup a local swarm.</p>
-<pre><code>miniswarm start 3
-eval $(docker-machine env ms-manager0)
+<p>Firstly, you need to have a Docker Swarm (docker &gt;= 1.13) already setup.
+If you don't have one, checkout the <a href="../../../tools/readme/">tools</a> section for
+a quick way to setup a local swarm.</p>
+<pre><code>    miniswarm start 3
+    eval $(docker-machine env ms-manager0)
 </code></pre>
+
 <p>Then, simply run...</p>
-<pre><code>sh deploy.sh
+<pre><code>    sh deploy.sh
 </code></pre>
-<p>Allow some time while images are pulled in the nodes and services are deployed. After a couple of minutes, you can check if all services are up, as usual, running...</p>
-<pre><code>$ docker service ls
-ID            NAME                            MODE        REPLICAS  IMAGE
-fjxof1n5ce58  mongo-replica_mongo             global      3/3       mongo:latest
-yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+
+<p>Allow some time while images are pulled in the nodes and services are deployed.
+After a couple of minutes, you can check if all services are up, as usual,
+running...</p>
+<pre><code>    $ docker service ls
+    ID            NAME                            MODE        REPLICAS  IMAGE
+    fjxof1n5ce58  mongo-rs_mongo             global      3/3       mongo:latest
+    yzsur7rb4mg1  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 </code></pre>
+
 <h2 id="a-walkthrough">A Walkthrough</h2>
-<p>As shown before, the recipe consists of basically two services, namely, one for mongo instances and one for controlling the replica-set.</p>
-<p>The mongo service is deployed in "global" mode, meaning that docker will run one instance of mongod per swarm node in the cluster.</p>
-<p>At the swarm's master node, a python-based controller script will be deployed to configure and maintain the mongodb replica-set.</p>
-<p>Let's now check that the controller worked fine inspecting the logs of the mongo-replica_mongo-controller service. This can be done with either...</p>
-<pre><code>$ docker service logs mongo-replica_mongo-controller
+<p>As shown before, the recipe consists of basically two services, namely, one for
+mongo instances and one for controlling the replica-set.</p>
+<p>The mongo service is deployed in "global" mode, meaning that docker will run one
+instance of mongod per swarm node in the cluster.</p>
+<p>At the swarm's master node, a python-based controller script will be deployed to
+configure and maintain the mongodb replica-set.</p>
+<p>Let's now check that the controller worked fine inspecting the logs of the
+<code>mongo_mongo-controller</code> service. This can be done with either...</p>
+<pre><code>    $ docker service logs mongo-rs_mongo-controller
 </code></pre>
+
 <p>or running the following...</p>
-<pre><code>$  docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
-INFO:__main__:Waiting some time before starting
-INFO:__main__:Initial config: {'version': 1, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}]}
-INFO:__main__:replSetInitiate: {'ok': 1.0}
+<pre><code>    $  docker logs $(docker ps -f &quot;name=mongo-rs_mongo-controller&quot; -q)
+    INFO:__main__:Waiting some time before starting
+    INFO:__main__:Initial config: {'version': 1, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}]}
+    INFO:__main__:replSetInitiate: {'ok': 1.0}
 </code></pre>
-<p>As you can see, the replica-set was configured with 3 replicas represented by containers running in the same overlay network. You can also run a mongo command in any of the mongo containers and execute <em>rs.status()</em> to see the same results.</p>
-<pre><code>$ docker exec -ti d56d17c40f8f mongo
-rs:SECONDARY&gt; rs.status()
+
+<p>As you can see, the replica-set was configured with 3 replicas represented by
+containers running in the same overlay network. You can also run a mongo command
+in any of the mongo containers and execute <code>rs.status()</code> to see the same
+results.</p>
+<pre><code>    $ docker exec -ti d56d17c40f8f mongo rs:SECONDARY&gt; rs.status()
 </code></pre>
+
 <h2 id="rescaling-the-replica-set">Rescaling the replica-set</h2>
-<p>Let's add a new node to the swarm to see how docker deploys a new task of the mongo service and the controller automatically adds it to the replica-set.</p>
-<pre><code># First get the token to join the swarm
-$ docker swarm join-token worker
+<p>Let's add a new node to the swarm to see how docker deploys a new task of the
+mongo service and the controller automatically adds it to the replica-set.</p>
+<pre><code>    # First get the token to join the swarm
+    $ docker swarm join-token worker
 
-# Create the new node
-$ docker-machine create -d virtualbox ms-worker2
-$ docker-machine ssh ms-worker2
+    # Create the new node
+    $ docker-machine create -d virtualbox ms-worker2
+    $ docker-machine ssh ms-worker2
 
-docker@ms-worker2:~$ docker swarm join \
---token INSERT_TOKEN_HERE \
-192.168.99.100:2377
+    docker@ms-worker2:~$ docker swarm join \
+    --token INSERT_TOKEN_HERE \
+    192.168.99.100:2377
 
-docker@ms-worker2:~$ exit
+    docker@ms-worker2:~$ exit
 </code></pre>
+
 <p>Back to the host, some minutes later...</p>
-<pre><code>$ docker service ls
-ID            NAME                            MODE        REPLICAS  IMAGE
-fjxof1n5ce58  mongo-replica_mongo             global      4/4       mongo:latest
-yzsur7rb4mg1  mongo-replica_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+<pre><code>    $ docker service ls
+    ID            NAME                            MODE        REPLICAS  IMAGE
+    fjxof1n5ce58  mongo-rs_mongo             global      4/4       mongo:latest
+    yzsur7rb4mg1  mongo_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
 
-$ docker logs $(docker ps -f "name=mongo-replica_mongo-controller" -q)
-...
-INFO:__main__:To add: {'10.0.0.8'}
-INFO:__main__:New config: {'version': 2, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}, {'_id': 3, 'host': '10.0.0.8:27017'}]}
-INFO:__main__:replSetReconfig: {'ok': 1.0}
+    $ docker logs $(docker ps -f &quot;name=mongo_mongo-controller&quot; -q)
+    ...
+    INFO:__main__:To add: {'10.0.0.8'}
+    INFO:__main__:New config: {'version': 2, '_id': 'rs', 'members': [{'_id': 0, 'host': '10.0.0.5:27017'}, {'_id': 1, 'host': '10.0.0.3:27017'}, {'_id': 2, 'host': '10.0.0.4:27017'}, {'_id': 3, 'host': '10.0.0.8:27017'}]}
+    INFO:__main__:replSetReconfig: {'ok': 1.0}
 </code></pre>
-<p>If a node goes down, the replica-set will be automatically reconfigured at the application level by mongo. Docker, on the other hand, will not reschedule the replica because it's expected to run one only one per node.</p>
-<p><em>NOTE</em>: If you don't want to have a replica in every node of the swarm, the solution for now is using a combination of constraints and node tags. You can read more about this in <a href="https://github.com/docker/docker/issues/26259">this Github issue</a>.</p>
-<p>For further details, refer to the <a href="https://github.com/smartsdk/mongo-rs-controller-swarm">mongo-rs-controller-swarm</a> repository, in particular the <em><a href="https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml">docker-compose.yml</a></em> file or the <em><a href="https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py">replica_ctrl.py</a></em> controller script.</p>
+
+<p>If a node goes down, the replica-set will be automatically reconfigured at
+the application level by mongo. Docker, on the other hand, will not reschedule
+the replica because it's expected to run one only one per node.</p>
+<p><em>NOTE</em>: If you don't want to have a replica in every node of the swarm,
+the solution for now is using a combination of constraints and node tags.
+You can read more about this in
+<a href="https://github.com/docker/docker/issues/26259">this Github issue</a>.</p>
+<p>For further details, refer to the <a href="https://github.com/smartsdk/mongo-rs-controller-swarm">mongo-rs-controller-swarm</a>
+repository, in particular the
+<code>[docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)</code>
+file or the
+<code>[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)</code>
+controller script.</p>
               
             </div>
           </div>
@@ -400,7 +435,7 @@ INFO:__main__:replSetReconfig: {'ok': 1.0}
         <a href="../../../tools/readme/" class="btn btn-neutral float-right" title="Tools">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../../iot-services/iotagent-ul/readme/" class="btn btn-neutral" title="IoT Agent UL"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../../iot-services/iotagent-ul/README/" class="btn btn-neutral" title="IoT Agent UL"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -428,7 +463,7 @@ INFO:__main__:replSetReconfig: {'ok': 1.0}
           <a href="https://github.com/smartsdk/smartsdk-recipes" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../../iot-services/iotagent-ul/readme/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../../iot-services/iotagent-ul/README/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../../../tools/readme/" style="color: #fcfcfc">Next &raquo;</a></span>
