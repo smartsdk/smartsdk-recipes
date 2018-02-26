@@ -79,12 +79,12 @@ and `REPLICASET_NAME`.
 Otherwise, if you prefer to make a new deployment of MongoDB just for API
 Umbrella, you can take a shortcut and run...
 
-```
-    $ sh deploy_back.sh
+```bash
+$ sh deploy_back.sh
 
-    Creating config mongo-rs_mongo-healthcheck
-    Creating service mongo-rs_mongo
-    Creating service mongo-rs_controller
+Creating config mongo-rs_mongo-healthcheck
+Creating service mongo-rs_mongo
+Creating service mongo-rs_controller
 ```
 
 Beside that, given that Ruby driver for MongoDB is not supporting service
@@ -94,7 +94,7 @@ cluster to allow the connection to the Replica Set from API Umbrella.
 Be aware that this works only when you deploy (as in the script), your MongoDB
 in global mode.
 
-```
+```bash
 $ docker service update --publish-add published=27017,target=27017,protocol=tcp,mode=host mongo-rs_mongo
 
 mongo-rs_mongo
@@ -118,41 +118,42 @@ nero0vahaa8h        mongo-rs_controller.1                      martel/mongo-repl
 Set the connection url for mongo based on the IPs of your Swarm Cluster
 (alternatively edit the `frontend.env` file):
 
-```
-  $ MONGO_REPLICATE_SET_IPS=192.168.99.100:27017,192.168.99.101:27017,192.168.99.102:27017
-  $ export MONGO_REPLICATE_SET_IPS
+```bash
+$ MONGO_REPLICATE_SET_IPS=192.168.99.100:27017,192.168.99.101:27017,192.168.99.102:27017
+$ export MONGO_REPLICATE_SET_IPS
 ```
 
 If you used `miniswarm` to create your cluster, you can get the different IPs
 using the `docker-machine ip` command, e.g.:
 
-```
-    $ docker-machine ip ms-manager0
-    
-    $ docker-machine ip ms-worker0
-    
-    $ docker-machine ip ms-worker1
+```bash
+$ docker-machine ip ms-manager0
+
+$ docker-machine ip ms-worker0
+
+$ docker-machine ip ms-worker1
 ```
 
 when all services will be in status ready, your backend is ready to be used:
 
-```
-    $ sh deploy_front.sh
+```bash
+$ sh deploy_front.sh
 
-    generating config file
-    replacing target file  api-umbrella.yml
-    replace mongodb with mongo-rs_mongo
-    replacing target file  api-umbrella.yml
-    replace rs_name with rs
-    Creating config api_api-umbrella
-    Creating service api_api-umbrella
+generating config file
+replacing target file  api-umbrella.yml
+replace mongodb with mongo-rs_mongo
+replacing target file  api-umbrella.yml
+replace rs_name with rs
+Creating config api_api-umbrella
+Creating service api_api-umbrella
 ```
 
 When also the frontend services will be running, your deployment
 will look like this:
 
-```
-    $ docker service ls
+```bash
+$ docker service ls
+
 ID                  NAME                  MODE                REPLICAS            IMAGE                                 PORTS
 ca11lmx40tu5        api_api-umbrella      replicated          2/2                 martel/api-umbrella:0.14.4-1-fiware   *:80->80/tcp,*:443->443/tcp
 te1i0vhwtmnw        mongo-rs_controller   replicated          1/1                 martel/mongo-replica-ctrl:latest      
@@ -198,7 +199,7 @@ of API Umbrella and register your first API. For more details read
 
 1. Register an new API. Create a simple API to test that everything works:
 
-    ```
+    ```bash
     $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/apis" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
     {
       "api": {
@@ -308,7 +309,7 @@ of API Umbrella and register your first API. For more details read
 
 1. Publish the newly registered API.
 
-    ```
+    ```bash
     $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/config/publish" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
     {
       "config": {
