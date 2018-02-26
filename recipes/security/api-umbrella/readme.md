@@ -256,7 +256,7 @@ Response:
       "api_key_verification_transition_start_at": null,
       "append_query_string": null,
       "authenticated_rate_limit_behavior": null,
-      "disable_api_key": true,
+      "disable_api_key": false,
       "error_data": null,
       "error_templates": {},
       "http_basic_auth": null,
