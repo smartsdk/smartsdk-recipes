@@ -61,8 +61,8 @@ If you don't have one, checkout the [tools](../../tools/readme.md) section
 for a quick way to setup a local swarm.
 
 ```
-    $ miniswarm start 3
-    $ eval $(docker-machine env ms-manager0)
+$ miniswarm start 3
+$ eval $(docker-machine env ms-manager0)
 ```
 
 In case you haven't done it yet for other recipes, deploy `backend` and
