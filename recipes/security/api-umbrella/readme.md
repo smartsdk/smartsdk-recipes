@@ -220,7 +220,7 @@ $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/apis" -H "X
     "settings": {
       "require_https":"required_return_error",
       "require_idp": "fiware-oauth2",
-      "disable_api_key":"true",
+      "disable_api_key":"false",
       "api_key_verification_level":"none",
       "rate_limit_mode":"unlimited",
       "error_templates": {},
@@ -342,7 +342,7 @@ Response:
           "created_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
           "settings": {
             "require_https": "required_return_error",
-            "disable_api_key": true,
+            "disable_api_key": false,
             "api_key_verification_level": "none",
             "require_idp": "fiware-oauth2",
             "rate_limit_mode": "unlimited",
