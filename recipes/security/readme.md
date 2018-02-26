@@ -1,6 +1,6 @@
 # Security Management
 
-Within FIWARE security is by different services that provide the following 
+Within FIWARE security is guaranteed by different services that provide the following 
 functionalities:
 
 * Identity Management (IDM): the reference implementation is currently
@@ -21,5 +21,5 @@ of the PEP Proxy based on API Umbrella. This is due to the fact that:
 * KeyRock is undergoing strong developments and new release will be announced
     soon, and the current FIWARE Lab IDM can be used for any project without
     need to deploy your own instance.
-* PDP is required only in complex scenarios, and the PDP available n FIWARE Lab
+* PDP is required only in complex scenarios, and the PDP available in FIWARE Lab
     can be used for any project without need to deploy your own instance.

@@ -73,14 +73,8 @@ API Umbrella needs a mongo database for its backend. If you have already
 deployed Mongo within your cluster and would like to reuse that database, you
 can skip the next step (deploying backend).
 You will just need to pay attention to the variables
-you define for Orion to link to Mongo, namely, `MONGO_SERVICE_URI`
-and `REPLICASET_NAME`. Make sure you have the correct values in `frontend.env`.
-The value of `MONGO_SERVICE_URI` should be a routable address for mongo.
-If deployed within the swarm, the service name (with stack prefix)
-would suffice. You can read more in the
-[official docker docs](https://docs.docker.com/docker-cloud/apps/service-links/).
-The default values should be fine for you if you used the
-[Mongo ReplicaSet Recipe](../../utils/mongo-replicaset/readme.md).
+you define for API Umbrella to link to Mongo, namely, `MONGO_SERVICE_URI`
+and `REPLICASET_NAME`.
 
 Otherwise, if you prefer to make a new deployment of MongoDB just for API
 Umbrella, you can take a shortcut and run...
@@ -94,7 +88,7 @@ Umbrella, you can take a shortcut and run...
 ```
 
 Beside that, given that Ruby driver for MongoDB is not supporting service
-discovery, you will need to have expose the ports of the MongoDB server on the
+discovery, you will need to expose the ports of the MongoDB server on the
 cluster to allow the connection to the Replica Set from API Umbrella.
 
 Be aware that this works only when you deploy (as in the script), your MongoDB
@@ -121,7 +115,8 @@ a2wddzw2g2fg        mongo-rs_mongo.w697ke0djs3cfdf3bgbrcblam   mongo:3.2        
 nero0vahaa8h        mongo-rs_controller.1                      martel/mongo-replica-ctrl:latest   ms-manager0         Running             Running 5 seconds ago
 ```
 
-Set the connection url for mongo based on the IPs of your Swarm Cluster:
+Set the connection url for mongo based on the IPs of your Swarm Cluster
+(alternatively edit the `frontend.env` file):
 
 ```
   $ MONGO_REPLICATE_SET_IPS=192.168.99.100:27017,192.168.99.101:27017,192.168.99.102:27017
@@ -169,259 +164,267 @@ are up and running.
 
 ## A walkthrough
 
-Now, let's create the admin user in API Umbrella. As first thing,
-get the IP of your master node:
+In the following walkthrough we will explain how to do the initial configuration
+of API Umbrella and register your first API. For more details read 
+[API Umbrella's documentation](https://api-umbrella.readthedocs.io/en/latest/).
 
-```
-    $ docker-machine ip ms-manager0
-```
+1. Let's create the admin user in API Umbrella. As first thing,
+    get the IP of your master node:
 
-Open the browser at the following endpoint: [http://ip/admin](http://ip/admin).
-
-Unless you also created certificates for your server, API Umbrella,
-will ask you to accept the connection to an insecure instance.
-
-In the page displayed you can enter the admin user name and the password.
-
-Now you are logged in and you can configure the backend APIs.
-
-In the menu select `Users->Admin Accounts` and click on the username you just
-created. Copy the `Admin API Access` for your account.
-
-In the menu select "Users->Api Users" click on the username
-`web.admin.ajax@internal.apiumbrella` and copy the Api
-Key (of course you can create new ones instead of reusing API Umbrella
-defaults).
-
-Create a simple API to test that everything works:
-
-```
-$ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/apis" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
-{
-  "api": {
-    "name": "distance FIWARE REST",
-    "sort_order": 100000,
-    "backend_protocol": "http",
-    "frontend_host": "<your-cluster-manager-ip>",
-    "backend_host": "maps.googleapis.com", 
-    "servers": [
-      {
-        "host": "maps.googleapis.com",
-        "port": 80
-      }
-    ],
-    "url_matches": [
-      {
-        "frontend_prefix": "/distance2/",
-        "backend_prefix": "/"
-      }
-    ],
-    "balance_algorithm": "least_conn",
-    "settings": {
-      "require_https":"required_return_error",
-      "require_idp": "fiware-oauth2",
-      "disable_api_key":"false",
-      "api_key_verification_level":"none",
-      "rate_limit_mode":"unlimited",
-      "error_templates": {},
-      "error_data": {}
-    }    
-  }
-}
-EOF
-
-Response:
-{
-  "api": {
-    "backend_host": "maps.googleapis.com",
-    "backend_protocol": "http",
-    "balance_algorithm": "least_conn",
-    "created_at": "2018-02-26T13:47:02Z",
-    "created_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
-    "deleted_at": null,
-    "frontend_host": "<your-cluster-manager-ip>",
-    "name": "distance FIWARE REST",
-    "servers": [
-      {
-        "host": "maps.googleapis.com",
-        "port": 80,
-        "id": "f0f7a039-d88c-4ef8-8798-a00ad3c8fcdb"
-      }
-    ],
-    "settings": {
-      "allowed_ips": null,
-      "allowed_referers": null,
-      "anonymous_rate_limit_behavior": null,
-      "api_key_verification_level": "none",
-      "api_key_verification_transition_start_at": null,
-      "append_query_string": null,
-      "authenticated_rate_limit_behavior": null,
-      "disable_api_key": false,
-      "error_data": null,
-      "error_templates": {},
-      "http_basic_auth": null,
-      "pass_api_key_header": null,
-      "pass_api_key_query_param": null,
-      "rate_limit_mode": "unlimited",
-      "require_https": "required_return_error",
-      "require_https_transition_start_at": null,
-      "require_idp": "fiware-oauth2",
-      "required_roles": null,
-      "required_roles_override": null,
-      "error_data_yaml_strings": {},
-      "headers_string": "",
-      "default_response_headers_string": "",
-      "override_response_headers_string": "",
-      "id": "4dfe22af-c12a-4733-807d-0a668c413a96",
-      "default_response_headers": null,
-      "headers": null,
-      "override_response_headers": null,
-      "rate_limits": null
-    },
-    "sort_order": 100000,
-    "updated_at": "2018-02-26T13:47:02Z",
-    "updated_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
-    "url_matches": [
-      {
-        "backend_prefix": "/",
-        "frontend_prefix": "/distance2/",
-        "id": "ec719b9f-2020-4eb9-8744-5cb2bae4b625"
-      }
-    ],
-    "version": 1,
-    "id": "cbe24047-7f74-4eb5-bd7e-211c3f8ede22",
-    "rewrites": null,
-    "sub_settings": null,
-    "creator": {
-      "username": "xxx"
-    },
-    "updater": {
-      "username": "xxx"
-    }
-  }
-}
-EOF
-```
-
-After creating the API, you need to publish it:
-
-```
-$ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/config/publish" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
-{
-  "config": {
-    "apis": {
-      "cbe24047-7f74-4eb5-bd7e-211c3f8ede22": {
-        "publish": "1"
-      }
-    },
-    "website_backends": {
-    }
-  }
-}
-EOF
-
-Response:
-
-{
-  "config_version": {
-    "config": {
-      "apis": [
-        {
-          "_id": "cbe24047-7f74-4eb5-bd7e-211c3f8ede22",
-          "version": 2,
-          "deleted_at": null,
-          "name": "distance FIWARE REST",
-          "sort_order": 100000,
-          "backend_protocol": "http",
-          "frontend_host": "192.168.99.100",
-          "backend_host": "maps.googleapis.com",
-          "balance_algorithm": "least_conn",
-          "updated_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
-          "updated_at": "2018-02-26T14:02:08Z",
-          "created_at": "2018-02-26T13:47:02Z",
-          "created_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
-          "settings": {
-            "require_https": "required_return_error",
-            "disable_api_key": false,
-            "api_key_verification_level": "none",
-            "require_idp": "fiware-oauth2",
-            "rate_limit_mode": "unlimited",
-            "error_templates": {},
-            "_id": "4dfe22af-c12a-4733-807d-0a668c413a96",
-            "anonymous_rate_limit_behavior": "ip_fallback",
-            "authenticated_rate_limit_behavior": "all",
-            "error_data": {}
-          },
-          "servers": [
-            {
-              "host": "maps.googleapis.com",
-              "port": 80,
-              "_id": "f0f7a039-d88c-4ef8-8798-a00ad3c8fcdb"
-            }
-          ],
-          "url_matches": [
-            {
-              "frontend_prefix": "/distance2/",
-              "backend_prefix": "/",
-              "_id": "ec719b9f-2020-4eb9-8744-5cb2bae4b625"
-            }
-          ]
-        }
-      ],
-      "website_backends": []
-    },
-    "created_at": "2018-02-26T14:03:53Z",
-    "updated_at": "2018-02-26T14:03:53Z",
-    "version": "2018-02-26T14:03:53Z",
-    "id": {
-      "$oid": "5a9413c99f9d04008c5a0b6c"
-    }
-  }
-}
-```
-
-Now you can issue a query to your API:
-
-1. Get a token from FIWARE:
-
-    ```bash
-    $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
-    $ bash token_script.sh
-
-    Username: your_email@example.com
-    Password:
-    Token: <this is the token you need>
+    ```
+        $ docker-machine ip ms-manager0
     ```
 
-1. Use it to make a query to your API:
+    Open the browser at the following endpoint: [http://<your-cluster-manager-ip>/admin](http://<your-cluster-manager-ip>/admin).
 
-    ```bash
-    $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
+    Unless you also created certificates for your server, API Umbrella,
+    will ask you to accept the connection to an insecure instance.
+
+    In the page displayed you can enter the admin user name and the password.
+
+    Now you are logged in and you can configure the backend APIs.
+
+    **N.B.:** The usage of the cluster master IP is just a convention, you can
+    reach the services also at the IPs of the worker nodes.
+
+1. Retrieve `X-Admin-Auth-Token` Access and `X-Api-Key`.
+    In the menu select `Users->Admin Accounts` and click on the username you just
+    created. Copy the `Admin API Access` for your account.
+
+    In the menu select "Users->Api Users" click on the username
+    `web.admin.ajax@internal.apiumbrella` and copy the API
+    Key (of course you can create new ones instead of reusing API Umbrella
+    defaults).
+
+1. Register an new API. Create a simple API to test that everything works:
+
+    ```
+    $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/apis" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
+    {
+      "api": {
+        "name": "distance FIWARE REST",
+        "sort_order": 100000,
+        "backend_protocol": "http",
+        "frontend_host": "<your-cluster-manager-ip>",
+        "backend_host": "maps.googleapis.com", 
+        "servers": [
+          {
+            "host": "maps.googleapis.com",
+            "port": 80
+          }
+        ],
+        "url_matches": [
+          {
+            "frontend_prefix": "/distance2/",
+            "backend_prefix": "/"
+          }
+        ],
+        "balance_algorithm": "least_conn",
+        "settings": {
+          "require_https":"required_return_error",
+          "require_idp": "fiware-oauth2",
+          "disable_api_key":"false",
+          "api_key_verification_level":"none",
+          "rate_limit_mode":"unlimited",
+          "error_templates": {},
+          "error_data": {}
+        }    
+      }
+    }
+    EOF
 
     Response:
     {
-       "destination_addresses" : [ "New York, NY, USA" ],
-       "origin_addresses" : [ "Washington, DC, USA" ],
-       "rows" : [
+      "api": {
+        "backend_host": "maps.googleapis.com",
+        "backend_protocol": "http",
+        "balance_algorithm": "least_conn",
+        "created_at": "2018-02-26T13:47:02Z",
+        "created_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
+        "deleted_at": null,
+        "frontend_host": "<your-cluster-manager-ip>",
+        "name": "distance FIWARE REST",
+        "servers": [
           {
-             "elements" : [
-                {
-                   "distance" : {
-                      "text" : "225 mi",
-                      "value" : 361940
-                   },
-                   "duration" : {
-                      "text" : "3 hours 50 mins",
-                      "value" : 13816
-                   },
-                   "status" : "OK"
-                }
-             ]
+            "host": "maps.googleapis.com",
+            "port": 80,
+            "id": "f0f7a039-d88c-4ef8-8798-a00ad3c8fcdb"
           }
-       ],
-       "status" : "OK"
+        ],
+        "settings": {
+          "allowed_ips": null,
+          "allowed_referers": null,
+          "anonymous_rate_limit_behavior": null,
+          "api_key_verification_level": "none",
+          "api_key_verification_transition_start_at": null,
+          "append_query_string": null,
+          "authenticated_rate_limit_behavior": null,
+          "disable_api_key": false,
+          "error_data": null,
+          "error_templates": {},
+          "http_basic_auth": null,
+          "pass_api_key_header": null,
+          "pass_api_key_query_param": null,
+          "rate_limit_mode": "unlimited",
+          "require_https": "required_return_error",
+          "require_https_transition_start_at": null,
+          "require_idp": "fiware-oauth2",
+          "required_roles": null,
+          "required_roles_override": null,
+          "error_data_yaml_strings": {},
+          "headers_string": "",
+          "default_response_headers_string": "",
+          "override_response_headers_string": "",
+          "id": "4dfe22af-c12a-4733-807d-0a668c413a96",
+          "default_response_headers": null,
+          "headers": null,
+          "override_response_headers": null,
+          "rate_limits": null
+        },
+        "sort_order": 100000,
+        "updated_at": "2018-02-26T13:47:02Z",
+        "updated_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
+        "url_matches": [
+          {
+            "backend_prefix": "/",
+            "frontend_prefix": "/distance2/",
+            "id": "ec719b9f-2020-4eb9-8744-5cb2bae4b625"
+          }
+        ],
+        "version": 1,
+        "id": "cbe24047-7f74-4eb5-bd7e-211c3f8ede22",
+        "rewrites": null,
+        "sub_settings": null,
+        "creator": {
+          "username": "xxx"
+        },
+        "updater": {
+          "username": "xxx"
+        }
+      }
+    }
+    EOF
+    ```
+
+1. Publish the newly registered API.
+
+    ```
+    $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/config/publish" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
+    {
+      "config": {
+        "apis": {
+          "cbe24047-7f74-4eb5-bd7e-211c3f8ede22": {
+            "publish": "1"
+          }
+        },
+        "website_backends": {
+        }
+      }
+    }
+    EOF
+
+    Response:
+
+    {
+      "config_version": {
+        "config": {
+          "apis": [
+            {
+              "_id": "cbe24047-7f74-4eb5-bd7e-211c3f8ede22",
+              "version": 2,
+              "deleted_at": null,
+              "name": "distance FIWARE REST",
+              "sort_order": 100000,
+              "backend_protocol": "http",
+              "frontend_host": "192.168.99.100",
+              "backend_host": "maps.googleapis.com",
+              "balance_algorithm": "least_conn",
+              "updated_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
+              "updated_at": "2018-02-26T14:02:08Z",
+              "created_at": "2018-02-26T13:47:02Z",
+              "created_by": "c9d7c2cf-737c-46ae-974b-22ebc12cce0c",
+              "settings": {
+                "require_https": "required_return_error",
+                "disable_api_key": false,
+                "api_key_verification_level": "none",
+                "require_idp": "fiware-oauth2",
+                "rate_limit_mode": "unlimited",
+                "error_templates": {},
+                "_id": "4dfe22af-c12a-4733-807d-0a668c413a96",
+                "anonymous_rate_limit_behavior": "ip_fallback",
+                "authenticated_rate_limit_behavior": "all",
+                "error_data": {}
+              },
+              "servers": [
+                {
+                  "host": "maps.googleapis.com",
+                  "port": 80,
+                  "_id": "f0f7a039-d88c-4ef8-8798-a00ad3c8fcdb"
+                }
+              ],
+              "url_matches": [
+                {
+                  "frontend_prefix": "/distance2/",
+                  "backend_prefix": "/",
+                  "_id": "ec719b9f-2020-4eb9-8744-5cb2bae4b625"
+                }
+              ]
+            }
+          ],
+          "website_backends": []
+        },
+        "created_at": "2018-02-26T14:03:53Z",
+        "updated_at": "2018-02-26T14:03:53Z",
+        "version": "2018-02-26T14:03:53Z",
+        "id": {
+          "$oid": "5a9413c99f9d04008c5a0b6c"
+        }
+      }
     }
     ```
+
+1. Test your new API, by issuing a query:
+
+  1. Get a token from FIWARE:
+
+      ```bash
+      $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
+      $ bash token_script.sh
+
+      Username: your_email@example.com
+      Password:
+      Token: <this is the token you need>
+      ```
+
+  1. Use it to make a query to your API:
+
+      ```bash
+      $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
+
+      Response:
+      {
+         "destination_addresses" : [ "New York, NY, USA" ],
+         "origin_addresses" : [ "Washington, DC, USA" ],
+         "rows" : [
+            {
+               "elements" : [
+                  {
+                     "distance" : {
+                        "text" : "225 mi",
+                        "value" : 361940
+                     },
+                     "duration" : {
+                        "text" : "3 hours 50 mins",
+                        "value" : 13816
+                     },
+                     "status" : "OK"
+                  }
+               ]
+            }
+         ],
+         "status" : "OK"
+      }
+      ```
 
 ## Networks considerations
 
