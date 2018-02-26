@@ -176,7 +176,7 @@ get the IP of your master node:
     $ docker-machine ip ms-manager0
 ```
 
-Open the browser at the following endpoint: http://ip/admin.
+Open the browser at the following endpoint: [http://ip/admin](http://ip/admin).
 
 Unless you also created certificates for your server, API Umbrella,
 will ask you to accept the connection to an insecure instance.
