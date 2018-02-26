@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+
+  api-umbrella:
+    image: martel/api-umbrella:${API_UMBRELLA_VERSION:-0.14.4-1-fiware}
+    ports:
+      - "80:80"
+      - "443:443"
+    deploy:
+      replicas: 2
+    configs:
+      - source: api-umbrella
+        target: /etc/api-umbrella/api-umbrella.yml
+        uid: '501'
+        gid: '20'
+        mode: 1777
+    networks:
+      - backend
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:80/"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+
+configs:
+  api-umbrella:
+    file: api-umbrella.yml
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+  backend:
+    driver: overlay
+    external: true
+  frontend:
+    driver: overlay
+    external: true
