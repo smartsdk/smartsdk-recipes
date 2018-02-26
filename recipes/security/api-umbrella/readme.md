@@ -7,7 +7,7 @@ service backed with an scalable
 
 All elements will be running in docker containers, defined in docker-compose
 files. Actually, this recipe focuses on the deployment of the API Umbrella
-frontend, reusing the [mongodb replica recipe](../../../utils/mongo-replicaset/readme.md)
+frontend, reusing the [mongodb replica recipe](../../utils/mongo-replicaset/readme.md)
 as its backend.
 
 At the time being, other services, such as [Elastic Search](https://www.elastic.co/products/elasticsearch)
@@ -51,13 +51,13 @@ The final deployment is represented by the following picture:
 
 ## Prerequisites
 
-Please make sure you read the [welcome page](../../../index.md) and followed
-the steps explained in the [installation guide](../../../installation.md).
+Please make sure you read the [welcome page](../../index.md) and followed
+the steps explained in the [installation guide](../../installation.md).
 
 ## How to use
 
 Firstly, you need to have a Docker Swarm (docker >= 17.06-ce) already setup.
-If you don't have one, checkout the [tools](../../../tools/readme.md) section
+If you don't have one, checkout the [tools](../../tools/readme.md) section
 for a quick way to setup a local swarm.
 
 ```
@@ -67,7 +67,7 @@ for a quick way to setup a local swarm.
 
 In case you haven't done it yet for other recipes, deploy `backend` and
 `frontend` networks as described in the
-[installation guide](../../../installation.md#creating-the-networks).
+[installation guide](../../installation.md#creating-the-networks).
 
 API Umbrella needs a mongo database for its backend. If you have already
 deployed Mongo within your cluster and would like to reuse that database, you
@@ -80,7 +80,7 @@ If deployed within the swarm, the service name (with stack prefix)
 would suffice. You can read more in the
 [official docker docs](https://docs.docker.com/docker-cloud/apps/service-links/).
 The default values should be fine for you if you used the
-[Mongo ReplicaSet Recipe](../../../utils/mongo-replicaset/readme.md).
+[Mongo ReplicaSet Recipe](../../utils/mongo-replicaset/readme.md).
 
 Otherwise, if you prefer to make a new deployment of MongoDB just for API
 Umbrella, you can take a shortcut and run...
