@@ -172,8 +172,8 @@ of API Umbrella and register your first API. For more details read
 1. Let's create the admin user in API Umbrella. As first thing,
     get the IP of your master node:
 
-    ```
-        $ docker-machine ip ms-manager0
+    ```bash
+    $ docker-machine ip ms-manager0
     ```
 
     Open the browser at the following endpoint: [http://<your-cluster-manager-ip>/admin](http://<your-cluster-manager-ip>/admin).
