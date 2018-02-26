@@ -176,9 +176,10 @@ of API Umbrella and register your first API. For more details read
     $ docker-machine ip ms-manager0
     ```
 
-    Open the browser at the following endpoint: [http://<your-cluster-manager-ip>/admin](http://<your-cluster-manager-ip>/admin).
+    Open the browser at the following endpoint:
+    `http://<your-cluster-manager-ip>/admin`.
 
-    Unless you also created certificates for your server, API Umbrella,
+    Unless you also created certificates for your server, API Umbrella
     will ask you to accept the connection to an insecure instance.
 
     In the page displayed you can enter the admin user name and the password.
@@ -189,10 +190,10 @@ of API Umbrella and register your first API. For more details read
     reach the services also at the IPs of the worker nodes.
 
 1. Retrieve `X-Admin-Auth-Token` Access and `X-Api-Key`.
-    In the menu select `Users->Admin Accounts` and click on the username you just
-    created. Copy the `Admin API Access` for your account.
+    In the menu select `Users->Admin Accounts` and click on the username
+    you just created. Copy the `Admin API Access` for your account.
 
-    In the menu select "Users->Api Users" click on the username
+    In the menu select `Users->Api Users` click on the username
     `web.admin.ajax@internal.apiumbrella` and copy the API
     Key (of course you can create new ones instead of reusing API Umbrella
     defaults).
@@ -200,7 +201,11 @@ of API Umbrella and register your first API. For more details read
 1. Register an new API. Create a simple API to test that everything works:
 
     ```bash
-    $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/apis" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
+    $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/apis" \
+      -H "X-Api-Key: <your-API-KEY>" \
+      -H "X-Admin-Auth-Token: <your-admin-auth-token>" \
+      -H "Accept: application/json" \
+      -H "Content-Type: application/json" -d @- <<EOF
     {
       "api": {
         "name": "distance FIWARE REST",
@@ -310,7 +315,11 @@ of API Umbrella and register your first API. For more details read
 1. Publish the newly registered API.
 
     ```bash
-    $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/config/publish" -H "X-Api-Key: <your-API-KEY>" -H "X-Admin-Auth-Token: <your-admin-auth-token>" -H "Accept: application/json" -H "Content-Type: application/json" -d @- <<EOF
+    $ curl -k -X POST "https://<your-cluster-manager-ip>/api-umbrella/v1/config/publish" \
+      -H "X-Api-Key: <your-API-KEY>" \
+      -H "X-Admin-Auth-Token: <your-admin-auth-token>" \
+      -H "Accept: application/json" \
+      -H "Content-Type: application/json" -d @- <<EOF
     {
       "config": {
         "apis": {
@@ -386,46 +395,46 @@ of API Umbrella and register your first API. For more details read
 
 1. Test your new API, by issuing a query:
 
-  1. Get a token from FIWARE:
+  * Get a token from FIWARE:
 
-      ```bash
-      $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
-      $ bash token_script.sh
+    ```bash
+    $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
+    $ bash token_script.sh
 
-      Username: your_email@example.com
-      Password:
-      Token: <this is the token you need>
-      ```
+    Username: your_email@example.com
+    Password:
+    Token: <this is the token you need>
+    ```
 
-  1. Use it to make a query to your API:
+  * Use it to make a query to your API:
 
-      ```bash
-      $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
+    ```bash
+    $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
 
-      Response:
-      {
-         "destination_addresses" : [ "New York, NY, USA" ],
-         "origin_addresses" : [ "Washington, DC, USA" ],
-         "rows" : [
-            {
-               "elements" : [
-                  {
-                     "distance" : {
-                        "text" : "225 mi",
-                        "value" : 361940
-                     },
-                     "duration" : {
-                        "text" : "3 hours 50 mins",
-                        "value" : 13816
-                     },
-                     "status" : "OK"
-                  }
-               ]
-            }
-         ],
-         "status" : "OK"
-      }
-      ```
+    Response:
+    {
+       "destination_addresses" : [ "New York, NY, USA" ],
+       "origin_addresses" : [ "Washington, DC, USA" ],
+       "rows" : [
+          {
+             "elements" : [
+                {
+                   "distance" : {
+                      "text" : "225 mi",
+                      "value" : 361940
+                   },
+                   "duration" : {
+                      "text" : "3 hours 50 mins",
+                      "value" : 13816
+                   },
+                   "status" : "OK"
+                }
+             ]
+          }
+       ],
+       "status" : "OK"
+    }
+    ```
 
 ## Networks considerations
 

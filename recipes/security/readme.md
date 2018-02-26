@@ -1,7 +1,7 @@
 # Security Management
 
-Within FIWARE security is guaranteed by different services that provide the following 
-functionalities:
+Within FIWARE security is guaranteed by different services that provide the
+following functionalities:
 
 * Identity Management (IDM): the reference implementation is currently
     [KeyRock](http://fiware-idm.readthedocs.io/en/latest/index.html)
