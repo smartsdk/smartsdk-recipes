@@ -395,46 +395,46 @@ of API Umbrella and register your first API. For more details read
 
 1. Test your new API, by issuing a query:
 
-  * Get a token from FIWARE:
+    * Get a token from FIWARE:
 
-    ```bash
-    $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
-    $ bash token_script.sh
+      ```bash
+      $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
+      $ bash token_script.sh
 
-    Username: your_email@example.com
-    Password:
-    Token: <this is the token you need>
-    ```
+      Username: your_email@example.com
+      Password:
+      Token: <this is the token you need>
+      ```
 
-  * Use it to make a query to your API:
+    * Use it to make a query to your API:
 
-    ```bash
-    $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
+      ```bash
+      $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
 
-    Response:
-    {
-       "destination_addresses" : [ "New York, NY, USA" ],
-       "origin_addresses" : [ "Washington, DC, USA" ],
-       "rows" : [
-          {
-             "elements" : [
-                {
-                   "distance" : {
-                      "text" : "225 mi",
-                      "value" : 361940
-                   },
-                   "duration" : {
-                      "text" : "3 hours 50 mins",
-                      "value" : 13816
-                   },
-                   "status" : "OK"
-                }
-             ]
-          }
-       ],
-       "status" : "OK"
-    }
-    ```
+      Response:
+      {
+         "destination_addresses" : [ "New York, NY, USA" ],
+         "origin_addresses" : [ "Washington, DC, USA" ],
+         "rows" : [
+            {
+               "elements" : [
+                  {
+                     "distance" : {
+                        "text" : "225 mi",
+                        "value" : 361940
+                     },
+                     "duration" : {
+                        "text" : "3 hours 50 mins",
+                        "value" : 13816
+                     },
+                     "status" : "OK"
+                  }
+               ]
+            }
+         ],
+         "status" : "OK"
+      }
+      ```
 
 ## Networks considerations
 
@@ -467,16 +467,16 @@ to one of the containerized API Umbrella services.
 
 ## Open interesting issues
 
-- [https://github.com/docker/swarm/issues/1106](https://github.com/docker/swarm/issues/1106)
+* [https://github.com/docker/swarm/issues/1106](https://github.com/docker/swarm/issues/1106)
 
-- [https://github.com/docker/docker/issues/27082](https://github.com/docker/docker/issues/27082)
+* [https://github.com/docker/docker/issues/27082](https://github.com/docker/docker/issues/27082)
 
-- [https://github.com/docker/docker/issues/29816](https://github.com/docker/docker/issues/29816)
+* [https://github.com/docker/docker/issues/29816](https://github.com/docker/docker/issues/29816)
 
-- [https://github.com/docker/docker/issues/26696](https://github.com/docker/docker/issues/26696)
+* [https://github.com/docker/docker/issues/26696](https://github.com/docker/docker/issues/26696)
 
-- [https://github.com/docker/docker/issues/23813](https://github.com/docker/docker/issues/23813)
+* [https://github.com/docker/docker/issues/23813](https://github.com/docker/docker/issues/23813)
 
 More info about docker network internals can be read at:
 
-- [Docker Reference Architecture](https://success.docker.com/KBase/Docker_Reference_Architecture%3A_Designing_Scalable%2C_Portable_Docker_Container_Networks)
+* [Docker Reference Architecture](https://success.docker.com/KBase/Docker_Reference_Architecture%3A_Designing_Scalable%2C_Portable_Docker_Container_Networks)
