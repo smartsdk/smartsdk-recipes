@@ -24,6 +24,9 @@ pages:
         - 'IoT Agent JSON': 'iot-services/iotagent-json/README.md'
         - 'IoT Agent LWM2M': 'iot-services/iotagent-lwm2m/readme.md'
         - 'IoT Agent UL': 'iot-services/iotagent-ul/README.md'
+    - 'Security':
+        - 'Intro': 'security/readme.md'
+        - 'API Umbrella': 'security/api-umbrella/readme.md'
     - 'Utils':
         - 'MongoDB Replica Set': 'utils/mongo-replicaset/readme.md'
   - 'Tools': 'tools/readme.md'
