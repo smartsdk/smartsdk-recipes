@@ -1,0 +1,5 @@
+services:
+  - router
+  - web
+mongodb:
+  url: "mongodb://mongodb_url/api_umbrella?replicaSet=rs_name"
