@@ -98,8 +98,8 @@ in global mode.
 $ docker service update --publish-add published=27017,target=27017,protocol=tcp,mode=host mongo-rs_mongo
 
 mongo-rs_mongo
-overall progress: 1 out of 1 tasks 
-w697ke0djs3c: running   [==================================================>] 
+overall progress: 1 out of 1 tasks
+w697ke0djs3c: running   [==================================================>]
 verify: Service converged
 ```
 
@@ -166,7 +166,7 @@ are up and running.
 ## A walkthrough
 
 In the following walkthrough we will explain how to do the initial configuration
-of API Umbrella and register your first API. For more details read 
+of API Umbrella and register your first API. For more details read
 [API Umbrella's documentation](https://api-umbrella.readthedocs.io/en/latest/).
 
 1. Let's create the admin user in API Umbrella. As first thing,
@@ -212,7 +212,7 @@ of API Umbrella and register your first API. For more details read
       "sort_order": 100000,
       "backend_protocol": "http",
       "frontend_host": "<your-cluster-manager-ip>",
-      "backend_host": "maps.googleapis.com", 
+      "backend_host": "maps.googleapis.com",
       "servers": [
         {
           "host": "maps.googleapis.com",
@@ -395,7 +395,7 @@ of API Umbrella and register your first API. For more details read
 
 1. Test your new API, by issuing a query:
 
-  * Get a token from FIWARE:
+    * Get a token from FIWARE:
 
     ```bash
     $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
@@ -406,7 +406,7 @@ of API Umbrella and register your first API. For more details read
     Token: <this is the token you need>
     ```
 
-  * Use it to make a query to your API:
+    * Use it to make a query to your API:
 
     ```bash
     $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&token=<your-FIWARE-token>"
