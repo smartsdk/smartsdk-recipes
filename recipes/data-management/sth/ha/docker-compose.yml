@@ -2,15 +2,15 @@ version: '3'
 
 services:
   comet:
-    image: telefonicaiot/fiware-sth-comet:${COMET_VERSION}
+    image: telefonicaiot/fiware-sth-comet:${COMET_VERSION:-2.2.0}
     ports:
       - "8666:8666"
     deploy:
       replicas: 2
     environment:
       - STH_HOST=0.0.0.0
-      - DB_URI=${MONGO_SERVICE_URI}
-      - REPLICA_SET=${REPLICASET_NAME}
+      - DB_URI=${MONGO_SERVICE_URI:-mongo-rs_mongo}
+      - REPLICA_SET=${REPLICASET_NAME:-rs}
       - LOGOPS_LEVEL=DEBUG
     networks:
       - frontend
