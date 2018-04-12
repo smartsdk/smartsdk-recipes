@@ -18,6 +18,21 @@ Once you make a pull request to the repository, you will be able to observe
 the results of the compliancy verification in your PR. Merge will be only possible
 if CI process is passed successfully.
 
+## Contributing to Portainer Recipes
+
+The SmartDSK Recipes aim to be deployable both using command line
+tools following this Guide or by using a portainer template.
+
+The documentation of the portainer template file is documented in the
+[Stack template definition format](https://portainer.readthedocs.io/en/stable/templates.html#stack-template-definition-format)
+
+The json file is however not human friendly to edit, so in this
+project the templates should be written in the
+`portainer-template.yaml` files, and before committing changes, call
+the `make` from the root directory of the project in order to update
+the file `portainer/templates.json`.  Then Add and commit the files
+`portainer-template.yaml` and `portainer/templates.json` together.
+
 ## Documentation
 
 For now we are using [Mkdocs](http://www.mkdocs.org) deploying on
