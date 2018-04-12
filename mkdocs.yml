@@ -8,7 +8,6 @@ pages:
     - 'Data/Context Management':
         - 'Context Broker':
           - 'Intro': 'data-management/context-broker/readme.md'
-          - 'Simple': 'data-management/context-broker/simple/readme.md'
           - 'HA': 'data-management/context-broker/ha/readme.md'
         - 'STH':
           - 'Intro': 'data-management/sth/readme.md'
