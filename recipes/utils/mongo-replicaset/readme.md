@@ -58,7 +58,7 @@ Then, simply run from this same folder...
 
 ```
 $ source settings.env  # In Windows, simply execute settings.bat instead.
-$ docker stack deploy -c docker-compose.yml ${STACK_NAME:-"mongo-rs"}
+$ docker stack deploy -c docker-compose.yml mongo-rs
 ```
 
 Allow some time while images are pulled in the nodes and services are deployed.
