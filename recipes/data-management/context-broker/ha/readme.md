@@ -73,12 +73,14 @@ The default values should be fine for you if you used the
 [Mongo ReplicaSet Recipe](../../../utils/mongo-replicaset/readme.md).
 
 Now you can activate your settings and deploy Orion...
+
 ```
 $ source settings.env  # In Windows, simply execute settings.bat instead.
 $ docker stack deploy -c docker-compose.yml orion
 ```
 
 At some point, your deployment should look like this...
+
 ```
 $ docker service ls
 ID            NAME                       MODE        REPLICAS  IMAGE
