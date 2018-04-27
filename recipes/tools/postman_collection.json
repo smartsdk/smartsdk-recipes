@@ -1,8 +1,7 @@
 {
 	"info": {
-		"name": "SmartSDK",
 		"_postman_id": "4df65e23-cd35-4df2-db44-7bd0df8f9744",
-		"description": "",
+		"name": "SmartSDK",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -21,11 +20,13 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {},
@@ -54,11 +55,13 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {},
@@ -92,16 +95,18 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"Room1\",\n  \"type\": \"Room\",\n  \"temperature\": {\n    \"value\": 23,\n    \"type\": \"Float\"\n  },\n  \"pressure\": {\n    \"value\": 720,\n    \"type\": \"Integer\"\n  }\n}"
+							"raw": "{\n  \"id\": \"Room1\",\n  \"type\": \"Room\",\n  \"temperature\": {\n    \"value\": 24,\n    \"type\": \"Float\"\n  },\n  \"pressure\": {\n    \"value\": 721,\n    \"type\": \"Integer\"\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{ORION_EP}}/v2/entities",
@@ -133,16 +138,18 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"temperature\": {\n    \"value\": 24,\n    \"type\": \"Number\"\n  },\n  \"pressure\": {\n    \"value\": 720,\n    \"type\": \"Integer\"\n  }\n}"
+							"raw": "{\n  \"temperature\": {\n    \"value\": 13,\n    \"type\": \"Number\"\n  },\n  \"pressure\": {\n    \"value\": 710,\n    \"type\": \"Integer\"\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{ORION_EP}}/v2/entities/Room1/attrs",
@@ -172,16 +179,18 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/entities/Room1",
+							"raw": "http://{{ORION_EP}}/v2/entities/?type=Room",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
@@ -189,10 +198,15 @@
 							"path": [
 								"v2",
 								"entities",
-								"Room1"
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Room"
+								}
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -207,11 +221,13 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/#",
+								"disabled": true
 							}
 						],
 						"body": {},
@@ -232,9 +248,9 @@
 					"response": []
 				},
 				{
-					"name": "Orion subscription",
+					"name": "Orion subscription v1",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
@@ -255,7 +271,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"entities\": [\n        {\n            \"type\": \"Room\",\n            \"id\": \"Room1\"\n        }\n    ],\n    \"attributes\": [\n        \"temperature\",\n        \"pressure\"\n    ],\n    \"reference\": \"http://comet:8666/notify\",\n    \"notifyConditions\": [\n        {\n            \"type\": \"ONCHANGE\",\n            \"condValues\": [\n                \"temperature\",\n                \"pressure\"\n            ]\n        }\n    ]\n}"
+							"raw": "{\n    \"entities\": [\n        {\n            \"type\": \"TrafficFlowObserved\",\n            \"id\": \".*\",\n            \"isPattern\": \"true\"\n        }\n    ],\n    \"attributes\": [\n    ],\n    \"reference\": \"http://comet:8666/notify\",\n    \"duration\": \"P1Y\",\n    \"notifyConditions\": [\n        {\n            \"type\": \"ONCHANGE\",\n            \"condValues\": [\n            ]\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://{{ORION_EP}}/v1/subscribeContext",
@@ -273,9 +289,86 @@
 					"response": []
 				},
 				{
+					"name": "Orion subscription v2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default"
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"device\",\n    \"notification\": {\n        \"attrs\": [],\n        \"http\": {\n            \"url\": \"http://quantumleap:8668/v2/notify\"\n        },\n        \"metadata\": [\n            \"dateCreated\",\n            \"dateModified\"\n        ]\n    },\n    \"subject\": {\n        \"condition\": {\n            \"attrs\": []\n        },\n        \"entities\": [\n            {\n                \"idPattern\": \".*\",\n                \"type\": \"Device\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						},
+						"description": "Subscribe Comet to Orion changes in Swarm"
+					},
+					"response": []
+				},
+				{
 					"name": "Orion subscription",
 					"request": {
 						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default",
+								"disabled": true
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/",
+								"disabled": true
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/v2/subscriptions/5ae2faa8cfdf0100fa49eb1f",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								"5ae2faa8cfdf0100fa49eb1f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orion subscription",
+					"request": {
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "Accept",
@@ -290,9 +383,12 @@
 								"value": "/"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"subject\": {\n        \"entities\": [\n            {\n                \"idPattern\": \".*\",\n                \"type\": \"TrafficFlowObserved\"\n            }\n        ],\n        \"condition\": {\n            \"attrs\": []\n        }\n    }\n}"
+						},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/subscriptions/5a0dbfdd30073de858882d0f",
+							"raw": "http://{{ORION_EP}}/v2/subscriptions/5a9ffeea40ec920fbdffb0e6",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
@@ -300,10 +396,9 @@
 							"path": [
 								"v2",
 								"subscriptions",
-								"5a0dbfdd30073de858882d0f"
+								"5a9ffeea40ec920fbdffb0e6"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -407,7 +502,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/Room/id/Room1/attributes/pressure?lastN=10&hLimit=100",
+							"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/TrafficFlowObserved/id/traffic_flow_observer_0/attributes/intensity?lastN=10&hLimit=10",
 							"protocol": "http",
 							"host": [
 								"{{COMET_EP}}"
@@ -417,28 +512,132 @@
 								"v1",
 								"contextEntities",
 								"type",
-								"Room",
+								"TrafficFlowObserved",
 								"id",
-								"Room1",
+								"traffic_flow_observer_0",
 								"attributes",
-								"pressure"
+								"intensity"
 							],
 							"query": [
 								{
 									"key": "lastN",
-									"value": "10",
-									"equals": true
+									"value": "10"
 								},
 								{
 									"key": "hLimit",
-									"value": "100",
-									"equals": true
+									"value": "10"
 								}
 							]
 						},
 						"description": "Historical data in Swarm"
 					},
-					"response": []
+					"response": [
+						{
+							"id": "966ffcf9-1ddc-48c1-b179-fc83b8e0ac14",
+							"name": "Comet raw information",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "fiware-service",
+										"value": "default"
+									},
+									{
+										"key": "fiware-ServicePath",
+										"value": "/"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/TrafficFlowObserved/id/traffic_flow_observer_0/attributes/intensity?lastN=10&hLimit=10",
+									"protocol": "http",
+									"host": [
+										"{{COMET_EP}}"
+									],
+									"path": [
+										"STH",
+										"v1",
+										"contextEntities",
+										"type",
+										"TrafficFlowObserved",
+										"id",
+										"traffic_flow_observer_0",
+										"attributes",
+										"intensity"
+									],
+									"query": [
+										{
+											"key": "lastN",
+											"value": "10"
+										},
+										{
+											"key": "hLimit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 28 Nov 2017 12:05:34 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"name": "Transfer-Encoding",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								},
+								{
+									"key": "cache-control",
+									"value": "no-cache",
+									"name": "cache-control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "content-encoding",
+									"value": "gzip",
+									"name": "content-encoding",
+									"description": "The type of encoding used on the data."
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"name": "content-type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "fiware-correlator",
+									"value": "fa01e0e2-f6de-4dfd-96b5-2c6c43b40c6c",
+									"name": "fiware-correlator",
+									"description": "Custom header"
+								},
+								{
+									"key": "vary",
+									"value": "accept-encoding",
+									"name": "vary",
+									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+								}
+							],
+							"cookie": [],
+							"body": "{\"contextResponses\":[{\"contextElement\":{\"attributes\":[{\"name\":\"intensity\",\"values\":[{\"recvTime\":\"2017-11-24T09:30:17.797Z\",\"attrType\":\"Number\",\"attrValue\":0},{\"recvTime\":\"2017-11-24T09:30:26.859Z\",\"attrType\":\"Number\",\"attrValue\":1},{\"recvTime\":\"2017-11-24T09:30:35.915Z\",\"attrType\":\"Number\",\"attrValue\":1},{\"recvTime\":\"2017-11-24T09:30:44.974Z\",\"attrType\":\"Number\",\"attrValue\":3},{\"recvTime\":\"2017-11-24T09:30:54.051Z\",\"attrType\":\"Number\",\"attrValue\":0},{\"recvTime\":\"2017-11-24T09:31:03.140Z\",\"attrType\":\"Number\",\"attrValue\":1},{\"recvTime\":\"2017-11-24T09:31:12.209Z\",\"attrType\":\"Number\",\"attrValue\":3},{\"recvTime\":\"2017-11-24T09:31:21.290Z\",\"attrType\":\"Number\",\"attrValue\":3},{\"recvTime\":\"2017-11-24T09:31:30.342Z\",\"attrType\":\"Number\",\"attrValue\":1},{\"recvTime\":\"2017-11-24T17:03:30.560Z\",\"attrType\":\"Number\",\"attrValue\":9}]}],\"id\":\"traffic_flow_observer_0\",\"isPattern\":false,\"type\":\"TrafficFlowObserved\"},\"statusCode\":{\"code\":\"200\",\"reasonPhrase\":\"OK\"}}]}"
+						}
+					]
 				},
 				{
 					"name": "Comet aggregated information",
@@ -460,7 +659,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/Room/id/Room1/attributes/pressure?aggrMethod=max&aggrPeriod=second&lastN=10&hLimit=100",
+							"raw": "http://{{COMET_EP}}/STH/v1/contextEntities/type/TrafficFlowObserved/id/traffic_flow_observer_0/attributes/intensity?aggrMethod=max&aggrPeriod=hour&hLimit=10",
 							"protocol": "http",
 							"host": [
 								"{{COMET_EP}}"
@@ -470,32 +669,24 @@
 								"v1",
 								"contextEntities",
 								"type",
-								"Room",
+								"TrafficFlowObserved",
 								"id",
-								"Room1",
+								"traffic_flow_observer_0",
 								"attributes",
-								"pressure"
+								"intensity"
 							],
 							"query": [
 								{
 									"key": "aggrMethod",
-									"value": "max",
-									"equals": true
+									"value": "max"
 								},
 								{
 									"key": "aggrPeriod",
-									"value": "second",
-									"equals": true
-								},
-								{
-									"key": "lastN",
-									"value": "10",
-									"equals": true
+									"value": "hour"
 								},
 								{
 									"key": "hLimit",
-									"value": "100",
-									"equals": true
+									"value": "10"
 								}
 							]
 						},
@@ -520,21 +711,24 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{QL_EP}}/version",
+							"raw": "http://{{QL_EP}}/v2/version",
 							"protocol": "http",
 							"host": [
 								"{{QL_EP}}"
 							],
 							"path": [
+								"v2",
 								"version"
 							]
 						},
@@ -553,30 +747,53 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"QL Subscription\",\n    \"subject\": {\n        \"entities\": [\n        {\n            \"type\": \"Room\",\n            \"id\": \"Room1\"\n        }\n        ],\n        \"condition\": {\n            \"attrs\": [\n            \"temperature\",\n            \"pressure\"\n            ]\n        }\n    },\n    \"notification\": {\n        \"http\": {\n            \"url\": \"http://192.0.0.1:8668/notify\"\n        },\n        \"attrs\": [\n        \"temperature\",\n        \"pressure\"\n        ],\n        \"metadata\": [\"dateCreated\", \"dateModified\"]\n    },\n    \"throttling\": 5\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/subscriptions",
+							"raw": "http://{{QL_EP}}/v2/subscribe?orionUrl=http://{{ORION_EP}}/v2&quantumleapUrl=http://quantumleap:8668/v2",
 							"protocol": "http",
 							"host": [
-								"{{ORION_EP}}"
+								"{{QL_EP}}"
 							],
 							"path": [
 								"v2",
-								"subscriptions"
+								"subscribe"
+							],
+							"query": [
+								{
+									"key": "orionUrl",
+									"value": "http://{{ORION_EP}}/v2"
+								},
+								{
+									"key": "quantumleapUrl",
+									"value": "http://quantumleap:8668/v2"
+								},
+								{
+									"key": "entityType",
+									"value": "AirQualityObserved",
+									"disabled": true
+								},
+								{
+									"key": "idPattern",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "attributes",
+									"value": null,
+									"disabled": true
+								}
 							]
 						},
 						"description": "Subscribe Comet to Orion changes in Swarm"
@@ -594,28 +811,164 @@
 							},
 							{
 								"key": "Fiware-Service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "Fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"subscriptionId\": \"5947d174793fe6f7eb5e3961\", \n\t\"data\": [\n\t\t{\n\t\t\t\"id\": \"Room1\", \n\t\t\t\"type\": \"Room\", \n\t\t\t\"temperature\": {\n\t\t\t\t\"type\": \"Number\", \n\t\t\t\t\"value\": 25.6, \n\t\t\t\t\"metadata\": {\n\t\t\t\t\t\"dateModified\": {\n\t\t\t\t\t\t\"type\": \"DateTime\", \n\t\t\t\t\t\t\"value\": \"2017-06-19T11:46:45.00Z\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n}"
+							"raw": "{\n\t\"subscriptionId\": \"5947d174793fe6f7eb5e3961\", \n\t\"data\": [\n\t\t{\n        \"id\": \"299500\",\n        \"type\": \"AirQualityObserved\",\n        \"aqi\": {\"type\": \"string\", \"value\": \"5\", \"metadata\": {}},\n        \"city\": {\"type\": \"string\", \"value\": \"Charleroi\", \"metadata\": {}},\n        \"h\": {\"type\": \"string\", \"value\": \"87\", \"metadata\": {}},\n        \"location\": {\"type\": \"geo:point\", \"value\": \"50.4093114542045, 4.45217178148666\", \"metadata\": {}},\n        \"no2\": {\"type\": \"string\", \"value\": \"6.4\", \"metadata\": {}},\n        \"p\": {\"type\": \"string\", \"value\": \"994\", \"metadata\": {}},\n        \"pm10\": {\"type\": \"string\", \"value\": \"3\", \"metadata\": {}},\n        \"pm25\": {\"type\": \"string\", \"value\": \"5\", \"metadata\": {}},\n        \"t\": {\"type\": \"string\", \"value\": \"8.4\", \"metadata\": {}},\n        \"url\": {\"type\": \"string\", \"value\": \"https://orion.s.orchestracities.com/v2/entities/Charleroi\", \"metadata\": {}}\n    \t}\n\t]\n}"
 						},
 						"url": {
-							"raw": "http://{{QL_EP}}/notify",
+							"raw": "http://{{QL_EP}}/v2/notify",
 							"protocol": "http",
 							"host": [
 								"{{QL_EP}}"
 							],
 							"path": [
+								"v2",
 								"notify"
 							]
 						},
 						"description": "Insert entities into QL"
+					},
+					"response": []
+				},
+				{
+					"name": "QL query 1T1E1A",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{QL_EP}}/v2/entities/airqualityobserved_0/attrs/precipitation?type=AirQualityObserved",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities",
+								"airqualityobserved_0",
+								"attrs",
+								"precipitation"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "AirQualityObserved",
+									"description": "COMPULSORY FOR NOW"
+								},
+								{
+									"key": "fromDate",
+									"value": "2018-04-04T00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "toDate",
+									"value": "2018-04-04T00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "lastN",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "aggrMethod",
+									"value": "max",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Query historical values of 1 attribute of 1 entity of 1 type."
+					},
+					"response": []
+				},
+				{
+					"name": "QL query 1T1ENA",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{QL_EP}}/v2/entities/airqualityobserved_0?type=AirQualityObserved&attrs=NO2,CO&lastN=4",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities",
+								"airqualityobserved_0"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "AirQualityObserved",
+									"description": "COMPULSORY FOR NOW"
+								},
+								{
+									"key": "attrs",
+									"value": "NO2,CO"
+								},
+								{
+									"key": "aggrMethod",
+									"value": "avg",
+									"disabled": true
+								},
+								{
+									"key": "fromDate",
+									"value": "2018-04-04T00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "toDate",
+									"value": "2018-04-04T00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "lastN",
+									"value": "4"
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Query historical values of 1 attribute of 1 entity of 1 type."
 					},
 					"response": []
 				}
