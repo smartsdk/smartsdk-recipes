@@ -153,8 +153,7 @@ You can read more about this in
 [this Github issue](https://github.com/docker/docker/issues/26259).
 
 For further details, refer to the [mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm)
-repository, in particular the
-`[docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)`
+repository, in particular the [docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)
 file or the
-`[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)`
+[replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)
 controller script.
