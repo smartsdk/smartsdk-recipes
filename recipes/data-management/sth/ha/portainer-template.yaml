@@ -1,0 +1,20 @@
+---
+- title: Short Time Historic (STH) - Comet
+  type: stack
+  categories:
+  - STH
+  description: |
+               Deploy a scalable Short Time Historic (STH) - Comet
+               Requires existing external networks: frontend, backend
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/data-management/sth/ha/docker-compose.yml
+  env:
+  - name: COMET_VERSION
+    label: Comet Version
+  - name: REPLICA_SET
+    label: Replica Set Name
+  - name: DOCKER_MTU
+    label: Docker MTU

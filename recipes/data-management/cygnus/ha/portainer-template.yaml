@@ -1,0 +1,22 @@
+---
+- title: Cygnus
+  type: stack
+  categories:
+  - Cygnus
+  description: |
+               Deploy a scalable Cygnus
+               Requires existing external networks: frontend, backend
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/data-management/cygnus/ha/docker-compose.yml
+  env:
+  - name: CYGNUS_MYSQL_HOST
+    label: CYGNUS MYSQL Host
+  - name: CYGNUS_MYSQL_USER
+    label: CYGNUS MYSQL User
+  - name: CYGNUS_MYSQL_PASS
+    label: CYGNUS MYSQL Password
+  - name: DOCKER_MTU
+    label: Docker MTU

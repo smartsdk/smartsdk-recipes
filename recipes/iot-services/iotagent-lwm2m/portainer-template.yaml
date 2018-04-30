@@ -1,0 +1,18 @@
+---
+- title: IoT Agent - lwm2m
+  type: stack
+  categories:
+  -  IoT Agent
+  description: |
+               Deploy a scalable IoT Agent - lwm2m
+               Requires existing external network: backend
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/iot-services/iotagent-lwm2m/docker-compose.yml
+  env:
+  - name: IOTA_VERSION
+    label: IOT Agent Version
+  - name: DOCKER_MTU
+    label: Docker MTU

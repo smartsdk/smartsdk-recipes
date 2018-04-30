@@ -1,0 +1,22 @@
+---
+- title: IoT Agent - ul
+  type: stack
+  categories:
+  -  IoT Agent
+  description: |
+               Deploy a scalable IoT Agent - ul
+               Requires existing external network: backend
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/iot-services/iotagent-ul/docker-compose.yml
+  env:
+  - name: IOTA_VERSION
+    label: IOT Agent Version
+  - name: IOTA_HTTP_PORT
+    label: IOT Agent HTTP Port
+  - name: IOTA_NORTH_PORT
+    label: IOT Agent HTTP Northbound Port
+  - name: DOCKER_MTU
+    label: Docker MTU
