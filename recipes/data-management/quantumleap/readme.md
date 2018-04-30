@@ -88,7 +88,8 @@ proxy.
 You will also need to set the values for the following 3 special environment
 variables, depending on the structure of your cluster. The default values will
 assume your cluster has only 1 node, which is not ideal if your cluster has
-multiple nodes. Make sure you have the correct values in `settings.env` (or `settings.bat` in Windows)
+multiple nodes. Make sure you have the correct values in `settings.env`
+(or `settings.bat` in Windows)
 
 - `EXPECTED_NODES`: How many nodes to wait for until the cluster state is
   recovered. The value should be equal to the number of nodes in the cluster.
