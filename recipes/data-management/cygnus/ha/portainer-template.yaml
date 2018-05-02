@@ -6,6 +6,9 @@
   description: |
                Deploy a scalable Cygnus
                Requires existing external networks: frontend, backend
+  note: |
+    <b>Requires existing external networks: frontend, backend.</b><br />
+    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/cygnus/ha/readme/'>documentation</a>.
   logo: https://www.fiware.org/style/imgs/logo_solo.png
   platform: linux
   repository:
