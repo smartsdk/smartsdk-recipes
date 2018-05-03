@@ -56,15 +56,15 @@ If you don't have one, checkout the [tools](../../../tools/readme.md) section
 for a quick way to setup a local swarm.
 
 ```
-    $ miniswarm start 3
-    $ eval $(docker-machine env ms-manager0)
+$ miniswarm start 3
+$ eval $(docker-machine env ms-manager0)
 ```
 
 Orion needs a mongo database for its backend. If you have already deployed Mongo
 within your cluster and would like to reuse that database, you can skip the next
 step (deploying backend). You will just need to pay attention to the variables
-you define for Orion to link to Mongo, namely, `MONGO_SERVICE_URI`
-and `REPLICASET_NAME`. Make sure you have the correct values in `frontend.env`.
+you define for Orion to link to Mongo, namely, `MONGO_SERVICE_URI`. Make sure
+you have the correct values in `settings.env` (or `settings.bat` in Windows).
 The value of `MONGO_SERVICE_URI` should be a routable address for mongo.
 If deployed within the swarm, the service name (with stack prefix)
 would suffice. You can read more in the
@@ -72,30 +72,24 @@ would suffice. You can read more in the
 The default values should be fine for you if you used the
 [Mongo ReplicaSet Recipe](../../../utils/mongo-replicaset/readme.md).
 
-Otherwise, if you prefer to make a new deployment of Mongo just for Orion,
-you can take a shortcut and run...
+Now you can activate your settings and deploy Orion...
 
 ```
-    $ sh deploy_back.sh
-```
-
-Wait some time until the backend is ready and then...
-
-```
-    $ sh deploy_front.sh
+$ source settings.env  # In Windows, simply execute settings.bat instead.
+$ docker stack deploy -c docker-compose.yml orion
 ```
 
 At some point, your deployment should look like this...
 
 ```
-    $ docker service ls
-    ID            NAME                            MODE        REPLICAS  IMAGE
-    nrxbm6k0a2yn  mongo-rs_mongo             global      3/3       mongo:3.2
-    rgws8vumqye2  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
-    zk7nu592vsde  orion_orion                     replicated  3/3       fiware/orion:1.3.0
+$ docker service ls
+ID            NAME                       MODE        REPLICAS  IMAGE
+nrxbm6k0a2yn  mongo-rs_mongo             global      3/3       mongo:3.2
+rgws8vumqye2  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+zk7nu592vsde  orion_orion                replicated  3/3       fiware/orion:1.3.0
 ```
 
-As shown above, if you see `3/3`in the replicas column it means the 3 replicas
+As shown above, if you see `3/3` in the replicas column it means the 3 replicas
 are up and running.
 
 ## A walkthrough
@@ -104,11 +98,11 @@ You can check the distribution of the containers of a service (a.k.a tasks)
 through the swarm running the following...
 
 ```
-    $ docker service ps orion_orion
-    ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE               ERROR  PORTS
-    wwgt3q6nqqg3  orion_orion.1  fiware/orion:1.3.0  ms-worker0   Running        Running 9 minutes ago          
-    l1wavgqra8ry  orion_orion.2  fiware/orion:1.3.0  ms-worker1   Running        Running 9 minutes ago          
-    z20v0pnym8ky  orion_orion.3  fiware/orion:1.3.0  ms-manager0  Running        Running 25 minutes ago    
+$ docker service ps orion_orion
+ID            NAME           IMAGE               NODE         DESIRED STATE  CURRENT STATE               ERROR  PORTS
+wwgt3q6nqqg3  orion_orion.1  fiware/orion:1.3.0  ms-worker0   Running        Running 9 minutes ago          
+l1wavgqra8ry  orion_orion.2  fiware/orion:1.3.0  ms-worker1   Running        Running 9 minutes ago          
+z20v0pnym8ky  orion_orion.3  fiware/orion:1.3.0  ms-manager0  Running        Running 25 minutes ago    
 ```
 
 The good news is that, as you can see from the above output, by default docker
@@ -125,23 +119,23 @@ The question now is... where is Orion actually running? We'll cover the network
 internals later, but for now let's query the manager node...
 
 ```
-    $ sh ../query.sh $(docker-machine ip ms-manager0)
+$ sh ../query.sh $(docker-machine ip ms-manager0)
 ```
 
 You will get something like...
 
 ```
-    {
-      "orion" : {
-      "version" : "1.3.0",
-      "uptime" : "0 d, 0 h, 18 m, 13 s",
-      "git_hash" : "cb6813f044607bc01895296223a27e4466ab0913",
-      "compile_time" : "Fri Sep 2 08:19:12 UTC 2016",
-      "compiled_by" : "root",
-      "compiled_in" : "ba19f7d3be65"
-    }
-    }
-    []
+{
+  "orion" : {
+  "version" : "1.3.0",
+  "uptime" : "0 d, 0 h, 18 m, 13 s",
+  "git_hash" : "cb6813f044607bc01895296223a27e4466ab0913",
+  "compile_time" : "Fri Sep 2 08:19:12 UTC 2016",
+  "compiled_by" : "root",
+  "compiled_in" : "ba19f7d3be65"
+}
+}
+[]
 ```
 
 Thanks to the docker swarm internal routing mesh, you can actually perform
@@ -151,30 +145,30 @@ where the request on port `1026` can be attended (i.e, any node running Orion).
 Let's insert some data...
 
 ```
-    $ sh ../insert.sh $(docker-machine ip ms-worker1)
+$ sh ../insert.sh $(docker-machine ip ms-worker1)
 ```
 
 And check it's there...
 
 ```
-    $ sh ../query.sh $(docker-machine ip ms-worker0)
-    ...
-    [
-        {
-            "id": "Room1",
-            "pressure": {
-                "metadata": {},
-                "type": "Integer",
-                "value": 720
-            },
-            "temperature": {
-                "metadata": {},
-                "type": "Float",
-                "value": 23
-            },
-            "type": "Room"
-        }
-    ]
+$ sh ../query.sh $(docker-machine ip ms-worker0)
+...
+[
+    {
+        "id": "Room1",
+        "pressure": {
+            "metadata": {},
+            "type": "Integer",
+            "value": 720
+        },
+        "temperature": {
+            "metadata": {},
+            "type": "Float",
+            "value": 23
+        },
+        "type": "Room"
+    }
+]
 ```
 
 Yes, you can query any of the three nodes.
@@ -188,7 +182,7 @@ in the swarm.
 Scaling up and down orion is a simple as runnnig something like...
 
 ```
-    $ docker service scale orion_orion=2
+$ docker service scale orion_orion=2
 ```
 
 (this maps to the `replicas` argument in the docker-compose)
@@ -197,27 +191,27 @@ Consequently, one of the nodes (ms-worker1 in my case) is no longer running
 Orion...
 
 ```
-    $ docker service ps orion_orion
-    ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE           ERROR  PORTS
-    2tibpye24o5q  orion_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago         
-    w9zmn8pp61ql  orion_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running 11 minutes ago
+$ docker service ps orion_orion
+ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE           ERROR  PORTS
+2tibpye24o5q  orion_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago         
+w9zmn8pp61ql  orion_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running 11 minutes ago
 ```
 
 But still responds to the querying as mentioned above...
 
 ```
-    $ sh ../query.sh $(docker-machine ip ms-worker1)
-    {
-      "orion" : {
-      "version" : "1.3.0",
-      "uptime" : "0 d, 0 h, 14 m, 30 s",
-      "git_hash" : "cb6813f044607bc01895296223a27e4466ab0913",
-      "compile_time" : "Fri Sep 2 08:19:12 UTC 2016",
-      "compiled_by" : "root",
-      "compiled_in" : "ba19f7d3be65"
-    }
-    }
-    []
+$ sh ../query.sh $(docker-machine ip ms-worker1)
+{
+  "orion" : {
+  "version" : "1.3.0",
+  "uptime" : "0 d, 0 h, 14 m, 30 s",
+  "git_hash" : "cb6813f044607bc01895296223a27e4466ab0913",
+  "compile_time" : "Fri Sep 2 08:19:12 UTC 2016",
+  "compiled_by" : "root",
+  "compiled_in" : "ba19f7d3be65"
+}
+}
+[]
 ```
 
 You can see the [mongo replica recipe](../../../utils/mongo-replicaset) to see
@@ -234,46 +228,46 @@ goes down. Let's show this by running the following (always on the manager
 node):
 
 ```
-    $ docker ps
-    CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
-    abc5e37037f0        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   2 minutes ago       Up 2 minutes        1026/tcp            orion_orion.1.o9ebbardwvzn1gr11pmf61er8
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+$ docker ps
+CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
+abc5e37037f0        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   2 minutes ago       Up 2 minutes        1026/tcp            orion_orion.1.o9ebbardwvzn1gr11pmf61er8
+1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 ```
 
 Suppose orion container goes down...
 
 ```
-    $ docker rm -f abc5e37037f0
+$ docker rm -f abc5e37037f0
 ```
 
 You will see it gone, but after a while it will automatically come back.
 
 ```
-    $ docker ps
-    CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+$ docker ps
+CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS              PORTS               NAMES
+1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                        mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour    27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 
-    $ docker ps
-    CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS                  PORTS               NAMES
-    60ba3f431d9d        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   6 seconds ago       Up Less than a second   1026/tcp            orion_orion.1.uj1gghehb2s1gnoestup2ugs5
-    1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
-    8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
+$ docker ps
+CONTAINER ID        IMAGE                                                                                                COMMAND                  CREATED             STATUS                  PORTS               NAMES
+60ba3f431d9d        fiware/orion@sha256:734c034d078d22f4479e8d08f75b0486ad5a05bfb36b2a1f1ba90ecdba2040a9                 "/usr/bin/contextB..."   6 seconds ago       Up Less than a second   1026/tcp            orion_orion.1.uj1gghehb2s1gnoestup2ugs5
+1d79dca4ff28        martel/mongo-replica-ctrl@sha256:f53d1ebe53624dcf7220fe02b3d764f1b0a34f75cb9fff309574a8be0625553a   "python /src/repli..."   About an hour ago   Up About an hour                            mongo-rs_mongo-controller.1.xomw6zf1o0wq0wbut9t5jx99j
+8ea3b24bee1c        mongo@sha256:0d4453308cc7f0fff863df2ecb7aae226ee7fe0c5257f857fd892edf6d2d9057                        "/usr/bin/mongod -..."   About an hour ago   Up About an hour        27017/tcp           mongo-rs_mongo.ta8olaeg1u1wobs3a2fprwhm6.3akgzz28zp81beovcqx182nkz
 ```
 
 Even if a whole node goes down, the service will remain working because you had
 both redundant orion instances and redundant db replicas.
 
 ```
-    $ docker-machine rm ms-worker0
+$ docker-machine rm ms-worker0
 ```
 
 You will still get replies to...
 
 ```
-    $ sh ../query.sh $(docker-machine ip ms-manager0)
-    $ sh ../query.sh $(docker-machine ip ms-worker1)
+$ sh ../query.sh $(docker-machine ip ms-manager0)
+$ sh ../query.sh $(docker-machine ip ms-worker1)
 ```
 
 ## Networks considerations

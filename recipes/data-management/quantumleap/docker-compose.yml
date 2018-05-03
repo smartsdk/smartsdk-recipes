@@ -22,7 +22,7 @@ services:
       - frontend
 
   traefik:
-    image: traefik:1.3.5-alpine
+    image: traefik:${TRAEFIK_VERSION:-1.3.5-alpine}
     command:
       - --web
       - --docker
@@ -62,7 +62,7 @@ services:
           memory: 36M
 
   crate:
-    image: crate:1.0.5
+    image: crate:${CRATE_VERSION:-2.3.6}
     # ports:
       # Admin UI
     #   - 4200:4200
