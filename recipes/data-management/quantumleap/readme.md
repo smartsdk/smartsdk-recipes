@@ -67,18 +67,18 @@ Before we launch the stack, you need to define a domain for the entrypoint
 of your docker cluster. Save that domain in an environment variable like this:
 
 ```
-    $ export CLUSTER_DOMAIN=mydomain.com
+$ export CLUSTER_DOMAIN=mydomain.com
 ```
 
 If you are just testing locally and don't own one, you can fake it editing your
 `/etc/hosts` file to add an entry that points to the IP of any of the nodes of
-your Swarm Cluster (replace 192.168.99.100 with the IP if your cluster
+your Swarm Cluster (replace `192.168.99.100` with the IP if your cluster
 entrypoint). See the example below.
 
 ```
-    # End of /etc/hosts file
-    192.168.99.100  mydomain.com
-    192.168.99.100  crate.mydomain.com
+# End of /etc/hosts file
+192.168.99.100  mydomain.com
+192.168.99.100  crate.mydomain.com
 ```
 
 Note we've included one entry for `crate.mydomain.com` because we'll be
@@ -88,7 +88,8 @@ proxy.
 You will also need to set the values for the following 3 special environment
 variables, depending on the structure of your cluster. The default values will
 assume your cluster has only 1 node, which is not ideal if your cluster has
-multiple nodes.
+multiple nodes. Make sure you have the correct values in `settings.env`
+(or `settings.bat` in Windows)
 
 - `EXPECTED_NODES`: How many nodes to wait for until the cluster state is
   recovered. The value should be equal to the number of nodes in the cluster.
@@ -118,7 +119,8 @@ Now, we're ready to launch the stack with the name `ql`.
 If you want to deploy the basic stack of QuantumLeap you can simply run...
 
 ```
-    $ docker stack deploy -c docker-compose ql
+$ source settings.env  # In Windows, execute settings.bat instead.
+$ docker stack deploy -c docker-compose ql
 ```
 
 Otherwise, if you'd like to include some extra services such as Grafana for data
@@ -129,22 +131,22 @@ supporting
 Hence the suggested way to proceed is the following...
 
 ```
-    # First we merge the two compose files using docker-compose
-    $ docker-compose -f docker-compose.yml -f docker-compose-addons.yml config > ql.yml
-    # Now we deploy the "ql" stack from the generated ql.yml file.
-    $ docker stack deploy -c ql.yml ql
+# First we merge the two compose files using docker-compose
+$ docker-compose -f docker-compose.yml -f docker-compose-addons.yml config > ql.yml
+# Now we deploy the "ql" stack from the generated ql.yml file.
+$ docker stack deploy -c ql.yml ql
 ```
 
 Wait until you see all instances up and running (this might take some minutes).
 
 ```
-    $ docker service ls
-    ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
-    2vbj18blsqje        ql_traefik          global              1/1                 traefik:1.3.5-alpine              *:80->80/tcp,*:443->443/tcp,*:4200->4200/tcp,*:4300->4300/tcp,*:8080->8080/tcp
-    bvs32e81jcns        ql_viz              replicated          1/1                 dockersamples/visualizer:latest   *:8282->8080/tcp
-    e8kyp4vylvev        ql_quantumleap      replicated          1/1                 smartsdk/quantumleap:latest       *:8668->8668/tcp
-    ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
-    tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000->3000/tcp
+$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
+2vbj18blsqje        ql_traefik          global              1/1                 traefik:1.3.5-alpine              *:80->80/tcp,*:443->443/tcp,*:4200->4200/tcp,*:4300->4300/tcp,*:8080->8080/tcp
+bvs32e81jcns        ql_viz              replicated          1/1                 dockersamples/visualizer:latest   *:8282->8080/tcp
+e8kyp4vylvev        ql_quantumleap      replicated          1/1                 smartsdk/quantumleap:latest       *:8668->8668/tcp
+ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
+tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000->3000/tcp
 ```
 
 Now you are ready to scale services according to your needs using simple docker
@@ -161,7 +163,7 @@ you have in the swarm cluster.
 For a quick test, you can use the `insert.sh` script in this folder.
 
 ```
-    $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
+$ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
 ```
 
 Otherwise, open your favourite API tester and send the fake notification shown
@@ -169,34 +171,34 @@ below to QuantumLeap to later see it persisted in the database through the Crate
 Dashboard.
 
 ```
-    # Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
-    {
-        "subscriptionId": "5947d174793fe6f7eb5e3961",
-        "data": [
-            {
-                "id": "Room1",
-                "type": "Room",
-                "temperature": {
-                    "type": "Number",
-                    "value": 27.6,
-                    "metadata": {
-                        "dateModified": {
-                            "type": "DateTime",
-                            "value": "2017-06-19T11:46:45.00Z"
-                        }
+# Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
+{
+    "subscriptionId": "5947d174793fe6f7eb5e3961",
+    "data": [
+        {
+            "id": "Room1",
+            "type": "Room",
+            "temperature": {
+                "type": "Number",
+                "value": 27.6,
+                "metadata": {
+                    "dateModified": {
+                        "type": "DateTime",
+                        "value": "2017-06-19T11:46:45.00Z"
                     }
                 }
             }
-        ]
-    }
+        }
+    ]
+}
 ```
 
-Remember in the typical scenario is not the client that will be sending payloads
-directly to the `/notify` endpoint, but rather *Orion Context Broker* in the
-form of notifications. More info in the
+Remember in the typical scenario, it is not the client that will be sending
+payloads directly to the `/notify` endpoint, but rather *Orion Context Broker*
+in the form of notifications. More info in the
 [official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
 
-You can use the postman collection available in the
+For all these queries, you can use the postman collection available in the
 [tools section](../../tools/readme.md).
 
 For further information, please refer to the
