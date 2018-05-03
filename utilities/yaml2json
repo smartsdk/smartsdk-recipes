@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import argparse
+
+desc = """\
+yaml2json converter for templates
+
+Run in the root directory of the project and then commit the changes.
+
+Rationale: yaml files are more human friendly to edit, but portainer requires a
+json file as template.
+"""
+
+parser = argparse.ArgumentParser(description=desc,
+                                 formatter_class=argparse.RawTextHelpFormatter)
+args = parser.parse_args()
+
+import yaml
+import json
+import sys
+
+fin = sys.stdin
+fout = sys.stdout
+
+with fin as hin:
+    with fout as wout:
+        data = yaml.safe_load(hin)
+        json.dump(data, wout, indent=4)

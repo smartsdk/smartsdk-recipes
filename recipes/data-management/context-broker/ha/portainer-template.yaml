@@ -1,0 +1,25 @@
+---
+- title: Orion Context Broker
+  type: stack
+  categories:
+  - Orion Context Broker
+  description: |
+               Deploy a scalable Orion Context Broker
+               Requires existing external networks: frontend, backend
+  note: |
+    <b>Requires existing external networks: frontend, backend.</b><br />
+    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/context-broker/ha/readme/'>documentation</a>.
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/data-management/context-broker/ha/docker-compose.yml
+  env:
+  - name: ORION_VERSION
+    label: Orion Version
+  - name: MONGO_SERVICE_URI
+    label: Mongo Service URI
+  - name: REPLICASET_NAME
+    label: Replica Set Name
+  - name: DOCKER_MTU
+    label: Docker MTU
