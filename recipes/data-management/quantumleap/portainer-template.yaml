@@ -29,6 +29,8 @@
     label: Minimum Master Nodes
   - name: DOCKER_MTU
     label: Docker MTU
+  - name: CRATE_VERSION
+    label: CRATE Version
 
 - title: QuantumLeap Addons
   type: stack
