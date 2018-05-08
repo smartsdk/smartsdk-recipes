@@ -1,21 +1,22 @@
 [
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/data-management/context-broker/ha/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable Orion Context Broker\nRequires existing external networks: frontend, backend\n",
-        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/context-broker/ha/readme/'>documentation</a>.\n",
         "categories": [
             "Orion Context Broker"
         ],
+        "title": "Orion Context Broker",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/context-broker/ha/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable Orion Context Broker\nRequires existing external networks: frontend, backend\n",
         "env": [
             {
                 "name": "ORION_VERSION",
                 "label": "Orion Version"
+            },
+            {
+                "name": "ORION_LOG_LEVEL",
+                "label": "Orion Log Level"
             },
             {
                 "name": "MONGO_SERVICE_URI",
@@ -30,21 +31,21 @@
                 "label": "Docker MTU"
             }
         ],
-        "title": "Orion Context Broker"
+        "repository": {
+            "stackfile": "recipes/data-management/context-broker/ha/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/data-management/cygnus/ha/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable Cygnus\nRequires existing external networks: frontend, backend\n",
-        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/cygnus/ha/readme/'>documentation</a>.\n",
         "categories": [
             "Cygnus"
         ],
+        "title": "Cygnus",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/cygnus/ha/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable Cygnus\nRequires existing external networks: frontend, backend\n",
         "env": [
             {
                 "name": "CYGNUS_MYSQL_HOST",
@@ -63,21 +64,21 @@
                 "label": "Docker MTU"
             }
         ],
-        "title": "Cygnus"
+        "repository": {
+            "stackfile": "recipes/data-management/cygnus/ha/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/data-management/quantumleap/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable QuantumLeap\nRequires existing external networks: frontend, backend\n",
-        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/quantumleap/readme/'>documentation</a>.\n",
         "categories": [
             "QuantumLeap"
         ],
+        "title": "QuantumLeap",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/quantumleap/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable QuantumLeap\nRequires existing external networks: frontend, backend\n",
         "env": [
             {
                 "name": "QL_VERSION",
@@ -86,6 +87,14 @@
             {
                 "name": "CRATE_HOST",
                 "label": "CRATE Host"
+            },
+            {
+                "name": "CRATE_VERSION",
+                "label": "CRATE Version"
+            },
+            {
+                "name": "TRAEFIK_VERSION",
+                "label": "Traefik Version"
             },
             {
                 "name": "CLUSTER_DOMAIN",
@@ -106,49 +115,49 @@
             {
                 "name": "DOCKER_MTU",
                 "label": "Docker MTU"
-            },
-            {
-                "name": "CRATE_VERSION",
-                "label": "CRATE Version"
             }
         ],
-        "title": "QuantumLeap"
+        "repository": {
+            "stackfile": "recipes/data-management/quantumleap/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/data-management/quantumleap/docker-compose-addons.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable QuantumLeap Addons\nRequires existing external networks: frontend, backend\n",
-        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/quantumleap/readme/'>documentation</a>.\n",
         "categories": [
             "QuantumLeap Addons"
         ],
+        "title": "QuantumLeap Addons",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/quantumleap/readme/'>documentation</a>.\n",
         "platform": "linux",
-        "title": "QuantumLeap Addons"
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable QuantumLeap Addons\nRequires existing external networks: frontend, backend\n",
+        "repository": {
+            "stackfile": "recipes/data-management/quantumleap/docker-compose-addons.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/data-management/sth/ha/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable Short Time Historic (STH) - Comet\nRequires existing external networks: frontend, backend\n",
-        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/sth/ha/readme/'>documentation</a>.\n",
         "categories": [
             "STH"
         ],
+        "title": "Short Time Historic (STH) - Comet",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/sth/ha/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable Short Time Historic (STH) - Comet\nRequires existing external networks: frontend, backend\n",
         "env": [
             {
                 "name": "COMET_VERSION",
                 "label": "Comet Version"
             },
             {
-                "name": "REPLICA_SET",
+                "name": "MONGO_SERVICE_URI",
+                "label": "Mongo Service Uri"
+            },
+            {
+                "name": "REPLICASET_NAME",
                 "label": "Replica Set Name"
             },
             {
@@ -156,21 +165,21 @@
                 "label": "Docker MTU"
             }
         ],
-        "title": "Short Time Historic (STH) - Comet"
+        "repository": {
+            "stackfile": "recipes/data-management/sth/ha/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/iot-services/iotagent-json/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable IoT Agent - json\nRequires existing external network: backend\n",
-        "note": "<b>Requires existing external networks: backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-json/README/'>documentation</a>.\n",
         "categories": [
             "IoT Agent"
         ],
+        "title": "IoT Agent - json",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-json/README/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable IoT Agent - json\nRequires existing external network: backend\n",
         "env": [
             {
                 "name": "MOSQUITTO_VERSION",
@@ -241,46 +250,58 @@
                 "label": "Docker MTU"
             }
         ],
-        "title": "IoT Agent - json"
+        "repository": {
+            "stackfile": "recipes/iot-services/iotagent-json/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/iot-services/iotagent-lwm2m/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable IoT Agent - lwm2m\nRequires existing external network: backend\n",
-        "note": "<b>Requires existing external networks: backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-lwm2m/readme/'>documentation</a>.\n",
         "categories": [
             "IoT Agent"
         ],
+        "title": "IoT Agent - lwm2m",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-lwm2m/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable IoT Agent - lwm2m\nRequires existing external network: backend\n",
         "env": [
             {
                 "name": "IOTA_VERSION",
                 "label": "IOT Agent Version"
             },
             {
+                "name": "IOTA_LWM"
+            },
+            {
+                "label": "IOT Agent LWM"
+            },
+            {
+                "name": "IOTA_NORTH_PORT"
+            },
+            {
+                "label": "IOT Agent North Port"
+            },
+            {
                 "name": "DOCKER_MTU",
                 "label": "Docker MTU"
             }
         ],
-        "title": "IoT Agent - lwm2m"
+        "repository": {
+            "stackfile": "recipes/iot-services/iotagent-lwm2m/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/iot-services/iotagent-ul/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable IoT Agent - ul\nRequires existing external network: backend\n",
-        "note": "<b>Requires existing external networks: backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-ul/README/'>documentation</a>.\n",
         "categories": [
             "IoT Agent"
         ],
+        "title": "IoT Agent - ul",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-ul/README/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable IoT Agent - ul\nRequires existing external network: backend\n",
         "env": [
             {
                 "name": "IOTA_VERSION",
@@ -299,21 +320,21 @@
                 "label": "Docker MTU"
             }
         ],
-        "title": "IoT Agent - ul"
+        "repository": {
+            "stackfile": "recipes/iot-services/iotagent-ul/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/security/api-umbrella/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a scalable api-umbrella\nRequires existing external networks: frontend, backend\n",
-        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/security/api-umbrella/readme/'>documentation</a>.\n",
         "categories": [
             "api-umbrella"
         ],
+        "title": "api-umbrella",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/security/api-umbrella/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable api-umbrella\nRequires existing external networks: frontend, backend\n",
         "env": [
             {
                 "name": "API_UMBRELLA_VERSION",
@@ -324,25 +345,29 @@
                 "label": "Docker MTU"
             }
         ],
-        "title": "api-umbrella"
+        "repository": {
+            "stackfile": "recipes/security/api-umbrella/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     },
     {
-        "repository": {
-            "url": "https://github.com/smartsdk/smartsdk-recipes",
-            "stackfile": "recipes/utils/mongo-replicaset/docker-compose.yml"
-        },
-        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
-        "type": "stack",
-        "description": "Deploy a replica setof MongoDB instances in a Docker Swarm.\nRequires existing external network: backend (configurable)\n",
-        "note": "<b>Requires existing external networks: backend (configurable).</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/utils/mongo-replicaset/readme/'>documentation</a>.\n",
         "categories": [
             "MongoDB"
         ],
+        "title": "MongoDB Replica Set",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: backend (configurable).</b><br />\nSee the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/utils/mongo-replicaset/readme/'>documentation</a>.\n",
         "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a replica setof MongoDB instances in a Docker Swarm.\nRequires existing external network: backend (configurable)\n",
         "env": [
             {
                 "name": "MONGO_VERSION",
                 "label": "MONGO Version"
+            },
+            {
+                "name": "MONGO_PORT",
+                "label": "MONGO Port"
             },
             {
                 "name": "REPLICASET_NAME",
@@ -357,6 +382,9 @@
                 "label": "Stack Name"
             }
         ],
-        "title": "MongoDB Replica Set"
+        "repository": {
+            "stackfile": "recipes/utils/mongo-replicaset/docker-compose.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     }
 ]

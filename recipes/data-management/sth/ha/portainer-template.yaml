@@ -17,7 +17,9 @@
   env:
   - name: COMET_VERSION
     label: Comet Version
-  - name: REPLICA_SET
+  - name: MONGO_SERVICE_URI
+    label: Mongo Service Uri
+  - name: REPLICASET_NAME
     label: Replica Set Name
   - name: DOCKER_MTU
     label: Docker MTU

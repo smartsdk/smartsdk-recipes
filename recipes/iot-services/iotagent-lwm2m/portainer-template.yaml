@@ -17,5 +17,9 @@
   env:
   - name: IOTA_VERSION
     label: IOT Agent Version
+  - name: IOTA_LWM
+  - label: IOT Agent LWM
+  - name: IOTA_NORTH_PORT
+  - label: IOT Agent North Port
   - name: DOCKER_MTU
     label: Docker MTU

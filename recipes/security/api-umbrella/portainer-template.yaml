@@ -15,7 +15,7 @@
     url: https://github.com/smartsdk/smartsdk-recipes
     stackfile: recipes/security/api-umbrella/docker-compose.yml
   env:
-  - name:  API_UMBRELLA_VERSION
+  - name: API_UMBRELLA_VERSION
     label: API Umbrella Version
   - name: DOCKER_MTU
     label: Docker MTU
