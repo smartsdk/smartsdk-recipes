@@ -17,6 +17,8 @@
   env:
   - name: MONGO_VERSION
     label: MONGO Version
+  - name: MONGO_PORT
+    label: MONGO Port
   - name: REPLICASET_NAME
     label: Replica Set Name
   - name: BACKEND_NETWORK_NAME

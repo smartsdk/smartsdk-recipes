@@ -19,6 +19,10 @@
     label: QuantumLeap Verions
   - name: CRATE_HOST
     label: CRATE Host
+  - name: CRATE_VERSION
+    label: CRATE Version
+  - name: TRAEFIK_VERSION
+    label: Traefik Version
   - name: CLUSTER_DOMAIN
     label: CLUSTER Domain
   - name: EXPECTED_NODES
@@ -29,8 +33,6 @@
     label: Minimum Master Nodes
   - name: DOCKER_MTU
     label: Docker MTU
-  - name: CRATE_VERSION
-    label: CRATE Version
 
 - title: QuantumLeap Addons
   type: stack
