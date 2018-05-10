@@ -85,13 +85,6 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../context-broker/simple/readme/">Simple</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
         <a class="" href="../../context-broker/ha/readme/">HA</a>
         
     </li>
@@ -373,16 +366,16 @@ steps explained in the <a href="../../../installation/">installation guide</a>.<
 <h3 id="before-starting">Before Starting</h3>
 <p>Before we launch the stack, you need to define a domain for the entrypoint
 of your docker cluster. Save that domain in an environment variable like this:</p>
-<pre><code>    $ export CLUSTER_DOMAIN=mydomain.com
+<pre><code>$ export CLUSTER_DOMAIN=mydomain.com
 </code></pre>
 
 <p>If you are just testing locally and don't own one, you can fake it editing your
 <code>/etc/hosts</code> file to add an entry that points to the IP of any of the nodes of
-your Swarm Cluster (replace 192.168.99.100 with the IP if your cluster
+your Swarm Cluster (replace <code>192.168.99.100</code> with the IP if your cluster
 entrypoint). See the example below.</p>
-<pre><code>    # End of /etc/hosts file
-    192.168.99.100  mydomain.com
-    192.168.99.100  crate.mydomain.com
+<pre><code># End of /etc/hosts file
+192.168.99.100  mydomain.com
+192.168.99.100  crate.mydomain.com
 </code></pre>
 
 <p>Note we've included one entry for <code>crate.mydomain.com</code> because we'll be
@@ -391,7 +384,8 @@ proxy.</p>
 <p>You will also need to set the values for the following 3 special environment
 variables, depending on the structure of your cluster. The default values will
 assume your cluster has only 1 node, which is not ideal if your cluster has
-multiple nodes.</p>
+multiple nodes. Make sure you have the correct values in <code>settings.env</code>
+(or <code>settings.bat</code> in Windows)</p>
 <ul>
 <li>
 <p><code>EXPECTED_NODES</code>: How many nodes to wait for until the cluster state is
@@ -420,7 +414,8 @@ environment variables:</p>
 <h3 id="deploy">Deploy</h3>
 <p>Now, we're ready to launch the stack with the name <code>ql</code>.</p>
 <p>If you want to deploy the basic stack of QuantumLeap you can simply run...</p>
-<pre><code>    $ docker stack deploy -c docker-compose ql
+<pre><code>$ source settings.env  # In Windows, execute settings.bat instead.
+$ docker stack deploy -c docker-compose ql
 </code></pre>
 
 <p>Otherwise, if you'd like to include some extra services such as Grafana for data
@@ -429,20 +424,20 @@ visualisation, you can integrate the addons present in the
 supporting
 <a href="https://github.com/moby/moby/issues/30127">multiple compose files to do a single deploy</a>.
 Hence the suggested way to proceed is the following...</p>
-<pre><code>    # First we merge the two compose files using docker-compose
-    $ docker-compose -f docker-compose.yml -f docker-compose-addons.yml config &gt; ql.yml
-    # Now we deploy the &quot;ql&quot; stack from the generated ql.yml file.
-    $ docker stack deploy -c ql.yml ql
+<pre><code># First we merge the two compose files using docker-compose
+$ docker-compose -f docker-compose.yml -f docker-compose-addons.yml config &gt; ql.yml
+# Now we deploy the &quot;ql&quot; stack from the generated ql.yml file.
+$ docker stack deploy -c ql.yml ql
 </code></pre>
 
 <p>Wait until you see all instances up and running (this might take some minutes).</p>
-<pre><code>    $ docker service ls
-    ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
-    2vbj18blsqje        ql_traefik          global              1/1                 traefik:1.3.5-alpine              *:80-&gt;80/tcp,*:443-&gt;443/tcp,*:4200-&gt;4200/tcp,*:4300-&gt;4300/tcp,*:8080-&gt;8080/tcp
-    bvs32e81jcns        ql_viz              replicated          1/1                 dockersamples/visualizer:latest   *:8282-&gt;8080/tcp
-    e8kyp4vylvev        ql_quantumleap      replicated          1/1                 smartsdk/quantumleap:latest       *:8668-&gt;8668/tcp
-    ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
-    tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000-&gt;3000/tcp
+<pre><code>$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
+2vbj18blsqje        ql_traefik          global              1/1                 traefik:1.3.5-alpine              *:80-&gt;80/tcp,*:443-&gt;443/tcp,*:4200-&gt;4200/tcp,*:4300-&gt;4300/tcp,*:8080-&gt;8080/tcp
+bvs32e81jcns        ql_viz              replicated          1/1                 dockersamples/visualizer:latest   *:8282-&gt;8080/tcp
+e8kyp4vylvev        ql_quantumleap      replicated          1/1                 smartsdk/quantumleap:latest       *:8668-&gt;8668/tcp
+ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
+tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000-&gt;3000/tcp
 </code></pre>
 
 <p>Now you are ready to scale services according to your needs using simple docker
@@ -454,39 +449,39 @@ service scale command as explained in
 CRATE.IO dashboard. In the "cluster" tab you should see the same number of nodes
 you have in the swarm cluster.</p>
 <p>For a quick test, you can use the <code>insert.sh</code> script in this folder.</p>
-<pre><code>    $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
+<pre><code>$ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
 </code></pre>
 
 <p>Otherwise, open your favourite API tester and send the fake notification shown
 below to QuantumLeap to later see it persisted in the database through the Crate
 Dashboard.</p>
-<pre><code>    # Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
-    {
-        &quot;subscriptionId&quot;: &quot;5947d174793fe6f7eb5e3961&quot;,
-        &quot;data&quot;: [
-            {
-                &quot;id&quot;: &quot;Room1&quot;,
-                &quot;type&quot;: &quot;Room&quot;,
-                &quot;temperature&quot;: {
-                    &quot;type&quot;: &quot;Number&quot;,
-                    &quot;value&quot;: 27.6,
-                    &quot;metadata&quot;: {
-                        &quot;dateModified&quot;: {
-                            &quot;type&quot;: &quot;DateTime&quot;,
-                            &quot;value&quot;: &quot;2017-06-19T11:46:45.00Z&quot;
-                        }
+<pre><code># Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
+{
+    &quot;subscriptionId&quot;: &quot;5947d174793fe6f7eb5e3961&quot;,
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: &quot;Room1&quot;,
+            &quot;type&quot;: &quot;Room&quot;,
+            &quot;temperature&quot;: {
+                &quot;type&quot;: &quot;Number&quot;,
+                &quot;value&quot;: 27.6,
+                &quot;metadata&quot;: {
+                    &quot;dateModified&quot;: {
+                        &quot;type&quot;: &quot;DateTime&quot;,
+                        &quot;value&quot;: &quot;2017-06-19T11:46:45.00Z&quot;
                     }
                 }
             }
-        ]
-    }
+        }
+    ]
+}
 </code></pre>
 
-<p>Remember in the typical scenario is not the client that will be sending payloads
-directly to the <code>/notify</code> endpoint, but rather <em>Orion Context Broker</em> in the
-form of notifications. More info in the
+<p>Remember in the typical scenario, it is not the client that will be sending
+payloads directly to the <code>/notify</code> endpoint, but rather <em>Orion Context Broker</em>
+in the form of notifications. More info in the
 <a href="https://smartsdk.github.io/ngsi-timeseries-api/">official documentation</a>.</p>
-<p>You can use the postman collection available in the
+<p>For all these queries, you can use the postman collection available in the
 <a href="../../../tools/readme/">tools section</a>.</p>
 <p>For further information, please refer to the
 <a href="https://smartsdk.github.io/ngsi-timeseries-api/">QuantumLeap's User Manual</a>.</p>

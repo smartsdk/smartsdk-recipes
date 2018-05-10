@@ -3,10 +3,10 @@ version: '3'
 services:
 
   orion:
-    image: fiware/orion:${ORION_VERSION:-1.7.0}
+    image: fiware/orion:${ORION_VERSION:-1.12.0}
     ports:
       - "1026:1026"
-    command: -logLevel DEBUG -dbhost ${MONGO_SERVICE_URI:-"mongo-rs_mongo"} -rplSet ${REPLICASET_NAME:-rs} -dbTimeout 10000
+    command: -logLevel ${ORION_LOG_LEVEL:-DEBUG} -dbhost ${MONGO_SERVICE_URI:-"mongo"} -rplSet ${REPLICASET_NAME:-rs} -dbTimeout 10000
     deploy:
       replicas: 2
     networks:
@@ -19,6 +19,7 @@ services:
       retries: 3
 
 networks:
+  # Legacy for running with docker-compose in FIWARE Lab
   default:
     driver_opts:
       com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}

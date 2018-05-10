@@ -85,13 +85,6 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../../data-management/context-broker/simple/readme/">Simple</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
         <a class="" href="../../../data-management/context-broker/ha/readme/">HA</a>
         
     </li>
@@ -401,8 +394,8 @@ in global mode.</p>
 <pre><code class="bash">$ docker service update --publish-add published=27017,target=27017,protocol=tcp,mode=host mongo-rs_mongo
 
 mongo-rs_mongo
-overall progress: 1 out of 1 tasks 
-w697ke0djs3c: running   [==================================================&gt;] 
+overall progress: 1 out of 1 tasks
+w697ke0djs3c: running   [==================================================&gt;]
 verify: Service converged
 </code></pre>
 
@@ -457,7 +450,7 @@ rbo2oe2y0d72        mongo-rs_mongo        global              3/3               
 are up and running.</p>
 <h2 id="a-walkthrough">A walkthrough</h2>
 <p>In the following walkthrough we will explain how to do the initial configuration
-of API Umbrella and register your first API. For more details read 
+of API Umbrella and register your first API. For more details read
 <a href="https://api-umbrella.readthedocs.io/en/latest/">API Umbrella's documentation</a>.</p>
 <ol>
 <li>Let's create the admin user in API Umbrella. As first thing,
@@ -504,7 +497,7 @@ defaults).</p>
       "sort_order": 100000,
       "backend_protocol": "http",
       "frontend_host": "<your-cluster-manager-ip>",
-      "backend_host": "maps.googleapis.com", 
+      "backend_host": "maps.googleapis.com",
       "servers": [
         {
           "host": "maps.googleapis.com",
@@ -684,9 +677,9 @@ defaults).</p>
 <ol>
 <li>
 <p>Test your new API, by issuing a query:</p>
-</li>
-<li>
-<p>Get a token from FIWARE:</p>
+<ul>
+<li>Get a token from FIWARE:</li>
+</ul>
 <p>```bash
 $ wget --no-check-certificate https://raw.githubusercontent.com/fgalan/oauth2-example-orion-client/master/token_script.sh
 $ bash token_script.sh</p>
@@ -694,9 +687,9 @@ $ bash token_script.sh</p>
 Password:
 Token: <this is the token you need>
 ```</p>
-</li>
-<li>
-<p>Use it to make a query to your API:</p>
+<ul>
+<li>Use it to make a query to your API:</li>
+</ul>
 <p>```bash
 $ curl -k "https://<your-cluster-manager-ip>/distance2/maps/api/distancematrix/json?units=imperial&amp;origins=Washington,DC&amp;destinations=New+York+City,NY&amp;token=<your-FIWARE-token>"</p>
 <p>Response:

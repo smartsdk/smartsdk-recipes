@@ -1,0 +1,21 @@
+---
+- title: api-umbrella
+  type: stack
+  categories:
+  -  api-umbrella
+  description: |
+               Deploy a scalable api-umbrella
+               Requires existing external networks: frontend, backend
+  note: |
+    <b>Requires existing external networks: frontend, backend.</b><br />
+    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/security/api-umbrella/readme/'>documentation</a>.
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/security/api-umbrella/docker-compose.yml
+  env:
+  - name: API_UMBRELLA_VERSION
+    label: API Umbrella Version
+  - name: DOCKER_MTU
+    label: Docker MTU

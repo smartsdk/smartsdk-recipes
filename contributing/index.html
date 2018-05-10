@@ -85,13 +85,6 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../data-management/context-broker/simple/readme/">Simple</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
         <a class="" href="../data-management/context-broker/ha/readme/">HA</a>
         
     </li>
@@ -260,6 +253,8 @@
             
                 <li class="toctree-l3"><a href="#contributing">Contributing</a></li>
                 
+                    <li><a class="toctree-l4" href="#contributing-to-portainer-recipes">Contributing to Portainer Recipes</a></li>
+                
                     <li><a class="toctree-l4" href="#documentation">Documentation</a></li>
                 
             
@@ -322,6 +317,17 @@ if something looks wrong.</p>
 <p>Once you make a pull request to the repository, you will be able to observe
 the results of the compliancy verification in your PR. Merge will be only possible
 if CI process is passed successfully.</p>
+<h2 id="contributing-to-portainer-recipes">Contributing to Portainer Recipes</h2>
+<p>The SmartDSK Recipes aim to be deployable both using command line
+tools following this Guide or by using a portainer template.</p>
+<p>The documentation of the portainer template file is documented in the
+<a href="https://portainer.readthedocs.io/en/stable/templates.html#stack-template-definition-format">Stack template definition format</a></p>
+<p>The json file is however not human friendly to edit, so in this
+project the templates should be written in the
+<code>portainer-template.yaml</code> files, and before committing changes, call
+the <code>make</code> from the root directory of the project in order to update
+the file <code>portainer/templates.json</code>.  Then Add and commit the files
+<code>portainer-template.yaml</code> and <code>portainer/templates.json</code> together.</p>
 <h2 id="documentation">Documentation</h2>
 <p>For now we are using <a href="http://www.mkdocs.org">Mkdocs</a> deploying on
 <a href="https://pages.github.com">Github Pages</a>.</p>
