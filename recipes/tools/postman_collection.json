@@ -10,41 +10,6 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Orion version",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "fiware-service",
-								"value": "default",
-								"disabled": true
-							},
-							{
-								"key": "fiware-ServicePath",
-								"value": "/",
-								"disabled": true
-							}
-						],
-						"body": {},
-						"url": {
-							"raw": "http://{{ORION_EP}}/version",
-							"protocol": "http",
-							"host": [
-								"{{ORION_EP}}"
-							],
-							"path": [
-								"version"
-							]
-						},
-						"description": "Orion version in Swarm"
-					},
-					"response": []
-				},
-				{
 					"name": "Orion entities",
 					"request": {
 						"method": "GET",
@@ -81,6 +46,41 @@
 					"response": []
 				},
 				{
+					"name": "Orion version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "default",
+								"disabled": true
+							},
+							{
+								"key": "fiware-ServicePath",
+								"value": "/",
+								"disabled": true
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{ORION_EP}}/version",
+							"protocol": "http",
+							"host": [
+								"{{ORION_EP}}"
+							],
+							"path": [
+								"version"
+							]
+						},
+						"description": "Orion version in Swarm"
+					},
+					"response": []
+				},
+				{
 					"name": "Orion entity",
 					"request": {
 						"method": "POST",
@@ -106,10 +106,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"Room1\",\n  \"type\": \"Room\",\n  \"temperature\": {\n    \"value\": 24,\n    \"type\": \"Float\"\n  },\n  \"pressure\": {\n    \"value\": 721,\n    \"type\": \"Integer\"\n  }\n}"
+							"raw": "{\n    \"id\": \"air_quality_observer_be_001\",\n    \"type\": \"AirQualityObserved\",\n    \"address\": {\n        \"streetAddress\": \"IJzerlaan\",\n        \"postOfficeBoxNumber\": \"18\",\n        \"addressLocality\": \"Antwerpen\",\n        \"addressCountry\": \"BE\"\n    },\n    \"dateObserved\": \"2017-11-03T12:37:23.734827\",\n    \"source\": \"http://testing.data.from.smartsdk\",\n    \"precipitation\": 0,\n    \"relativeHumidity\": 0.54,\n    \"temperature\": 12.2,\n    \"windDirection\": 186,\n    \"windSpeed\": 0.64,\n    \"airQualityLevel\": \"moderate\",\n    \"airQualityIndex\": 65,\n    \"reliability\": 0.7,\n    \"CO\": 500,\n    \"NO\": 45,\n    \"NO2\": 69,\n    \"NOx\": 139,\n    \"SO2\": 11,\n    \"CO_Level\": \"moderate\",\n    \"refPointOfInterest\": \"null\"\n}"
 						},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/entities",
+							"raw": "http://{{ORION_EP}}/v2/entities?options=keyValues",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
@@ -117,6 +117,12 @@
 							"path": [
 								"v2",
 								"entities"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues"
+								}
 							]
 						},
 						"description": "Insert entities into Orion in Swarm"
@@ -126,7 +132,7 @@
 				{
 					"name": "Orion update",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "Accept",
@@ -149,10 +155,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"temperature\": {\n    \"value\": 13,\n    \"type\": \"Number\"\n  },\n  \"pressure\": {\n    \"value\": 710,\n    \"type\": \"Integer\"\n  }\n}"
+							"raw": "{\n  \"precipitation\": {\n    \"value\": 101,\n    \"type\": \"Number\"\n  }\n}"
 						},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/entities/Room1/attrs",
+							"raw": "http://{{ORION_EP}}/v2/entities/air_quality_observer_be_001/attrs",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
@@ -160,7 +166,7 @@
 							"path": [
 								"v2",
 								"entities",
-								"Room1",
+								"air_quality_observer_be_001",
 								"attrs"
 							]
 						},
@@ -190,7 +196,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/entities/?type=Room",
+							"raw": "http://{{ORION_EP}}/v2/entities/air_quality_observer_be_001",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
@@ -198,13 +204,7 @@
 							"path": [
 								"v2",
 								"entities",
-								""
-							],
-							"query": [
-								{
-									"key": "type",
-									"value": "Room"
-								}
+								"air_quality_observer_be_001"
 							]
 						}
 					},
@@ -226,21 +226,20 @@
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/#",
+								"value": "/",
 								"disabled": true
 							}
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/subscriptions/",
+							"raw": "http://{{ORION_EP}}/v2/subscriptions",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
 							],
 							"path": [
 								"v2",
-								"subscriptions",
-								""
+								"subscriptions"
 							]
 						},
 						"description": "Orion subscriptions in Swarm"
@@ -262,11 +261,13 @@
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
+								"value": "/",
+								"disabled": true
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -298,21 +299,23 @@
 								"value": "application/json"
 							},
 							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
 								"key": "fiware-service",
-								"value": "default"
+								"value": "default",
+								"disabled": true
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"value": "/",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"description\": \"device\",\n    \"notification\": {\n        \"attrs\": [],\n        \"http\": {\n            \"url\": \"http://quantumleap:8668/v2/notify\"\n        },\n        \"metadata\": [\n            \"dateCreated\",\n            \"dateModified\"\n        ]\n    },\n    \"subject\": {\n        \"condition\": {\n            \"attrs\": []\n        },\n        \"entities\": [\n            {\n                \"idPattern\": \".*\",\n                \"type\": \"Device\"\n            }\n        ]\n    }\n}"
+							"raw": "{\n    \"description\": \"Manual Subscription created from Postman\",\n    \"notification\": {\n        \"attrs\": [],\n        \"http\": {\n            \"url\": \"http://quantumleap:8668/v2/notify\"\n        },\n        \"metadata\": [\n            \"dateCreated\",\n            \"dateModified\"\n        ]\n    },\n    \"subject\": {\n        \"condition\": {\n            \"attrs\": []\n        },\n        \"entities\": [\n            {\n                \"idPattern\": \".*\",\n                \"type\": \"Device\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{ORION_EP}}/v2/subscriptions",
@@ -351,7 +354,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{ORION_EP}}/v2/subscriptions/5ae2faa8cfdf0100fa49eb1f",
+							"raw": "http://{{ORION_EP}}/v2/subscriptions/5b3df2ae940fcc446763ef90",
 							"protocol": "http",
 							"host": [
 								"{{ORION_EP}}"
@@ -359,7 +362,7 @@
 							"path": [
 								"v2",
 								"subscriptions",
-								"5ae2faa8cfdf0100fa49eb1f"
+								"5b3df2ae940fcc446763ef90"
 							]
 						}
 					},
@@ -533,7 +536,7 @@
 					},
 					"response": [
 						{
-							"id": "966ffcf9-1ddc-48c1-b179-fc83b8e0ac14",
+							"id": "eed6ecd6-00d6-425d-84a6-9b840fd42f51",
 							"name": "Comet raw information",
 							"originalRequest": {
 								"method": "GET",
@@ -761,7 +764,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{QL_EP}}/v2/subscribe?orionUrl=http://{{ORION_EP}}/v2&quantumleapUrl=http://quantumleap:8668/v2",
+							"raw": "http://{{QL_EP}}/v2/subscribe?orionUrl=http://orion:1026/v2&quantumleapUrl=http://quantumleap:8668/v2&entityType=AirQualityObserved",
 							"protocol": "http",
 							"host": [
 								"{{QL_EP}}"
@@ -773,7 +776,7 @@
 							"query": [
 								{
 									"key": "orionUrl",
-									"value": "http://{{ORION_EP}}/v2"
+									"value": "http://orion:1026/v2"
 								},
 								{
 									"key": "quantumleapUrl",
@@ -781,8 +784,7 @@
 								},
 								{
 									"key": "entityType",
-									"value": "AirQualityObserved",
-									"disabled": true
+									"value": "AirQualityObserved"
 								},
 								{
 									"key": "idPattern",
@@ -822,7 +824,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"subscriptionId\": \"5947d174793fe6f7eb5e3961\", \n\t\"data\": [\n\t\t{\n        \"id\": \"299500\",\n        \"type\": \"AirQualityObserved\",\n        \"aqi\": {\"type\": \"string\", \"value\": \"5\", \"metadata\": {}},\n        \"city\": {\"type\": \"string\", \"value\": \"Charleroi\", \"metadata\": {}},\n        \"h\": {\"type\": \"string\", \"value\": \"87\", \"metadata\": {}},\n        \"location\": {\"type\": \"geo:point\", \"value\": \"50.4093114542045, 4.45217178148666\", \"metadata\": {}},\n        \"no2\": {\"type\": \"string\", \"value\": \"6.4\", \"metadata\": {}},\n        \"p\": {\"type\": \"string\", \"value\": \"994\", \"metadata\": {}},\n        \"pm10\": {\"type\": \"string\", \"value\": \"3\", \"metadata\": {}},\n        \"pm25\": {\"type\": \"string\", \"value\": \"5\", \"metadata\": {}},\n        \"t\": {\"type\": \"string\", \"value\": \"8.4\", \"metadata\": {}},\n        \"url\": {\"type\": \"string\", \"value\": \"https://orion.s.orchestracities.com/v2/entities/Charleroi\", \"metadata\": {}}\n    \t}\n\t]\n}"
+							"raw": "{\n\t\"subscriptionId\": \"5947d174793fe6f7eb5e3923\", \n\t\"data\": [{\n\t\t\"id\": \"wcbe001\",\n\t\t\"type\": \"WasteContainer\", \n\t\t\"address\": {\n\t\t\"type\": \"StructuredValue\",\n\t\t\"value\": {\n\t\t\t\"streetAddress\": \"Slachthuislaan\",\n    \t\t\"postOfficeBoxNumber\": \"44\",\n    \t\t\"addressLocality\": \"Antwerpen\",\n    \t\t\"addressCountry\": \"BE\"\n\t\t},\n\t\t\"metadata\": {}\n\t\t},\n\t\t\"load\": {\"type\": \"Number\", \"value\": 0.4, \"metadata\": {}}, \n\t\t\"humidity\": {\"type\": \"Number\", \"value\": 0.8, \"metadata\": {}}\n\t}]\n}"
 						},
 						"url": {
 							"raw": "http://{{QL_EP}}/v2/notify",
@@ -851,7 +853,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{QL_EP}}/v2/entities/airqualityobserved_0/attrs/precipitation?type=AirQualityObserved",
+							"raw": "http://{{QL_EP}}/v2/entities/air_quality_observer_be_001/attrs/precipitation?type=AirQualityObserved",
 							"protocol": "http",
 							"host": [
 								"{{QL_EP}}"
@@ -859,7 +861,7 @@
 							"path": [
 								"v2",
 								"entities",
-								"airqualityobserved_0",
+								"air_quality_observer_be_001",
 								"attrs",
 								"precipitation"
 							],
@@ -917,7 +919,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{QL_EP}}/v2/entities/airqualityobserved_0?type=AirQualityObserved&attrs=NO2,CO&lastN=4",
+							"raw": "http://{{QL_EP}}/v2/entities/air_quality_observer_be_001?type=AirQualityObserved&attrs=NO2,CO,precipitation&lastN=4",
 							"protocol": "http",
 							"host": [
 								"{{QL_EP}}"
@@ -925,7 +927,7 @@
 							"path": [
 								"v2",
 								"entities",
-								"airqualityobserved_0"
+								"air_quality_observer_be_001"
 							],
 							"query": [
 								{
@@ -935,7 +937,7 @@
 								},
 								{
 									"key": "attrs",
-									"value": "NO2,CO"
+									"value": "NO2,CO,precipitation"
 								},
 								{
 									"key": "aggrMethod",
@@ -969,6 +971,66 @@
 							]
 						},
 						"description": "Query historical values of 1 attribute of 1 entity of 1 type."
+					},
+					"response": []
+				},
+				{
+					"name": "QL delete entity",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{QL_EP}}/v2/entities/airqualityobserved_0?type=AirQualityObserved&fromDate=2018-04-04T00:00:00&toDate=2018-04-04T00:00:00&lastN=10",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"v2",
+								"entities",
+								"airqualityobserved_0"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "AirQualityObserved"
+								},
+								{
+									"key": "fromDate",
+									"value": "2018-04-04T00:00:00"
+								},
+								{
+									"key": "toDate",
+									"value": "2018-04-04T00:00:00"
+								},
+								{
+									"key": "lastN",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QL delete entities",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{QL_EP}}/v2/types/AirQualityObserved",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"v2",
+								"types",
+								"AirQualityObserved"
+							]
+						}
 					},
 					"response": []
 				}
