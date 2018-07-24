@@ -1,0 +1,50 @@
+version: '3.3'
+
+services:
+  cygnus-common:
+    image: fiware/cygnus-ngsi
+    environment:
+        # - CYGNUS_LOG_LEVEL=DE0BUG  # Keep for debugging
+      - CYGNUS_MYSQL_HOST=${CYGNUS_MYSQL_HOST-mysql}
+      - CYGNUS_MYSQL_USER=${CYGNUS_MYSQL_USER-root}
+      - CYGNUS_MYSQL_PASS=${CYGNUS_MYSQL_PASS-mypassword}
+    depends_on:
+      - mysql
+    ports:
+      - "5050:5050"
+    configs:
+      - source: cygnus_agent
+        target: /opt/apache-flume/conf/cygnus_agent.conf
+      - source: cartodb_keys
+        target: /opt/apache-flume/conf/cartodb_keys.conf
+    networks:
+      - frontend
+      - backend
+
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${CYGNUS_MYSQL_PASS-mypassword}
+    networks:
+      - backend
+
+configs:
+  cygnus_agent:
+    file: ./conf/cygnus_agent.conf
+  cartodb_keys:
+    file: ./conf/cartodb_keys.conf
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+  frontend:
+    driver: overlay
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+  backend:
+    driver: overlay
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}

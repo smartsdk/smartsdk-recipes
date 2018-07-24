@@ -1,0 +1,35 @@
+version: '3.3'
+
+services:
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - crate
+    environment:
+      - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - grafanaconfig:/etc/grafana
+    networks:
+      - backend  # To access Crate DB
+      - frontend
+
+volumes:
+  grafanadata:
+  grafanaconfig:
+
+networks:
+  backend:
+    external: true
+  frontend:
+    external: true
+

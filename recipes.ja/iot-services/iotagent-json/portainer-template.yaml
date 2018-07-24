@@ -1,0 +1,51 @@
+---
+- title: IoT Agent - json
+  type: stack
+  categories:
+  -  IoT Agent
+  description: |
+               Deploy a scalable IoT Agent - json
+               Requires existing external network: backend
+  note: |
+    <b>Requires existing external networks: backend.</b><br />
+    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-json/README/'>documentation</a>.
+  logo: https://www.fiware.org/style/imgs/logo_solo.png
+  platform: linux
+  repository:
+    url: https://github.com/smartsdk/smartsdk-recipes
+    stackfile: recipes/iot-services/iotagent-json/docker-compose.yml
+  env:
+  - name: MOSQUITTO_VERSION
+    label: Mosquitto Verions
+  - name: IOTA_VERSION
+    label: IOT Agent Version
+  - name: IOTA_HTTP_PORT
+    label: IOT Agent HTTP Port
+  - name: IOTA_NORTH_PORT
+    label: IOT Agent HTTP Northbound Port
+  - name: IOTA_MQTT_HOST
+    label: IOT Agent MQTT Host
+  - name: IOTA_MQTT_PORT
+    label: IOT Agent MQTTPort
+  - name: IOTA_LOG_LEVEL
+    label: IOT Agent Log Level
+  - name: IOTA_TIMESTAMP
+    label: IOT Agent Timestamp
+  - name: IOTA_CB_HOST
+    label: IOT Agent Context Broker Host
+  - name: IOTA_CB_PORT
+    label: IOT Agent Contex Broker Port
+  - name: IOTA_REGISTRY_TYPE
+    label: IOT Agent Registry Type
+  - name: IOTA_MONGO_HOST
+    label: IOT Agent Mongo Host
+  - name: IOTA_MONGO_PORT
+    label: IOT Agent Mongo Port
+  - name: IOTA_MONGO_DB
+    label: IOT Agent Mongo Database
+  - name: IOTA_MONGO_REPLICASET
+    label: IOT Agent Mongo Replica Set
+  - name: IOTA_PROVIDER_URL
+    label: IOT Agent Provider URL
+  - name: DOCKER_MTU
+    label: Docker MTU

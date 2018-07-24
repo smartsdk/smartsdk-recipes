@@ -1,0 +1,17 @@
+# ようこそ
+
+このサイトは、[SmartSDK](https://www.smartsdk.eu) が提供するレシピのドキュメンテーションに特化しており、 さまざまな [FIWARE Generic Enablers](https://catalogue.fiware.org/enablers)  とそれらの組み合わせを一般的なユースケースとして紹介しています。
+
+レシピは [Docker](https://docs.docker.com) といくつかの補完的なスクリプトに基づいています。単純なケースでは、[docker-compose](https://docs.docker.com/compose/) を使用して単一の Docker ホストでそれらを実行することができます。しかし、より興味深いシナリオは、[Docker Swarm](https://docs.docker.com/engine/swarm/) クラスタで実行することを目指してい ます。
+
+レシピは、[FIWARE Chapters](https://www.fiware.org/our-vision/) とそれらが扱うことを目指している一般的な [Generic Enablers](https://catalogue.fiware.org/enablers) を尊重したフォルダにまとめられています。共有機能は `utils` フォルダ内にあります。
+
+また、ローカルの環境でレシピをテストする場合は、[ツール](./tools/readme.md) のセクションを参照してください。
+
+## 入門
+
+最初に[インストール](./installation.md) のセクションに進み、インストラクションに従ってコードを取得し、環境を設定します。
+
+そして、対応する FIWARE のドキュメントのさまざまレシピとそのリファレンス部分を自由に探検してください。このドキュメントの構造は、ナビゲーションを簡単にするため、リポジトリのレシピ・フォルダの構造にマップされています。
+
+このレポジトリを改善したい場合は、[コントリビューション](./contributing.md) のセクションをお見逃しなく。
