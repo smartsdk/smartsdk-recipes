@@ -1,5 +1,0 @@
-mongo-docker-compose.yml
-mongo-healthcheck
-api-umbrella.yml
-api-umbrella.yml.bak
-token_script.sh
