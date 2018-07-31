@@ -4,7 +4,7 @@
 
 Here you can find recipes aimed at different usages of QuantumLeap. We assume
 you are already familiar with it, otherwise refer to the
-[official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
+[official documentation](https://quantumleap.readthedocs.io/en/latest/).
 
 Instructions on how to prepare your environment to test these recipes are given
 in the [installation section](../../installation.md).
@@ -195,11 +195,10 @@ Dashboard.
 
 Remember in the typical scenario, it is not the client that will be sending
 payloads directly to the `/notify` endpoint, but rather *Orion Context Broker*
-in the form of notifications. More info in the
-[official documentation](https://smartsdk.github.io/ngsi-timeseries-api/).
+in the form of notifications.
 
 For all these queries, you can use the postman collection available in the
 [tools section](../../tools/readme.md).
 
 For further information, please refer to the
-[QuantumLeap's User Manual](https://smartsdk.github.io/ngsi-timeseries-api/).
+[QuantumLeap's User Manual](https://quantumleap.readthedocs.io/en/latest/user/).
