@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
   api-umbrella:
-    image: martel/api-umbrella:${API_UMBRELLA_VERSION:-0.14.4-1-fiware}
+    image: smartsdk/api-umbrella:${API_UMBRELLA_VERSION:-0.14.4-1-fiware}
     ports:
       - "80:80"
       - "443:443"

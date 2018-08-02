@@ -69,7 +69,7 @@ running...
 $ docker service ls
 ID            NAME                            MODE        REPLICAS  IMAGE
 fjxof1n5ce58  mongo-rs_mongo             global      3/3       mongo:latest
-yzsur7rb4mg1  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+yzsur7rb4mg1  mongo-rs_mongo-controller  replicated  1/1       smartsdk/mongo-rs-controller-swarm:latest
 ```
 
 ## A Walkthrough
@@ -134,7 +134,7 @@ Back to the host, some minutes later...
 $ docker service ls
 ID            NAME                            MODE        REPLICAS  IMAGE
 fjxof1n5ce58  mongo-rs_mongo             global      4/4       mongo:latest
-yzsur7rb4mg1  mongo_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+yzsur7rb4mg1  mongo_mongo-controller  replicated  1/1       smartsdk/mongo-rs-controller-swarm:latest
 
 $ docker logs $(docker ps -f "name=mongo_mongo-controller" -q)
 ...
