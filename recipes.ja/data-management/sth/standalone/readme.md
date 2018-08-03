@@ -2,7 +2,8 @@
 
 ## イントロダクション
 
-このスタンドアロン・ウォークスルーのアイデアは、以下に示すような簡単な通知ベースのシナリオ内で Comet Generic Enabler をテストして紹介することです。
+このスタンドアロン・ウォークスルーのアイデアは、以下に示すような簡単な通知ベース
+のシナリオ内で Comet Generic Enabler をテストして紹介することです。
 
 <img src='http://g.gravizo.com/g?
 digraph Cluster {
@@ -35,7 +36,9 @@ digraph Cluster {
 
 ## ウォークスルー
 
-まず、Docker Swarm (docker >= 1.13) をセットアップしておく必要があります。セットアップしていない場合は、local swarm をセットアップするための簡単な方法については[ツール](../../../tools/readme.md)・セクションをチェックしてください。
+まず、Docker Swarm (docker >= 1.13) をセットアップしておく必要があります。セット
+アップしていない場合は、local swarm をセットアップするための簡単な方法については
+[ツール](../../../tools/readme.md)・セクションをチェックしてください。
 
 ```
     $ miniswarm start 3
@@ -59,7 +62,10 @@ digraph Cluster {
     xg8ds3szkoi7  comet_orion-mongo  replicated  1/1       mongo:3.2
 ```
 
-さて、いくつかの検査を開始しましょう。便宜上、Orion と Comet のサービスの IP アドレスを保存しましょう。このシナリオでは、両方ともサービス・ポートを公開している Swarm に配備されているため、Swarm の ingress ネットワーク には1つのエントリポイントで十分です。
+さて、いくつかの検査を開始しましょう。便宜上、Orion と Comet のサービスの IP
+ アドレスを保存しましょう。このシナリオでは、両方ともサービス・ポートを公開して
+いる Swarm に配備されているため、Swarm の ingress ネットワーク には1つのエントリ
+ポイントで十分です。
 
 ```
     ORION=http://$(docker-machine ip ms-manager0)

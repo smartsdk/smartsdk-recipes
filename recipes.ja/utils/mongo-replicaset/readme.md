@@ -1,6 +1,7 @@
 # MongoDB レプリカ・セット
 
-このレシピは、MongoDB インスタンスの[レプリカ・セット](https://docs.mongodb.com/manual/replication/)を Docker Swarm にデプロイして制御することを目的としています。
+このレシピは、MongoDB インスタンスの[レプリカ・セット](https://docs.mongodb.com/manual/replication/)を
+ Docker Swarm にデプロイして制御することを目的としています。
 
 <img src='http://g.gravizo.com/g?
 digraph Cluster {
@@ -88,7 +89,10 @@ INFO:__main__:Initial config: {'version': 1, '_id': 'rs', 'members': [{'_id': 0,
 INFO:__main__:replSetInitiate: {'ok': 1.0}
 ```
 
-ご覧のとおり、レプリカ・セットは、同じオーバーレイ・ネットワーク上で動作するコンテナによって表される 3つのレプリカで構成されていました。mongo コンテナのいずれかで mongo コマンドを実行して、同じ結果を表示するために `rs.status()` を実行することもできます。
+ご覧のとおり、レプリカ・セットは、同じオーバーレイ・ネットワーク上で動作する
+コンテナによって表される 3つのレプリカで構成されていました。mongo コンテナの
+いずれかで mongo コマンドを実行して、同じ結果を表示するために `rs.status()` を
+実行することもできます。
 
 ```
 $ docker exec -ti d56d17c40f8f mongo rs:SECONDARY> rs.status()
@@ -96,7 +100,9 @@ $ docker exec -ti d56d17c40f8f mongo rs:SECONDARY> rs.status()
 
 ## レプリカ・セットの再スケーリング
 
-新しいノードを `swarm` に追加して、docker が mongo サービスの新しいタスクをどのようにデプロイし、コントローラーがそれを自動的にレプリカ・セットに追加するかを見てみましょう。
+新しいノードを `swarm` に追加して、docker が mongo サービスの新しいタスクを
+どのようにデプロイし、コントローラーがそれを自動的にレプリカ・セットに追加する
+かを見てみましょう。
 
 ```
 # First get the token to join the swarm
@@ -130,6 +136,12 @@ INFO:__main__:replSetReconfig: {'ok': 1.0}
 
 ノードがダウンすると、レプリカ・セットは mongo によってアプリケーションのレベルで自動的に再構成されます。一方、Docker は、ノードごとに1つしか実行されないため、レプリカのスケジュールを変更しません。
 
-_注_ : swarm のすべてのノードにレプリカを配置したくない場合は、現在の解決策は、制約とノード・タグの組み合わせを使用することです。これについて、[Github の issue](https://github.com/docker/docker/issues/26259) で詳しく読むことができます。
+_注_ : swarm のすべてのノードにレプリカを配置したくない場合は、現在の解決策は、
+制約とノード・タグの組み合わせを使用することです。これについて、
+[Github の issue](https://github.com/docker/docker/issues/26259) で詳しく
+読むことができます。
 
-詳細は、[mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm) リポジトリ、特に [docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml) ファイルまたは [replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py) コントローラのスクリプトを参照してください。
+詳細は、[mongo-rs-controller-swarm](https://github.com/smartsdk/mongo-rs-controller-swarm)
+リポジトリ、特に [docker-compose.yml](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/docker-compose.yml)
+ファイルまたは [replica_ctrl.py](https://github.com/smartsdk/mongo-rs-controller-swarm/blob/master/src/replica_ctrl.py)
+ コントローラのスクリプトを参照してください。

@@ -1,10 +1,18 @@
 # API Umbrella の HA 構成
 
-このレシピでは、MongoDB インスタンスのスケーラブルな[レプリカ・セット](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)を使用してスケーラブルな API Umbrella インスタンス・サービス をデプロイする方法を示します。
+このレシピでは、MongoDB インスタンスのスケーラブルな[レプリカ・セット](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)
+を使用してスケーラブルな API Umbrella インスタンス・サービス をデプロイする方法
+を示します。
 
-すべての要素は docker-compose ファイルで定義された docker コンテナで実行されます。実際、このレシピは、[mongodb のレプリカ・レシピ](../../utils/mongo-replicaset/readme.md)をバックエンドとして再利用する API Umbrella フロントエンドのデプロイメントに重点を置いています。
+すべての要素は docker-compose ファイルで定義された docker コンテナで実行されま
+す。実際、このレシピは、[mongodb のレプリカ・レシピ](../../utils/mongo-replicaset/readme.md)
+をバックエンドとして再利用する API Umbrella フロントエンドのデプロイメントに
+重点を置いています。
 
-当面は、 API のインタラクション をログするための Elastic Search や QoS などの他のサービスは展開されていません。これは主に、API Umbrella が古いバージョンの Elastic Search (すなわち、バージョン2、現在のバージョンは 6 です) のみをサポートしているためです。
+当面は、 API のインタラクション をログするための Elastic Search や QoS などの他
+のサービスは展開されていません。これは主に、API Umbrella が古いバージョンの
+ Elastic Search (すなわち、バージョン2、現在のバージョンは 6 です) のみを
+サポートしているためです。
 
 最終的なデプロイメントは、次の図で表されます :
 
@@ -42,22 +50,31 @@
 
 ## 前提条件
 
-[ウェルカム・ページ](../../index.md)を読み、[インストール・ガイド](../../installation.md)で説明されている手順に従ってください。
+[ウェルカム・ページ](../../index.md)を読み、[インストール・ガイド](../../installation.md)
+で説明されている手順に従ってください。
 
 ## 使い方
 
-まず、Docker Swarm (docker >= 17.06-ce) をセットアップする必要があります。セットアップが必要な場合は、ローカルの swarm をセットアップするための簡単な方法については[ツール](../../tools/readme.md)・セクションをチェックしてください。
+まず、Docker Swarm (docker >= 17.06-ce) をセットアップする必要があります。
+セットアップが必要な場合は、ローカルの swarm をセットアップするための簡単な方法
+については[ツール](../../tools/readme.md)・セクションをチェックしてください。
 
 ```
 $ miniswarm start 3
 $ eval $(docker-machine env ms-manager0)
 ```
 
-他のレシピのためにそれをまだ行っていない場合は、[インストール・ガイド](../../installation.md#creating-the-networks)で説明しているように、`backend` と `frontend` をデプロイしてください。
+他のレシピのためにそれをまだ行っていない場合は、[インストール・ガイド](../../installation.md#creating-the-networks)
+で説明しているように、`backend` と `frontend` をデプロイしてください。
 
-API Umbrella にはバックエンド用の mongo データベースが必要です。すでにクラスタ内に Mongo をデプロイしていて、そのデータベースを再利用したい場合は、次のステップ (バックエンドのデプロイ) をスキップできます。API Umbrella が Mongo にリンクするために定義する変数、つまり、`MONGO_SERVICE_URI` および `REPLICASET_NAME` に注意する必要があります。
+API Umbrella にはバックエンド用の mongo データベースが必要です。すでにクラスタ内
+に Mongo をデプロイしていて、そのデータベースを再利用したい場合は、次のステップ
+ (バックエンドのデプロイ) をスキップできます。API Umbrella が Mongo にリンクする
+ために定義する変数、つまり、`MONGO_SERVICE_URI` および `REPLICASET_NAME` に注意
+する必要があります。
 
-そうでなければ、API Umbrella のためだけに MongoDB の新しい展開をしたい場合は、ショートカットして、次のコマンドを実行することができます...
+そうでなければ、API Umbrella のためだけに MongoDB の新しい展開をしたい場合は、
+ショートカットして、次のコマンドを実行することができます...
 
 ```bash
 $ sh deploy_back.sh
@@ -67,7 +84,9 @@ Creating service mongo-rs_mongo
 Creating service mongo-rs_controller
 ```
 
-それに加えて、MongoDB の Ruby ドライバがサービス・ディスカバリーをサポートしていない場合、MongoDB サーバのポートをクラスタに公開して、API Umbrella のレプリカ・セットへの接続を許可する必要があります。
+それに加えて、MongoDB の Ruby ドライバがサービス・ディスカバリーをサポートして
+いない場合、MongoDB サーバのポートをクラスタに公開して、API Umbrella のレプリカ
+・セットへの接続を許可する必要があります。
 
 これは、スクリプトのように、MongoDB をグローバル・モードでデプロイする場合にのみ機能することに注意してください。
 
@@ -98,7 +117,8 @@ $ MONGO_REPLICATE_SET_IPS=192.168.99.100:27017,192.168.99.101:27017,192.168.99.1
 $ export MONGO_REPLICATE_SET_IPS
 ```
 
-`miniswarm` クラスタの作成に使用した場合は、次のように `docker-machine ip` コマンドを使用して異なる IPs を取得できます。たとえば、 :
+`miniswarm` クラスタの作成に使用した場合は、次のように `docker-machine ip`
+コマンドを使用して異なる IPs を取得できます。たとえば、 :
 
 ```bash
 $ docker-machine ip ms-manager0
@@ -137,7 +157,9 @@ rbo2oe2y0d72        mongo-rs_mongo        global              3/3               
 
 ## ウォークスルー
 
-次のウォークスルーでは、API Umbrella の初期設定を行い、最初の API を登録する方法について説明します。詳細については、[API Umbrella のドキュメント](https://api-umbrella.readthedocs.io/en/latest/)を参照してください。
+次のウォークスルーでは、API Umbrella の初期設定を行い、最初の API を登録する方法
+について説明します。詳細については、[API Umbrella のドキュメント](https://api-umbrella.readthedocs.io/en/latest/)
+を参照してください。
 
 1. API Umbrella で管理ユーザを作成しましょう。まず、マスターノードの IP を取得します :
 
@@ -156,9 +178,14 @@ $ docker-machine ip ms-manager0
 
 **注意:** クラスタ・マスター IP の使用法は単なる慣習であり、ワーカー・ノードの IPs でもサービスにアクセスできます。
 
-1. `X-Admin-Auth-Token` アクセス と `X-Api-Key` を取得します。メニューで、`Users->Admin Accounts` を選択し、作成したユーザ名をクリックします。あなたのアカウントの `Admin API Access` をコピーします。
+1. `X-Admin-Auth-Token` アクセス と `X-Api-Key` を取得します。メニューで、
+   `Users->Admin Accounts` を選択し、作成したユーザ名をクリックします。
+   あなたのアカウントの `Admin API Access` をコピーします。
 
-メニューで、`Users->Api Users` を選択し、ユーザ名 `web.admin.ajax@internal.apiumbrella` をクリックして API キーをコピーします。もちろん、API Umbrella のデフォルトを再利用するのではなく、新しいものを作成できます。
+メニューで、`Users->Api Users` を選択し、
+ユーザ名 `web.admin.ajax@internal.apiumbrella` をクリックして API キーをコピー
+します。もちろん、API Umbrella のデフォルトを再利用するのではなく、新しいものを
+作成できます。
 
 1. 新しい API を登録してください。すべてが動作することをテストするためのシンプルな API を作成します :
 
@@ -400,13 +427,32 @@ Response:
 
 ## ネットワークの考慮事項
 
-この場合、すべてのコンテナは、互いに通信する同じオーバーレイ・ネットワーク (バックエンド) に接続されます。ただし、設定が異なり、ファイアウォールの背後にあるコンテナを実行している場合は、ポート `80` と `443` (API Umbrellas のデフォルト) と `27017` (Mongo のデフォルト) で TCP のトラフィックを開いたままにしてください。
+この場合、すべてのコンテナは、互いに通信する同じオーバーレイ・ネットワーク
+ (バックエンド) に接続されます。ただし、設定が異なり、ファイアウォールの背後に
+あるコンテナを実行している場合は、ポート `80` と `443` (API Umbrellas の
+デフォルト) と `27017` (Mongo のデフォルト) で TCP のトラフィックを開いたままに
+してください。
 
-サービスのコンテナ (タスク) が起動されると、このオーバーレイ・ネットワーク内の IP アドレスが割り当てられます。アプリケーションのアーキテクチャの他のサービスは、例えば、動的な再スケジューリングのために、変更される可能性があるため、これらの IP に依存するべきではありません。良い点は、Docker がサービス全体の仮想 IP を作成するため、このアドレスへのすべてのトラフィックがタスク・アドレスに負荷分散されることです。
+サービスのコンテナ (タスク) が起動されると、このオーバーレイ・ネットワーク内の
+ IP アドレスが割り当てられます。アプリケーションのアーキテクチャの他のサービス
+は、例えば、動的な再スケジューリングのために、変更される可能性があるため、
+これらの IP に依存するべきではありません。良い点は、Docker がサービス全体の
+仮想 IP を作成するため、このアドレスへのすべてのトラフィックがタスク・アドレスに
+負荷分散されることです。
 
-Docker Swarm の内部 DNS のおかげで、サービスの名前を使って接続することもできます。このレシピの `docker-compose.yml` ファイルを見ると、orion は mongo サービスの名前を `dbhost` param として開始されます。これは、レプリカ・セット全体の単一のmongoインスタンスであっても関係ありません。
+Docker Swarm の内部 DNS のおかげで、サービスの名前を使って接続することも
+できます。このレシピの `docker-compose.yml` ファイルを見ると、orion は mongo
+ サービスの名前を `dbhost` param として開始されます。これは、レプリカ・セット
+全体の単一のmongoインスタンスであっても関係ありません。
 
-ただし、オーバーレイ・ネットワークの外部から、たとえばホストから)、コンテナにアクセスするには、`docker_gwbridge` へのコンテナのインターフェイスの ip にアクセスする必要があります。この情報を外部から取得するのは簡単な方法ではないようです。この[未解決の問題](https://github.com/docker/libnetwork/issues/1082)を参照してください。ウォークスルーでは、swarm ノードの1つを介して、API Umbrella をクエリしました。これは、docker ingress  ネットワークがコンテナ化された API Umbrella サービスのいずれかにトラフィックをルーティングすることに依存しているためです。
+ただし、オーバーレイ・ネットワークの外部から、たとえばホストから)、コンテナに
+アクセスするには、`docker_gwbridge` へのコンテナのインターフェイスの ip に
+アクセスする必要があります。この情報を外部から取得するのは簡単な方法ではない
+ようです。この[未解決の問題](https://github.com/docker/libnetwork/issues/1082)を
+参照してください。ウォークスルーでは、swarm ノードの1つを介して、API Umbrella を
+クエリしました。これは、docker ingress  ネットワークがコンテナ化された
+ API Umbrella サービスのいずれかにトラフィックをルーティングすることに依存して
+いるためです。
 
 ## 未解決の問題
 
