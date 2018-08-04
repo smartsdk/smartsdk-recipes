@@ -9,10 +9,10 @@
 CI プロセス中に、多数の Linter が実行されることに注意してください :
 
 * yml ファイルの正確性を保証するため、[yaml linting ルール](https://yamllint.readthedocs.io/en/latest/rules.html)
-をチェックすることをお勧めします
+  をチェックすることをお勧めします
 
 * ドキュメンテーション・スタイルの一貫性を保つために、MD の [linting ルール](https://github.com/markdownlint/markdownlint/blob/master/docs/RULES.md)
-に従うことをお勧めします。
+  に従うことをお勧めします。
 
 リポジトリへのプルリクエスト (PR) を作成すると、PR でのコンプライアンス検証の
 結果を確認することができます。CI プロセスが正常に終了した場合にのみマージが
