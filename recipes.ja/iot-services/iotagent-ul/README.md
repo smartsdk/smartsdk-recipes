@@ -14,7 +14,8 @@
 
 変数のドキュメントについては、[グローバル設定ドキュメント](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)を参照してください。
 
-- `IOTA_VERSION`: [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-ul/~/dockerfile/) のバージョン番号 (tag)
+- `IOTA_VERSION`: [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-ul/~/dockerfile/)
+   のバージョン番号 (tag)
 
 - `IOTA_LOG_LEVEL`: デフォルトは `DEBUG` です
 
@@ -42,7 +43,9 @@
 
 #### ファイルによるカスタマイズ
 
-- `config.js`: 展開する前にこのファイルを自由に編集してください。これはエージェントによって設定ファイルとして使用されます。これは[設定](https://docs.docker.com/compose/compose-file/#configs)として Docker によって扱われます
+- `config.js`: 展開する前にこのファイルを自由に編集してください。これは
+  エージェントによって設定ファイルとして使用されます。これは[設定](https://docs.docker.com/compose/compose-file/#configs)
+  として Docker によって扱われます
 
 ### このレシピのデプロイ
 

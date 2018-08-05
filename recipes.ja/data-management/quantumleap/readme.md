@@ -2,13 +2,18 @@
 
 ## イントロダクション
 
-ここでは、QuantumLeap のさまざまな用途を目的としたレシピを見つけることができます。すでにあなたが QuantumLeapに精通していることを前提としてい ます。そでなければ、[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)を参照してください。
+ここでは、QuantumLeap のさまざまな用途を目的としたレシピを見つけることが
+できます。すでにあなたが QuantumLeapに精通していることを前提としています。
+そうでなければ、[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)
+を参照してください。
 
-これらのレシピをテストするための環境の準備方法については、[インストールのセクション](../../installation.md)を参照してください。
+これらのレシピをテストするための環境の準備方法については、
+[インストールのセクション](../../installation.md)を参照してください。
 
 ## 要件
 
-[ウェルカム・ページ](../../index.md)を読み、[インストール・ガイド](../../installation.md)で説明されている手順に従ってください。
+[ウェルカム・ページ](../../index.md)を読み、[インストール・ガイド](../../installation.md)
+で説明されている手順に従ってください。
 
 ## HA デプロイの概要
 
@@ -59,13 +64,17 @@
 
 ### 始める前に
 
-スタックを起動する前に、docker クラスタのエントリ・ポイントのドメインを定義する必要があります。そのドメインを次のような環境変数に保存します :
+スタックを起動する前に、docker クラスタのエントリ・ポイントのドメインを定義する
+必要があります。そのドメインを次のような環境変数に保存します :
 
 ```
 $ export CLUSTER_DOMAIN=mydomain.com
 ```
 
-ローカルでテストしていて、ドメインを所有していない場合、`/etc/hosts` ファイルを編集して Swarm Cluster のノードの IP を指し示すエントリを追加することができます。クラスタ・エントリ・ポイントの場合は、192.168.99.100 を IP で置き換えてください。以下の例を参照してください。
+ローカルでテストしていて、ドメインを所有していない場合、`/etc/hosts` ファイルを
+編集して Swarm Cluster のノードの IP を指し示すエントリを追加することが
+できます。クラスタ・エントリ・ポイントの場合は、192.168.99.100 を IP で置き換え
+てください。以下の例を参照してください。
 
 ```
 # End of /etc/hosts file
@@ -73,21 +82,31 @@ $ export CLUSTER_DOMAIN=mydomain.com
 192.168.99.100  crate.mydomain.com
 ```
 
-[Traefik](https://traefik.io) プロキシ経由で CrateDB クラスタ UI にアクセスするため、`crate.mydomain.com` のための1つのエントリが含まれています。
+[Traefik](https://traefik.io) プロキシ経由で CrateDB クラスタ UI にアクセスする
+ため、`crate.mydomain.com` のための1つのエントリが含まれています。
 
-また、クラスタの構造に応じて、以下の3つの特別な環境変数の値を設定する必要があります。デフォルト値では、クラスタにノードが1つしかないと想定されます。クラスタに複数のノードがある場合は理想的ではありません。`settings.env` (Windowsでは `settings.bat`) に正しい値を持っていることを確認してください。
+また、クラスタの構造に応じて、以下の3つの特別な環境変数の値を設定する必要があり
+ます。デフォルト値では、クラスタにノードが1つしかないと想定されます。クラスタに
+複数のノードがある場合は理想的ではありません。`settings.env`
+ (Windowsでは `settings.bat`) に正しい値を持っていることを確認してください。
 
-- `EXPECTED_NODES`: クラスタ状態が回復するまで待機するノード数。値は、クラスタ内のノードの数と等しくなければなりません
+- `EXPECTED_NODES`: クラスタ状態が回復するまで待機するノード数。値は、クラスタ内
+  のノードの数と等しくなければなりません
 
 - `RECOVER_AFTER_NODES`: クラスタ状態の回復が始まる前に開始する必要があるノードの数
 
-- `MINIMUM_MASTER_NODES`: quorum をクラスタの最大ノード数の半分より大きく設定することを強くお勧めします。すなわち、(N / 2) + 1 です。ここで、N はクラスタ内のノードの最大数です
+- `MINIMUM_MASTER_NODES`: quorum をクラスタの最大ノード数の半分より大きく設定
+  することを強くお勧めします。すなわち、(N / 2) + 1 です。ここで、N はクラスタ
+  内のノードの最大数です
 
-詳細は、[これらのドキュメント](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10) または、[elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html)の対応するセクションを参照してください。
+詳細は、[これらのドキュメント](https://crate.io/docs/crate/guide/en/latest/scale/multi_node_setup.html#id10)
+ または、[elasticsearch のドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html)
+の対応するセクションを参照してください。
 
 これらに加えて、次の環境変数を使用してデプロイメントをカスタマイズすることもできます。
 
-- `QL_VERSION`: 展開したい [Quantumleap image](https://hub.docker.com/r/smartsdk/quantumleap/) イメージの Docker タグ
+- `QL_VERSION`: 展開したい [Quantumleap image](https://hub.docker.com/r/smartsdk/quantumleap/)
+   イメージの Docker タグ
 
 ### デプロイ
 
@@ -100,7 +119,10 @@ $ source settings.env  # In Windows, execute settings.bat instead.
 $ docker stack deploy -c docker-compose ql
 ```
 
-それ以外の場合は、データ視覚化のために Grafana などの追加サービスを追加したい場合は、`docker-compose-addons.yml` に現在表示されているアドオンを統合することができます。残念ながら、docker は現在、[単一の展開を行うために複数の compose ファイル](https://github.com/moby/moby/issues/30127)を直接サポートしていません。それゆえ、提案する方法は次のとおりです...
+それ以外の場合は、データ視覚化のために Grafana などの追加サービスを追加したい
+場合は、`docker-compose-addons.yml` に現在表示されているアドオンを統合すること
+ができます。残念ながら、docker は現在、[単一の展開を行うために複数の compose ファイル](https://github.com/moby/moby/issues/30127)
+を直接サポートしていません。それゆえ、提案する方法は次のとおりです...
 
 ```
 # First we merge the two compose files using docker-compose
@@ -121,11 +143,15 @@ ignls7l57hzn        ql_crate            global              3/3                 
 tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000->3000/tcp
 ```
 
-これで、[公式ドキュメント](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/)で説明されているシンプルな docker service scale command を使用して、必要に応じてサービスを拡張できます。
+これで、[公式ドキュメント](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/)
+で説明されているシンプルな docker service scale command を使用して、必要に応じて
+サービスを拡張できます。
 
 ### 探査
 
-今、エクスプローラで [http://crate.mydomain.com](http://crate.mydomain.com) を開くと 、CRATE.IO ダッシュボードが表示されます。"cluster" タブには、swarm クラスタ内にある同じ数のノードが表示されます。
+今、エクスプローラで [http://crate.mydomain.com](http://crate.mydomain.com) を
+開くと 、CRATE.IO ダッシュボードが表示されます。"cluster" タブには、swarm
+ クラスタ内にある同じ数のノードが表示されます。
 
 クイックテストの場合は、このフォルダ内の `insert.sh` スクリプトを使用できます。
 
@@ -133,7 +159,9 @@ tfszxc2fcmxx        ql_grafana          replicated          1/1                 
 $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
 ```
 
-それ以外の場合は、お気に入りの API テスターを開き、QuantumLeap に下に示す通知を送信して、後で Crate Dashboard を介してデータベースに保持されていることを確認してください。
+それ以外の場合は、お気に入りの API テスターを開き、QuantumLeap に下に示す通知を
+送信して、後で Crate Dashboard を介してデータベースに保持されていることを確認
+してください。
 
 ```
 # Simple examples payload to send to IP_OF_ANY_SWARM_NODE:8668/notify
@@ -158,8 +186,13 @@ $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
 }
 ```
 
-典型的なシナリオでは、ペイロードを `/notify` エンドポイントに直接送信するのではなく、通知 (notifications) の形式で、*Orion Context Broker* に送信することになります。詳細は[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)を参照してください。
+典型的なシナリオでは、ペイロードを `/notify` エンドポイントに直接送信するのでは
+なく、通知 (notifications) の形式で、*Orion Context Broker* に送信することになり
+ます。詳細は[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)
+を参照してください。
 
-これらのすべてのクエリについては、[ツール・セクション](../../tools/readme.md)で利用可能な、postman コレクションを使用できます。
+これらのすべてのクエリについては、[ツール・セクション](../../tools/readme.md)
+で利用可能な、postman コレクションを使用できます。
 
-詳細については、[QuantumLeap のユーザ・マニュアル](https://smartsdk.github.io/ngsi-timeseries-api/)を参照してください。
+詳細については、[QuantumLeap のユーザ・マニュアル](https://smartsdk.github.io/ngsi-timeseries-api/)
+を参照してください。

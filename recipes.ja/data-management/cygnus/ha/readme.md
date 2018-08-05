@@ -2,15 +2,23 @@
 
 ## 要件
 
-[ウェルカム・ページ](../../../index.md)を読み、[インストール・ガイド](../../../installation.md)で説明されている手順に従ってください。
+[ウェルカム・ページ](../../../index.md)を読み、[インストール・ガイド](../../../installation.md)
+で説明されている手順に従ってください。
 
 ## 入門
 
-このレシピでは、MySQL バックエンドでデフォルトの cygnus-ngsi 設定をデプロイする方法を説明します。この Generic Enabler は実際には[他の多くのバックエンド](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html)とともにデプロイできることに注意してください。
+このレシピでは、MySQL バックエンドでデフォルトの cygnus-ngsi 設定をデプロイする
+方法を説明します。この Generic Enabler は実際には[他の多くのバックエンド](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-common/backends_catalogue/introduction/index.html)
+とともにデプロイできることに注意してください。
 
-このレシピは特に [docker "configs"](https://docs.docker.com/compose/compose-file/#configs) の使用を必要 とするため、docker versions 17.06.0 以降でサポートされている docker-compose file version "3.3" に依存します。
+このレシピは特に [docker "configs"](https://docs.docker.com/compose/compose-file/#configs)
+ の使用を必要 とするため、docker versions 17.06.0 以降でサポートされている
+ docker-compose file version "3.3" に依存します。
 
-これらのレシピをテストするための環境の準備方法については、ドキュメントの[インストール](../../../installation.md)・セクションに記載されています。3ノードの Swarm セットアップを作成したと仮定すると、このデプロイは次のようになります...
+これらのレシピをテストするための環境の準備方法については、ドキュメントの
+[インストール](../../../installation.md)・セクションに記載されています。
+3ノードの Swarm セットアップを作成したと仮定すると、このデプロイは次のように
+なります...
 
 <img src='http://g.gravizo.com/g?
   digraph G {
@@ -44,9 +52,16 @@
   }
 '>
 
-[ドキュメント](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html) からすでに分かっ ているように、cygnus を設定するには、特定のエージェント設定ファイルを提供する必要があります。この場合、`conf` フォルダ内の `cygnus_agent.conf` および `cartodb_keys.conf` ファイルをカスタマイズできます。これらのファイルの内容は、Docker によって対応する設定にロードされ、cygnus サービスのすべてのレプリカで使用可能になります。
+[ドキュメント](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html)
+ からすでに分かっ ているように、cygnus を設定するには、特定のエージェント設定
+ファイルを提供する必要があります。この場合、`conf` フォルダ内の
+ `cygnus_agent.conf` および `cartodb_keys.conf` ファイルをカスタマイズできます。
+これらのファイルの内容は、Docker によって対応する設定にロードされ、cygnus
+ サービスのすべてのレプリカで使用可能になります。
 
-`docker-compose.yml` を見ると、環境変数 `CYGNUS_MYSQL_USER` と `CYGNUS_MYSQL_PASS` を設定することによって、MySQL ユーザとパスワードの値をカスタマイズできることに気づくでしょう。
+`docker-compose.yml` を見ると、環境変数 `CYGNUS_MYSQL_USER` と
+ `CYGNUS_MYSQL_PASS` を設定することによって、MySQL ユーザとパスワードの値を
+カスタマイズできることに気づくでしょう。
 
 サンプルをそのまま起動するには、次のコマンドを実行します :
 
@@ -63,7 +78,8 @@
     vmju1turlizr        cygnus_cygnus-common   replicated          3/3                 fiware/cygnus-ngsi:latest   *:5050->5050/tcp
 ```
 
-説明のために、単純な `notification.sh` スクリプトを使用して、cygnus のエントリポイントに NGSI 通知を送信してみましょう。
+説明のために、単純な `notification.sh` スクリプトを使用して、cygnus の
+エントリポイントに NGSI 通知を送信してみましょう。
 
 ```
     $ sh notification.sh http://0.0.0.0:5050/notify
@@ -87,7 +103,11 @@
     * Connection #0 to host 0.0.0.0 left intact
 ```
 
-Docker Swarm クラスタ上でサービスとして稼働している cygnus を持つことで、他の docker サービスと同様にスケーラビリティを達成できます。詳細については、 [Orionのレシピ](../../context-broker/ha/readme.md)を参照して Docker でこれを行う方法を参照してください。それ以外の場合は、[Docker サービスのドキュメント](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/)を参照してください。
+Docker Swarm クラスタ上でサービスとして稼働している cygnus を持つことで、他の
+ docker サービスと同様にスケーラビリティを達成できます。詳細については、 
+[Orionのレシピ](../../context-broker/ha/readme.md)を参照して Docker でこれを
+行う方法を参照してください。それ以外の場合は、[Docker サービスのドキュメント](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/)
+を参照してください。
 
 ## カスタマイズ
 
@@ -95,17 +115,29 @@ Docker Swarm クラスタ上でサービスとして稼働している cygnus �
 
 cygnus デプロイメントのために別のバックエンドを試したい場合は、3つの手順を実行する必要があります。
 
-1. ニーズに合わせて、`cygnus_agent.conf` を設定してください。詳細は[ドキュメント](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html)を参照してください。
+1. ニーズに合わせて、`cygnus_agent.conf` を設定してください。詳細は
+   [ドキュメント](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/configuration_examples/index.html)
+   を参照してください。
 
-1. `docker-compose.yml` を更新してください。特に cygnus サービス用に構成された環境変数です。たとえば、MySQL ではなく MongoDB を使用する場合は、変数 `CYGNUS_MONGO_USER` と `CYGNUS_MONGO_PASS` を使用する必要があります。必要な変数の完全なリストについては、[cygnus のドキュメント](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2)を参照してください。
+1. `docker-compose.yml` を更新してください。特に cygnus サービス用に構成された
+   環境変数です。たとえば、MySQL ではなく MongoDB を使用する場合は、変数
+   `CYGNUS_MONGO_USER` と `CYGNUS_MONGO_PASS` を使用する必要があります。
+   必要な変数の完全なリストについては、[cygnus のドキュメント](http://fiware-cygnus.readthedocs.io/en/latest/cygnus-ngsi/installation_and_administration_guide/install_with_docker/index.html#section3.2)
+   を参照してください。
 
-1. mysql サービスの定義を削除し、あなたの好みのものを導入するよう、`docker-compose.yml`を更新してください。また、cygnus の `depends_on:` のセクションを新しいサービスの名前で更新することを忘れないでください。
+1. mysql サービスの定義を削除し、あなたの好みのものを導入するよう、
+   `docker-compose.yml`を更新してください。また、cygnus の `depends_on:` の
+   セクションを新しいサービスの名前で更新することを忘れないでください。
 
 ### 別のチャンネルを使用
 
-`conf/cygnus_agent.conf` の設定ファイルを見てみると、メモリベースのチャネルとファイルベースのチャネルのどちらからでも選択できます。チャンネルタイプの設定からコメントにする/コメントを外す (つまり、`#` キャラクターを残す/削除する) ようにしてください。
+`conf/cygnus_agent.conf` の設定ファイルを見てみると、メモリベースのチャネルと
+ファイルベースのチャネルのどちらからでも選択できます。チャンネルタイプの設定から
+コメントにする/コメントを外す (つまり、`#` キャラクターを残す/削除する) ように
+してください。
 
     cygnus-ngsi.channels.main-channel.type = memory
     #cygnus-ngsi.channels.main-channel.type = file
 
-チャネルの詳細については、公式ドキュメントの [channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations) をチェックしてください。
+チャネルの詳細については、公式ドキュメントの [channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations)
+ をチェックしてください。

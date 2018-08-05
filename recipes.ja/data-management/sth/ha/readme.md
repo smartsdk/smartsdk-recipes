@@ -37,18 +37,30 @@ digraph Cluster {
 }
 '>
 
-後で、これは、たとえば [Orion Context Broker の HA デプロイメント](../../context-broker/ha/readme.md)と組み合わせることができます。
+後で、これは、たとえば [Orion Context Broker の HA デプロイメント](../../context-broker/ha/readme.md)
+と組み合わせることができます。
 
 ## ウォークスルー
 
-まず、Docker Swarm (docker >= 1.13) を既にセットアップしておく必要があります。セットアップしていない場合は、local swarm をセットアップするための簡単な方法については[ツール](../../../tools/readme.md)・セクションをチェックしてください。
+まず、Docker Swarm (docker >= 1.13) を既にセットアップしておく必要があります。
+セットアップしていない場合は、local swarm をセットアップするための簡単な方法に
+ついては[ツール](../../../tools/readme.md)・セクションをチェックしてください。
 
 ```
     miniswarm start 3
     eval $(docker-machine env ms-manager0)
 ```
 
-Comet はバックエンド用の mongo データベースが必要です。すでにクラスタ内に Mongo をデプロイしていて、そのデータベースを再利用したい場合は、次のステップ (バックエンドのデプロイ) をスキップできます。Comet が Mongo にリンクするために定義する変数、つまり、`MONGO_SERVICE_URI` と `REPLICASET_NAME` に注意するだけで十分です。`frontend.env` の値が正しいことを確認してください。`MONGO_SERVICE_URI` の値は、mongo のルーティング可能なアドレスでなければなりません。swarm 内にデプロイされた場合は、プレフィックス付きのサービス名で十分です。[公式 Docker ドキュメント](https://docs.docker.com/docker-cloud/apps/service-links/)でもっと読むことができます。[Mongo Replicaset Recipe](../../../utils/mongo-replicaset/readme.md) を使用していれば、デフォルト値は正常です。
+Comet はバックエンド用の mongo データベースが必要です。すでにクラスタ内に Mongo
+ をデプロイしていて、そのデータベースを再利用したい場合は、次のステップ (バック
+エンドのデプロイ) をスキップできます。Comet が Mongo にリンクするために定義する
+変数、つまり、`MONGO_SERVICE_URI` と `REPLICASET_NAME` に注意するだけで十分
+です。`frontend.env` の値が正しいことを確認してください。`MONGO_SERVICE_URI`
+ の値は、mongo のルーティング可能なアドレスでなければなりません。swarm 内に
+デプロイされた場合は、プレフィックス付きのサービス名で十分です。
+[公式 Docker ドキュメント](https://docs.docker.com/docker-cloud/apps/service-links/)
+でもっと読むことができます。[Mongo Replicaset Recipe](../../../utils/mongo-replicaset/readme.md)
+ を使用していれば、デフォルト値は正常です。
 
 それ以外の場合、Comet のためだけに Mongo の新しい展開をしたい場合は、次のコマンドを実行することができます...
 
@@ -62,9 +74,13 @@ Comet はバックエンド用の mongo データベースが必要です。す�
     sh deploy_front.sh
 ```
 
-さて、いつものように、すべてが適切に接続されていることを確認する簡単なテストを行います。通知のソースとして、swarm に Orion をデプロイしました。たとえば、[Orion in HA](../../context-broker/ha/readme.md) を参照してください。
+さて、いつものように、すべてが適切に接続されていることを確認する簡単なテストを
+行います。通知のソースとして、swarm に Orion をデプロイしました。たとえば、
+[Orion in HA](../../context-broker/ha/readme.md) を参照してください。
 
-便宜上、Orion と Comet のサービスの IP アドレスを保存しましょう。このシナリオでは、両方ともサービス・ポートを公開している Swarm に配備されているため、Swarm の ingress ネットワークには1つのエントリ・ポイントで十分です。
+便宜上、Orion と Comet のサービスの IP アドレスを保存しましょう。このシナリオ
+では、両方ともサービス・ポートを公開している Swarm に配備されているため、Swarm
+ の ingress ネットワークには1つのエントリ・ポイントで十分です。
 
 ```
     ORION=http://$(docker-machine ip ms-manager0)

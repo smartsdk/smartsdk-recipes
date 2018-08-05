@@ -14,13 +14,15 @@
 
 変数のドキュメントについては、[グローバル設定ドキュメント](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)を参照してください。
 
-- `MOSQUITTO_VERSION`: [Mosquitto Docker Image](https://hub.docker.com/\_/eclipse-mosquitto/) のバージョン番号 (tag)。デフォルトは `1.4.12` です
+- `MOSQUITTO_VERSION`: [Mosquitto Docker Image](https://hub.docker.com/\_/eclipse-mosquitto/)
+   のバージョン番号 (tag)。デフォルトは `1.4.12` です
 
 - `IOTA_MQTT_HOST`: デフォルトは`mosquitto` で、Docker サービスの名前です
 
 - `IOTA_MQTT_PORT`: デフォルトは`1883` です
 
-- `IOTA_VERSION`: [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-json/~/dockerfile/) のバージョン番号 (tag)。デフォルトは `1.6.0` です
+- `IOTA_VERSION`: [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/iotagent-json/~/dockerfile/)
+   のバージョン番号 (tag)。デフォルトは `1.6.0` です
 
 - `IOTA_LOG_LEVEL`: デフォルトは `DEBUG` です
 
@@ -48,9 +50,14 @@
 
 #### ファイルによるカスタマイズ
 
-- `config.js`: デプロイ前に、このファイルを自由に編集してください。これはエージェントによって設定ファイルとして使用されます。これは[設定](https://docs.docker.com/compose/compose-file/#configs)として Docker によって扱われます。ENV 変数で指定した値は、ファイルに設定されている値よりも優先されます
+- `config.js`: デプロイ前に、このファイルを自由に編集してください。これは
+  エージェントによって設定ファイルとして使用されます。これは[設定](https://docs.docker.com/compose/compose-file/#configs)
+  として Docker によって扱われます。ENV 変数で指定した値は、ファイルに設定されて
+  いる値よりも優先されます
 
-- `mosquitto.conf`: デプロイ前に、このファイルを自由に編集してください。設定ファイルとして mosquitto が使用します。これは[設定](https://docs.docker.com/compose/compose-file/#configs)として Docker によって扱われ ます
+- `mosquitto.conf`: デプロイ前に、このファイルを自由に編集してください。設定
+  ファイルとして mosquitto が使用します。これは[設定](https://docs.docker.com/compose/compose-file/#configs)
+  として Docker によって扱われ ます
 
 ### このレシピの展開
 
@@ -68,11 +75,15 @@
 
 ### 覚えておいていただきたい重要なこと
 
-- 今日の時点で、公式 Mosquitto Docker イメージは、mosquitto-clients を含んでいないので、`mosquitto_sub` と `mosquitto_pub` ようなコマンドを実行する場合、基本的に2つのオプションがあります：
+- 今日の時点で、公式 Mosquitto Docker イメージは、mosquitto-clients を含んで
+  いないので、`mosquitto_sub` と `mosquitto_pub` ようなコマンドを実行する場合、
+  基本的に2つのオプションがあります：
 
   1. システムにそれらをインストールし、host パラメータを追加して、docker mosquitto service を指すようにします
 
-  1. クライアントを mosquitto コンテナにインストールします。これはコンテナの再起動後も持続しないことに注意してください。これを必要とする場合は、それに応じて Docker イメージを作成してください
+  1. クライアントを mosquitto コンテナにインストールします。これはコンテナの
+     再起動後も持続しないことに注意してください。これを必要とする場合は、
+     それに応じて Docker イメージを作成してください
 
 ```
        docker exec -ti mosquitto_container sh -c "apk --no-cache add mosquitto-clients"

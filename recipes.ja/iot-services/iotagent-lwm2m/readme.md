@@ -12,7 +12,8 @@
 
 #### ENV 変数によるカスタマイズ
 
-- `IOTA_VERSION`: [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/) のバージョン番号 (tag)。デフォルトは `latest` です。
+- `IOTA_VERSION`: [Agent Docker Image](https://hub.docker.com/r/telefonicaiot/lightweightm2m-iotagent/tags/)
+   のバージョン番号 (tag)。デフォルトは `latest` です。
 
 - `IOTA_LWM2M_PORT`: デフォルトは `5684` です
 
@@ -40,7 +41,9 @@
 
 #### ファイルによるカスタマイズ
 
-- `config.js`: デプロイ前にこのファイルを自由に編集してください。これはエージェントによって設定ファイルとして使用されます。これは[設定](https://docs.docker.com/compose/compose-file/#configs)として Docker によって扱われます
+- `config.js`: デプロイ前にこのファイルを自由に編集してください。これは
+  エージェントによって設定ファイルとして使用されます。これは[設定](https://docs.docker.com/compose/compose-file/#configs)
+  として Docker によって扱われます
 
 ### このレシピの展開
 
@@ -56,7 +59,8 @@
 
 ``Note``
 
-[公式ステップ・バイ・ステップのガイド](https://fiware-iotagent-lwm2m.readthedocs.io/en/latest/userGuide/index.html)に従えば、次のようにして lwm2m クライアントをすぐに起動することができます：
+[公式ステップ・バイ・ステップのガイド](https://fiware-iotagent-lwm2m.readthedocs.io/en/latest/userGuide/index.html)
+に従えば、次のようにして lwm2m クライアントをすぐに起動することができます：
 
 ```
     docker exec -ti [AGENT_CONTAINER_ID_HERE] node_modules/lwm2m-node-lib/bin/iotagent-lwm2m-client.js
