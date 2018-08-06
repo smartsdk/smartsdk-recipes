@@ -31,7 +31,7 @@ services:
         delay: 1m30s
 
   controller:
-    image: martel/mongo-replica-ctrl:latest
+    image: smartsdk/mongo-rs-controller-swarm:latest
     volumes:
       # TODO: Avoid exposing the docker socket (security issue)
       - /var/run/docker.sock:/var/run/docker.sock

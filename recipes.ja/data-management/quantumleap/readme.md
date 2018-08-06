@@ -4,7 +4,7 @@
 
 ここでは、QuantumLeap のさまざまな用途を目的としたレシピを見つけることが
 できます。すでにあなたが QuantumLeapに精通していることを前提としています。
-そうでなければ、[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)
+そうでなければ、[公式ドキュメント](https://quantumleap.readthedocs.io)
 を参照してください。
 
 これらのレシピをテストするための環境の準備方法については、
@@ -188,11 +188,10 @@ $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
 
 典型的なシナリオでは、ペイロードを `/notify` エンドポイントに直接送信するのでは
 なく、通知 (notifications) の形式で、*Orion Context Broker* に送信することになり
-ます。詳細は[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)
-を参照してください。
+ます。
 
 これらのすべてのクエリについては、[ツール・セクション](../../tools/readme.md)
 で利用可能な、postman コレクションを使用できます。
 
-詳細については、[QuantumLeap のユーザ・マニュアル](https://smartsdk.github.io/ngsi-timeseries-api/)
+詳細については、[QuantumLeap のユーザ・マニュアル](https://quantumleap.readthedocs.io)
 を参照してください。

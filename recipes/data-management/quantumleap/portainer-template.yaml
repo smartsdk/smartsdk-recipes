@@ -16,7 +16,7 @@
     stackfile: recipes/data-management/quantumleap/docker-compose.yml
   env:
   - name: QL_VERSION
-    label: QuantumLeap Verions
+    label: QuantumLeap Version
   - name: CRATE_HOST
     label: CRATE Host
   - name: CRATE_VERSION

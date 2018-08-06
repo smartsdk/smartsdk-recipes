@@ -107,7 +107,7 @@ ID                  NAME                                       IMAGE            
 mxxrlexvj0r9        mongo-rs_mongo.z69rvapjce827l69b6zehceal   mongo:3.2                          ms-worker1          Running             Starting 9 seconds ago
 d74orl0f0q7a        mongo-rs_mongo.fw2ajm8zw4f12ut3sgffgdwsl   mongo:3.2                          ms-worker0          Running             Starting 15 seconds ago
 a2wddzw2g2fg        mongo-rs_mongo.w697ke0djs3cfdf3bgbrcblam   mongo:3.2                          ms-manager0         Running             Starting 6 seconds ago
-nero0vahaa8h        mongo-rs_controller.1                      martel/mongo-replica-ctrl:latest   ms-manager0         Running             Running 5 seconds ago
+nero0vahaa8h        mongo-rs_controller.1                      smartsdk/mongo-replica-ctrl:latest   ms-manager0         Running             Running 5 seconds ago
 ```
 
 Swarm Cluster の IPs に基づいて mongo の接続 URL を設定するか、`frontend.env` ファイルを編集します :
@@ -148,8 +148,8 @@ Creating service api_api-umbrella
 $ docker service ls
 
 ID                  NAME                  MODE                REPLICAS            IMAGE                                 PORTS
-ca11lmx40tu5        api_api-umbrella      replicated          2/2                 martel/api-umbrella:0.14.4-1-fiware   *:80->80/tcp,*:443->443/tcp
-te1i0vhwtmnw        mongo-rs_controller   replicated          1/1                 martel/mongo-replica-ctrl:latest
+ca11lmx40tu5        api_api-umbrella      replicated          2/2                 smartsdk/api-umbrella:0.14.4-1-fiware   *:80->80/tcp,*:443->443/tcp
+te1i0vhwtmnw        mongo-rs_controller   replicated          1/1                 smartsdk/mongo-replica-ctrl:latest
 rbo2oe2y0d72        mongo-rs_mongo        global              3/3                 mongo:3.2
 ```
 

@@ -63,7 +63,7 @@ $ docker stack deploy -c docker-compose.yml mongo-rs
 $ docker service ls
 ID            NAME                            MODE        REPLICAS  IMAGE
 fjxof1n5ce58  mongo-rs_mongo             global      3/3       mongo:latest
-yzsur7rb4mg1  mongo-rs_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+yzsur7rb4mg1  mongo-rs_mongo-controller  replicated  1/1       smartsdk/mongo-replica-ctrl:latest
 ```
 
 ## ウォークスルー
@@ -125,7 +125,7 @@ docker@ms-worker2:~$ exit
 $ docker service ls
 ID            NAME                            MODE        REPLICAS  IMAGE
 fjxof1n5ce58  mongo-rs_mongo             global      4/4       mongo:latest
-yzsur7rb4mg1  mongo_mongo-controller  replicated  1/1       martel/mongo-replica-ctrl:latest
+yzsur7rb4mg1  mongo_mongo-controller  replicated  1/1       smartsdk/mongo-replica-ctrl:latest
 
 $ docker logs $(docker ps -f "name=mongo_mongo-controller" -q)
 ...
