@@ -186,21 +186,12 @@ $ sh insert.sh IP_OF_ANY_SWARM_NODE 8668
 }
 ```
 
-<<<<<<< HEAD
 典型的なシナリオでは、ペイロードを `/notify` エンドポイントに直接送信するのでは
 なく、通知 (notifications) の形式で、*Orion Context Broker* に送信することになり
-ます。詳細は[公式ドキュメント](https://smartsdk.github.io/ngsi-timeseries-api/)
-を参照してください。
-=======
-典型的なシナリオでは、ペイロードを `/notify` エンドポイントに直接送信するのではなく、通知 (notifications) の形式で、*Orion Context Broker* に送信することになります。
->>>>>>> Update QL docs link
+ます。
 
 これらのすべてのクエリについては、[ツール・セクション](../../tools/readme.md)
 で利用可能な、postman コレクションを使用できます。
 
-<<<<<<< HEAD
-詳細については、[QuantumLeap のユーザ・マニュアル](https://smartsdk.github.io/ngsi-timeseries-api/)
+詳細については、[QuantumLeap のユーザ・マニュアル](https://quantumleap.readthedocs.io)
 を参照してください。
-=======
-詳細については、[QuantumLeap のユーザ・マニュアル](https://quantumleap.readthedocs.io)を参照してください。
->>>>>>> Update QL docs link
