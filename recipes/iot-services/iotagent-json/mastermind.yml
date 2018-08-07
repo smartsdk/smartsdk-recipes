@@ -1,0 +1,105 @@
+name: iotagent-json
+version: 1.6.0
+description: IoT Agent with JSON
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: MOSQUITTO_VERSION
+    name: Mosquitto Version
+    description: The version of Mosquitto to use
+    required: true
+    managed: true
+    default: 1.4.12
+  - variable: IOTA_MQTT_PORT
+    name: Mosquitto Port
+    description: The port for Mosquitto to use
+    required: true
+    managed: true
+    default: 1883
+  - variable: IOTA_HTTP_PORT
+    name: HTTP Port
+    description: The HTTP Port for the IoT Agent to use
+    required: true
+    managed: true
+    default: 7896
+  - variable: IOTA_NORTH_PORT
+    name: Northbound Port
+    description: The Northbound Port for the IoT Agent to use
+    required: true
+    managed: true
+    default: 4041
+  - variable: IOTA_MQTT_HOST
+    name: Mosquitto Host
+    description: The host for the Mosquitto instance (should be mosquitto with this Docker compose)
+    required: true
+    managed: true
+    default: mosquitto
+  - variable: IOTA_LOG_LEVEL
+    name: IoT Agent Log Level
+    description: The Log Level for the IoT Agent
+    required: true
+    managed: true
+    default: DEBUG
+  - variable: IOTA_TIMESTAMP
+    name: IoT Agent Timestamp
+    description: If Timestamps are to be included in the logs
+    required: true
+    managed: true
+    default: true
+  - variable: IOTA_CB_PORT
+    name: IoT Context Broker Port
+    description: The port used by the Context Broker to connect the IoT Agent to
+    required: true
+    managed: true
+    default: 1026
+  - variable: IOTA_REGISTRY_TYPE
+    name: IoT Agent Registry Type
+    description: The type of registry to use for the IoT Agent
+    required: true
+    managed: true
+    default: mongodb
+  - variable: IOTA_MONGO_PORT
+    name: IoT Mongo Port
+    description: The port for the Mongo Database to use
+    required: true
+    managed: true
+    default: 27017
+  - variable: IOTA_MONGO_DB
+    name: IoT Mongo Database
+    description: The database in Mongo to use
+    required: true
+    managed: true
+    default: iotagentjson
+  - variable: IOTA_MONGO_REPLICASET
+    name: IoT Mongo Replicaset
+    description: The Replicaset in Mongo to use
+    required: true
+    managed: true
+    default: rs
+  - variable: IOTA_PROVIDER_URL
+    name: IoT Agent Provider URL
+    description: The URL for the IoT Agent. THE HOSTNAME SHOULD MATCH THE NAME OF THIS SERVICE OR THE ENDPOINT OF THE CLUSTER BEING USED
+    required: true
+    managed: true
+    default: http://agent:4041
+  - variable: DOCKER_MTU
+    name: Docker MTU
+    description: The MTU to use for Docker
+    required: true
+    managed: true
+    default: 1400
+services:
+  - service_type: orion
+    name: IoT Context Broker Host
+    description: The host of the Context Broker to connect the agent to
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: IOTA_CB_HOST
+  - service_type: mongo
+    name: IoT Mongo Host
+    description: The host of the Mongo Database to connect the agent to
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: IOTA_MONGO_HOST

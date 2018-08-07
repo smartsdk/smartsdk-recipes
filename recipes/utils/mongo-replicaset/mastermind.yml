@@ -1,0 +1,36 @@
+name: mongo
+version: 3.2
+description: MongoDB Replicaset to work with Fiware IoT Services
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: REPLICASET_NAME
+    name: Replicaset Name
+    description: The name to use for the replicaset
+    required: true
+    managed: true
+    default: rs
+  - variable: MONGO_PORT
+    name: Mongo Port
+    description: The port to use for Mongo
+    required: true
+    managed: true
+    default: 27017
+  - variable: OVERLAY_NETWORK_NAME
+    name: Overlay Network Name
+    description: The name of the mongo backend overlay network to use in Docker
+    required: true
+    managed: true
+    default: backend
+  - variable: STACK_NAME
+    name: Stack Name
+    description: The name to use for the mongo Docker stack. THIS NEEDS TO MATCH THE NAME OF THIS MONGO SERVICE
+    required: true
+    managed: true
+    default: mongo
+  - variable: DOCKER_MTU
+    name: Docker MTU
+    description: The MTU for Docker
+    required: true
+    managed: true
+    default: 1500

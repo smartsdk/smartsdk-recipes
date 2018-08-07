@@ -1,0 +1,5 @@
+name: grafana
+version: test
+description: Simple Grafana recipe. Includes Crate plugin.
+protocol_type: HTTP
+ngsi_version: 1

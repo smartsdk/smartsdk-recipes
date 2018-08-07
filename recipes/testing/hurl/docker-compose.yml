@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres:
+    image: icclab/postgres-hurl
+  hurl-it:
+    image: icclab/hurl-it
+    working_dir: /code/hurl
+    environment:
+      - POSTGRES_HOST=postgres
+    ports:
+      - "9393:9393"
+    depends_on:
+      - postgres

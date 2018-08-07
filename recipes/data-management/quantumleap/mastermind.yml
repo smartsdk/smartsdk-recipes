@@ -1,0 +1,42 @@
+name: quantumleap
+version: latest
+description: Quantum Leap
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: CRATE_HOST
+    name: Crate Host
+    description: The host of Crate
+    required: true
+    managed: true
+    default: crate
+  - variable: CLUSTER_DOMAIN
+    name: Cluster Domain
+    description: The domain of the cluster hosting this Service
+    required: true
+    managed: true
+    default: mydomain.com
+  - variable: EXPECTED_NODES
+    name: Expected Nodes
+    description: The number of expected nodes in the cluster running this Service
+    required: true
+    managed: true
+    default: 1
+  - variable: RECOVER_AFTER_NODES
+    name: Recover After Nodes
+    description: The number of nodes to recover
+    required: true
+    managed: true
+    default: 1
+  - variable: MINIMUM_MASTER_NODES
+    name: Minimum Master Nodes
+    description: The minimum amount of Master Nodes in the cluster running this Service
+    required: true
+    managed: true
+    default: 1
+  - variable: DOCKER_MTU
+    name: Docker MTU
+    description: The MTU to use for Docker
+    required: true
+    managed: true
+    default: 1400

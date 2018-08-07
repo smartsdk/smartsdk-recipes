@@ -1,0 +1,26 @@
+name: sth-comet
+version: 2.2.0
+description: STH Comet for historics
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: REPLICASET_NAME
+    name: Replicaset Name
+    description: The version to use for the replicaset on Mongo
+    required: true
+    managed: true
+    default: rs
+  - variable: DOCKER_MTU
+    name: Docker MTU
+    description: The MTU to use in Docker
+    required: true
+    managed: true
+    default: 1400
+services:
+  - service_type: mongo
+    name: IoT Mongo Host
+    description: The host of the Mongo Database to connect Comet to
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: MONGO_SERVICE_URI

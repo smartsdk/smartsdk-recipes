@@ -1,0 +1,24 @@
+name: mqtt-panel
+version: 0.1.0
+description: MQTT Panel is a simple web interface that can be used for showing the effect of MQTT traffic within a browser.
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: MQTT_SERVER
+    name: MQTT Server
+    description: Hostname/IP address of MQTT server
+    required: true
+    managed: true
+    default: localhost
+  - variable: MQTT_PORT
+    name: MQTT Port (websockets)
+    description: Port to be used to communicate with MQTT websockets interface.
+    required: true
+    managed: true
+    default: 3000
+  - variable: MQTT_PANEL_PORT
+    name: MQTT Panel Port
+    description: Port on which MQTT Panel service will be run.
+    required: true
+    managed: true
+    default: 3000

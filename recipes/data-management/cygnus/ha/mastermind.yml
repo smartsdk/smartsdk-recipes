@@ -1,0 +1,36 @@
+name: cygnus
+version: 1.0.0
+description: Cygnus is a connector in charge of persisting Orion Context Broker context data in certain configured third-party storages, creating a historical view of such data.
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: CYGNUS_MYSQL_HOST
+    name: MySQL Host
+    description: MySQL Host to use. This recipe launches its own MySQL database, so the default value will work. If the user wants to use a different MySQL database, change this
+    required: true
+    managed: true
+    default: mysql
+  - variable: CYGNUS_MYSQL_USER
+    name: MySQL User
+    description: MySQL User for the database to use with Cygnus
+    required: true
+    managed: true
+    default: root
+  - variable: CYGNUS_MYSQL_PASS
+    name: MySQL Password
+    description: MySQL Password for the database to use with Cygnus
+    required: true
+    managed: true
+    default: mypassword
+  - variable: MYSQL_ROOT_PASSWORD
+    name: MySQL Root Password
+    description: MySQL Root Password for the database to start with Cygnus
+    required: true
+    managed: true
+    default: mypassword
+  - variable: DOCKER_MTU
+    name: Docker MTU
+    description: The MTU to use for Docker
+    required: true
+    managed: true
+    default: 1400

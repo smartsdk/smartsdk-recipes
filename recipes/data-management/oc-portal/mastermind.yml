@@ -1,0 +1,150 @@
+name: portal
+version: latest
+description: Orchestra Cities Portal platform
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: ALLOWED_HOST
+    name: Allowed host
+    description: The allowed host for the Portal (it should be the ip of the Docker swarm's Master Node for example)
+    required: true
+    managed: true
+    default: 192.168.99.100
+  - variable: DEVELOPER_EMAIL
+    name: Developer Email
+    description: The email of the developer deploying this Portal instance
+    required: true
+    managed: true
+    default: admin@mail.com
+  - variable: ADMIN_NAME
+    name: Admin Name
+    description: The name of the adnin for this Portal instance
+    required: true
+    managed: true
+    default: admin
+  - variable: MYSQL_DATABASE_NAME
+    name: MySQL Database Name
+    description: The name of the database for the Portal
+    required: true
+    managed: true
+    default: catalogue
+  - variable: MYSQL_DATABASE_USER
+    name: MySQL Database User
+    description: The name of the user for the database of the Portal
+    required: true
+    managed: true
+    default: root
+  - variable: MYSQL_DATABASE_PASSWORD
+    name: MySQL Database Password
+    description: The password for the database of the Portal
+    required: true
+    managed: true
+    default: r00t
+  - variable: MYSQL_DATABASE_PORT
+    name: MySQL Database Port
+    description: The port for the MySQL database
+    required: true
+    managed: true
+    default: 3306
+  - variable: KEYCLOAK_SERVER_PORT
+    name: Keycloak Port
+    description: The port for the Keycloak instance
+    required: true
+    managed: true
+    default: 8080
+  - variable: KEYCLOAK_ADMIN_USERNAME
+    name: Keycloak Admin Username
+    description: The username of the Keycloak admin to use
+    required: true
+    managed: true
+    default: keycloak
+  - variable: KEYCLOAK_ADMIN_PASSWORD
+    name: Keycloak Admin Password
+    description: The password of the Keycloak admin to use
+    required: true
+    managed: true
+    default: password
+  - variable: PUBLIC_CLIENT_ID
+    name: Keycloak Public Client ID
+    description: The ID of the Keycloak public openID Connect client to use
+    required: true
+    managed: true
+    default: privacy-manager
+  - variable: PUBLIC_URI
+    name: Portal Public URI
+    description: The URI to use for the Portal (should use the master node of the Swarm Cluster)
+    required: true
+    managed: true
+    default: http://192.168.99.100:80
+  - variable: CONFIDENTIAL_CLIENT_ID
+    name: Portal Condifental Client ID
+    description: The ID of the Keycloak confidential/private openID Connect client to use
+    required: true
+    managed: true
+    default: privacy-manager-openid
+  - variable: CONFIDENTIAL_CLIENT_SECRET
+    name: Portal Condifental Client Secret
+    description: The Secret of the Keycloak confidential/private openID Connect client to use
+    required: true
+    managed: true
+    default: a0007871-6fa5-4c34-9343-a9ecf9146382
+  - variable: IOT_MANAGER_URL
+    name: IoT Manager URL
+    description: The URL of the IoT Manager used by the Portal
+    required: true
+    managed: true
+    default: https://iot-manager.com
+  - variable: ORION_PORT
+    name: Orion Port
+    description: The Port used by Orion
+    required: true
+    managed: true
+    default: 1026
+  - variable: QL_PORT
+    name: QuantumLeap Port
+    description: The Port used by QuantumLeap
+    required: true
+    managed: true
+    default: 8668
+  - variable: ES_PORT
+    name: ElasticSearch Port
+    description: The Port used by ElasticSearch
+    required: true
+    managed: true
+    default: 9200
+services:
+  - service_type: mysql
+    name: MySQL Host
+    description: The host of the MySQL Database to connect the Portal to
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: MYSQL_DATABASE_HOST
+  - service_type: keycloak
+    name: Keycloak Host
+    description: The host of the Keycloak instance to use for the Portal
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: KEYCLOAK_SERVER_HOST
+  - service_type: orion
+    name: Orion Host
+    description: The host of the Orion instance to use for the Portal
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: ORION_HOST
+  - service_type: quantumleap
+    name: QuantumLeap Host
+    description: The host of the QuantumLeap instance to use for the Portal
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: QL_HOST
+  - service_type: elasticsearch
+    name: ElasticSearch Host
+    description: The host of the ElasticSearch instance to use for the Portal
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: ES_HOST

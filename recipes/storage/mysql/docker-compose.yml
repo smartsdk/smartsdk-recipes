@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7.13
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - backend
+volumes:
+  mysqldata:
+    external: false
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: 1500
+  backend:
+    driver: overlay
+    external: true
