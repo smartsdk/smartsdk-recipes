@@ -8,7 +8,7 @@
                Requires existing external network: backend
   note: |
     <b>Requires existing external networks: backend.</b><br />
-    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/iot-services/iotagent-lwm2m/readme/'>documentation</a>.
+    See the <a target='_blank' href='https://smartsdk-recipes.readthedocs.io/en/latest/iot-services/iotagent-lwm2m/readme/'>documentation</a>.
   logo: https://www.fiware.org/style/imgs/logo_solo.png
   platform: linux
   repository:
