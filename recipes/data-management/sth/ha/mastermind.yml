@@ -18,7 +18,7 @@ environment_variables:
     default: 1400
 services:
   - service_type: mongo
-    name: IoT Mongo Host
+    name: Mongo Host
     description: The host of the Mongo Database to connect Comet to
     required: true
     managed: true
