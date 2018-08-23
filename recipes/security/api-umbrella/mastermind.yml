@@ -1,0 +1,5 @@
+name: api-umbrella
+version: 0.14.4-1-fiware
+description: Api Umbrella
+protocol_type: HTTP
+ngsi_version: 1

@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  iotmanager:
+    image: iotmanager
+    ports:
+      - ${IOTA_SERVER_PORT}:${IOTA_SERVER_PORT}
+    environment:
+      - IOTA_SERVER_PORT=${IOTA_SERVER_PORT}
+      - IOTA_MONGO_HOST=${IOTA_MONGO_HOST}
+      - IOTA_MONGO_PORT=${IOTA_MONGO_PORT}
+      - IOTA_LOG_LEVEL=${IOTA_LOG_LEVEL}
+      - IOTA_MONGO_REPLICASET=${IOTA_MONGO_REPLICASET}
+      - IOTA_MONGO_DB=${IOTA_MONGO_DB}
+    networks:
+      - backend
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mongo
+
+networks:
+  backend:
+    driver: overlay
+    external: false

@@ -1,0 +1,5 @@
+name: hurl
+version: 1.3.0
+description: Hurl.it is a testing tool which can be used to send HTTP requests to other services; requests can be sent and the response received from the service can be seen. It's a web based alternative to curl which is (arguably) slightly better from a demonstration point of view.
+protocol_type: HTTP
+ngsi_version: 1

@@ -1,0 +1,30 @@
+name: mysql
+version: 5.7.13
+description: MySQL Database
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: MYSQL_USER
+    name: MySQL User
+    description: The name for the user of the database
+    required: true
+    managed: true
+    default: keycloak
+  - variable: MYSQL_PASSWORD
+    name: MySQL Password
+    description: The password for the user of the database
+    required: true
+    managed: true
+    default: password
+  - variable: MYSQL_DATABASE
+    name: MySQL Database Name
+    description: The name of the database
+    required: true
+    managed: true
+    default: catalogue
+  - variable: MYSQL_ROOT_PASSWORD
+    name: MySQL Root Password
+    description: The root password for MySQL
+    required: true
+    managed: true
+    default: r00t

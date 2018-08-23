@@ -1,0 +1,48 @@
+name: elasticsearch
+version: 5.4
+description: Elastic Search
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: MINIMUM_MASTER_NODES
+    name: Minimum Master Nodes
+    description: The minimum number of master nodes in the cluster
+    required: true
+    managed: true
+    default: 1
+  - variable: DISCOVERY_TYPE
+    name: Discovery Type
+    description: The Discovery type (e.g. single-node)
+    required: true
+    managed: true
+    default: single-node
+  - variable: SECURITY_ENABLED
+    name: Security Enabled
+    description: Whether the security is enabled or not (true or false)
+    required: true
+    managed: true
+    default: false
+  - variable: MONITORING_ENABLED
+    name: Monitoring Enabled
+    description: Whether the monitoring is enabled or not (true or false)
+    required: true
+    managed: true
+    default: false
+  - variable: ML_ENABLED
+    name: Machine Learning Enabled
+    description: Whether the machine learning is enabled or not (true or false)
+    required: true
+    managed: true
+    default: false
+  - variable: GRAPH_ENABLED
+    name: Graph Enabled
+    description: Whether the graphing is enabled or not (true or false)
+    required: true
+    managed: true
+    default: false
+  - variable: WATCHER_ENABLED
+    name: Watcher Enabled
+    description: Whether the watcher is enabled or not (true or false)
+    required: true
+    managed: true
+    default: false

@@ -1,0 +1,24 @@
+name: iotagent-ul
+version: 1.5.0
+description: IoT Agent with the Ultralight protocol
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: IOTA_HTTP_PORT
+    name: HTTP Port
+    description: The HTTP Port for the IoT Agent to use
+    required: true
+    managed: true
+    default: 7896
+  - variable: IOTA_NORTH_PORT
+    name: Northbound Port
+    description: The Northbound Port for the IoT Agent to use
+    required: true
+    managed: true
+    default: 4041
+  - variable: DOCKER_MTU
+    name: Docker MTU
+    description: The MTU to use for Docker
+    required: true
+    managed: true
+    default: 1400

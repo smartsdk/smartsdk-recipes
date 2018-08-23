@@ -1,0 +1,38 @@
+name: keycloak
+version: 5.7.13
+description: Keycloak Identity Manager
+protocol_type: HTTP
+ngsi_version: 1
+environment_variables:
+  - variable: MYSQL_PORT
+    name: MySQL Database port
+    description: The port used by MySQL
+    required: true
+    managed: true
+    default: 3306
+  - variable: MYSQL_DATABASE
+    name: MySQL Database
+    description: The Database used by MySQL
+    required: true
+    managed: true
+    default: catalogue
+  - variable: KEYCLOAK_USER
+    name: Keycloak User
+    description: The User for Keycloak
+    required: true
+    managed: true
+    default: keycloak
+  - variable: KEYCLOAK_PASSWORD
+    name: Keycloak Password
+    description: The Password for Keycloak
+    required: true
+    managed: true
+    default: password
+services:
+  - service_type: mysql
+    name: MySQL Host
+    description: The host of the MySQL Database to connect Keycloak to
+    required: true
+    managed: true
+    retrieve: endpoint
+    as: MYSQL_ADDR

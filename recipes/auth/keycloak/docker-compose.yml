@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  keycloak:
+    image: jboss/keycloak:3.4.3.Final
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    networks:
+      - backend
+    environment:
+      - MYSQL_ADDR=${MYSQL_ADDR}
+      # Intentional redundancy here because handling of these wouldn't work
+      # as documented in keycloak.
+      - MYSQL_PORT_3306_TCP_ADDR=${MYSQL_ADDR}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_PORT_3306_TCP_PORT=${MYSQL_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - KEYCLOAK_USER=${KEYCLOAK_USER}
+      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+      - KEYCLOAK_LOGLEVEL=DEBUG
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: 1500
+  backend:
+    driver: overlay
+    external: true

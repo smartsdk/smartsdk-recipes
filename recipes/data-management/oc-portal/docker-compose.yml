@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  catalogue:
+    image: cerfoglg/catalogue
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    environment:
+      - DJANGO_SETTINGS_MODULE=select4cities.settings.docker_compose_deployment
+      - LOCAL="True"
+      - ALLOWED_HOST=${ALLOWED_HOST}
+      - DEVELOPER_EMAIL=${DEVELOPER_EMAIL}
+      - ADMIN_NAME=${ADMIN_NAME}
+      - MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME}
+      - MYSQL_DATABASE_USER=${MYSQL_DATABASE_USER}
+      - MYSQL_DATABASE_PASSWORD=${MYSQL_DATABASE_PASSWORD}
+      - MYSQL_DATABASE_HOST=${MYSQL_DATABASE_HOST}
+      - MYSQL_DATABASE_PORT=${MYSQL_DATABASE_PORT}
+      - KEYCLOAK_SERVER_HOST=${KEYCLOAK_SERVER_HOST}
+      - KEYCLOAK_SERVER_PORT=${KEYCLOAK_SERVER_PORT}
+      - KEYCLOAK_ADMIN_USERNAME=${KEYCLOAK_ADMIN_USERNAME}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - PUBLIC_CLIENT_ID=${PUBLIC_CLIENT_ID}
+      - PUBLIC_URI=${PUBLIC_URI}
+      - CONFIDENTIAL_CLIENT_ID=${CONFIDENTIAL_CLIENT_ID}
+      - CONFIDENTIAL_CLIENT_SECRET=${CONFIDENTIAL_CLIENT_SECRET}
+      - IOT_MANAGER_URL=${IOT_MANAGER_URL}
+      - ORION_HOST=${ORION_HOST}
+      - ORION_PORT=${ORION_PORT}
+      - QL_HOST=${QL_HOST}
+      - QL_PORT=${QL_PORT}
+      - ES_HOST=${ES_HOST}
+      - ES_PORT=${ES_PORT}
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.4.2
+    environment:
+      - ELASTICSEARCH_URL=http://${ES_HOST}:${ES_PORT}
+      - SERVER_PORT=5601
+    ports:
+      - "5601:5601"
+    networks:
+      - backend
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: 1500
+  backend:
+    driver: overlay
+    external: true
