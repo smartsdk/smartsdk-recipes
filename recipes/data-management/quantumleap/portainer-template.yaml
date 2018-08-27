@@ -8,7 +8,7 @@
                Requires existing external networks: frontend, backend
   note: |
     <b>Requires existing external networks: frontend, backend.</b><br />
-    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/quantumleap/readme/'>documentation</a>.
+    See the <a target='_blank' href='https://smartsdk-recipes.readthedocs.io/en/latest/data-management/quantumleap/readme/'>documentation</a>.
   logo: https://www.fiware.org/style/imgs/logo_solo.png
   platform: linux
   repository:
@@ -43,7 +43,7 @@
                Requires existing external networks: frontend, backend
   note: |
     <b>Requires existing external networks: frontend, backend.</b><br />
-    See the <a target='_blank' href='https://smartsdk.github.io/smartsdk-recipes/data-management/quantumleap/readme/'>documentation</a>.
+    See the <a target='_blank' href='https://smartsdk-recipes.readthedocs.io/en/latest/data-management/quantumleap/readme/'>documentation</a>.
   logo: https://www.fiware.org/style/imgs/logo_solo.png
   platform: linux
   repository:
