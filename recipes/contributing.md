@@ -15,8 +15,19 @@ Be aware that during the CI process, a number of linters are run:
   to the MD [linting rules](https://github.com/markdownlint/markdownlint/blob/master/docs/RULES.md).
 
 Once you make a pull request to the repository, you will be able to observe
-the results of the compliancy verification in your PR. Merge will be only possible
-if CI process is passed successfully.
+the results of the compliancy verification in your PR. Merge will be only
+possible after a successful CI run.
+
+## Important observations for new recipes
+
+1. Please add a `README.md` with an introduction on how to use the recipe and
+which things MUST be set in order for it to work.
+1. State which services are **stateful** and which are **stateless**.
+1. Provide the recipe with sensible defaults that work out of the box in the
+FIWARE Lab. Use as much defaults as possible, so users need minimum to none
+configuration before the first testing deployment.
+1. Please keep recipes in order (respect the folder structure) following
+categories.
 
 ## Contributing to Portainer Recipes
 
@@ -48,13 +59,13 @@ If you change the structure of the index or add new pages, remember to update
 Note you can preview your changes locally by running
 
 ```
-    # from the location of mkdocs.yml
-    $ mkdocs serve
+# from the location of mkdocs.yml
+$ mkdocs serve
 ```
 
 After all your changes, remember to run
 
 ```
-    # from the location of mkdocs.yml
-    $ mkdocs gh-deploy
+# from the location of mkdocs.yml
+$ mkdocs gh-deploy
 ```
