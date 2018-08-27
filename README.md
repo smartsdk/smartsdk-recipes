@@ -23,8 +23,8 @@ section of the docs.
 
 ## How to use
 
-See the [Home](https://smartsdk-recipes.readthedocs.io/en/latest/) section of the
-docs.
+See the [Home](https://smartsdk-recipes.readthedocs.io/en/latest/)
+section of the docs.
 
 ## License
 
@@ -32,5 +32,5 @@ This repository is licensed under Affero General Public License (GPL) version 3.
 
 ## Contributing
 
-See the [Contributing](https://smartsdk-recipes.readthedocs.io/en/latest/) section of
-the docs.
+See the [Contributing](https://smartsdk-recipes.readthedocs.io/en/latest/)
+section of the docs.
