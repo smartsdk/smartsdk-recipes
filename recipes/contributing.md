@@ -21,13 +21,16 @@ possible after a successful CI run.
 ## Important observations for new recipes
 
 1. Please add a `README.md` with an introduction on how to use the recipe and
-which things MUST be set in order for it to work.
+    which things MUST be set in order for it to work.
+
 1. State which services are **stateful** and which are **stateless**.
+
 1. Provide the recipe with sensible defaults that work out of the box in the
-FIWARE Lab. Use as much defaults as possible, so users need minimum to none
-configuration before the first testing deployment.
+    FIWARE Lab. Use as much defaults as possible, so users need little to none
+    configuration before the first testing deployment.
+
 1. Please keep recipes in order (respect the folder structure) following
-categories.
+    categories.
 
 ## Contributing to Portainer Recipes
 
