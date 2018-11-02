@@ -32,5 +32,5 @@ This repository is licensed under Affero General Public License (GPL) version 3.
 
 ## Contributing
 
-See the [Contributing](https://smartsdk-recipes.readthedocs.io/en/latest/)
+See the [Contributing](https://smartsdk-recipes.readthedocs.io/en/latest/contributing/)
 section of the docs.
