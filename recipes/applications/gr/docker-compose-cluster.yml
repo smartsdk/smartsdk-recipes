@@ -1,0 +1,263 @@
+version: '3.3'
+services:
+
+    traefik:
+        image: traefik:1.7-alpine
+        command:
+          - "--api"
+          - "--entrypoints=Name:http Address::80"
+#          - "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
+#          - "--entrypoints=Name:https Address::443 TLS"
+#          - "--defaultentrypoints=http,https"
+#          - "--acme"
+#          - "--acme.storage=/etc/traefik/acme/acme.json"
+#          - "--acme.entryPoint=https"
+#          - "--acme.httpChallenge.entryPoint=http"
+#          - "--acme.onHostRule=true"
+#          - "--acme.onDemand=false"
+#          - "--acme.email=sam.jm1618@gmail.com"
+          - "--docker"
+          - "--docker.swarmMode"
+          - "--docker.domain=polifonias.com.mx"
+          - "--docker.watch"
+        ports:
+#          - target: 80
+#            published: 80
+#            mode: host
+#          - target: 443
+#            published: 443
+#            mode: host
+          - target: 8080
+            published: 8080
+            mode: host
+          - "80:80"
+#          - "443:443"
+          - "8080:8080"
+#        secrets:
+#          - traefik.toml
+#          - acme.json
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+#          - $PWD/traefik.toml:/etc/traefik/traefik.toml
+#         - $PWD/acme:/etc/traefik/acme
+        networks:
+          - frontend
+          - backend
+#        labels:
+#          - "traefik.backend=traefik"
+#          - "traefik.enable=true"
+        deploy:
+          labels:
+            - "traefik.enable=false"
+          mode: global
+          placement:
+            constraints: [node.role==manager]
+          restart_policy:
+            condition: on-failure
+          resources:
+            limits:
+              cpus: '0.30'
+              memory: 72M
+            reservations:
+              cpus: '0.10'
+              memory: 36M
+
+    smart-sdk-back:
+        image: smartsdk/greenroute-backend:latest
+        depends_on:
+            - smart-sdk-keyrock
+        environment:
+            - SPRING_PROFILES_ACTIVE=production
+            - SPRING_DATA_MONGODB_URI=mongodb://mongo-rs_mongo:27017/?replicaSet=${REPLICASET_NAME:-rs}
+            - IDM_SERVERS_KEYSTONE=http://smart-sdk-keyrock:5000
+            - IDM_SERVERS_ORION=http://130.206.123.34:1026
+            - FRONT_URL=https://www.polifonias.com.mx/#
+        networks:
+          - backend
+        labels:
+          - "traefik.backend=smart-sdk-back"
+          - "traefik.frontend.rule=Host:api.polifonias.com.mx"
+          - "traefik.enable=true"
+          - "traefik.port=8080"
+
+    smart-sdk-front:
+        image: smartsdk/greenroute-frontend:latest
+#         ports:
+#           - "80:80"
+        environment:
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.polifonias.com.mx/back-sdk}
+          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroutesdk.com.mx/dashboard/db/airquality-dashboard}
+          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://smartsdkitesm.com}
+          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.polifonias.com.mx/}
+        networks:
+          - frontend
+          - backend  # because of keyrock
+        labels:
+#          - "traefik.backend=smart-sdk-back"
+          - "traefik.frontend.rule=Host:polifonias.com.mx, www.polifonias.com.mx"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+#    smart-sdk-orion:
+#        image: fiware/orion:1.14.0
+##        ports:
+##          - "1026:1026"
+#        command: -dbhost smart-sdk-mongodb -corsOrigin __ALL
+#        depends_on:
+#          - smart-sdk-mongodb
+#        healthcheck:
+#          test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+#          interval: 1m
+#          timeout: 10s
+#          retries: 3
+#        networks:
+#          - backend
+#        labels:
+#          - "traefik.backend=smart-sdk-orion"
+#          - "traefik.frontend.rule=Host:orion.greenroutesdk.com.mx"
+#          - "traefik.enable=true"
+#          - "traefik.port=1026"
+
+#    smart-sdk-mongodb:
+#        image: mongo:3.2.6
+#        volumes:
+#          - mongodb-data:/data/db
+#        deploy:
+#          mode: global
+#          restart_policy:
+#            condition: on-failure
+#          update_config:
+#            parallelism: 1
+#            delay: 1m30s
+#        networks:
+#          - backend
+#        labels:
+#          - "traefik.enable=false"
+
+    mongo-seeder:
+        image: smartsdk/greenroute-mongo-seed:latest
+        deploy:
+          restart_policy:
+            condition: on-failure
+        depends_on:
+          - mongo-rs_mongo
+        environment:
+          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo-rs_mongo}
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    smart-sdk-keyrock:
+        image: rodrigonievez/infotec-idm-image
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    routing-map:
+        image: smartsdk/greenroute-routing-frontend:token-cookie
+#         ports:
+#           - "80:80"
+        environment:
+          - BACKEND_URL=${BACKEND_URL:-https://api.polifonias.com.mx/back-sdk}
+          - ORION_URL=${ORION_URL:-https://orion.greenroutesdk.com.mx/}
+        networks:
+          - frontend
+#          - backend  # because of keyrock
+        labels:
+#          - "traefik.backend=smart-sdk-back"
+          - "traefik.frontend.rule=Host:map.polifonias.com.mx"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+#    smartcity-alerts:
+#        image: samjm/smartcity-alerts:0.1
+#        environment:
+#          - ENV_BACKEND=${ENV_BACKEND:-https://api.greenroutesdk.com.mx/back-sdk}
+#          - ENV_ORION=${ENV_ORION:-https://orion.greenroutesdk.com.mx}
+#        networks:
+#          - frontend
+#          - backend  # because of keyrock
+#        labels:
+#          - "traefik.backend=smartcity-alerts"
+#          - "traefik.frontend.rule=Host:alerts.greenroutesdk.com.mx"
+#          - "traefik.enable=true"
+#          - "traefik.port=80"
+
+#    quantumleap:
+#        image: smartsdk/quantumleap
+##        ports:
+##          - "8668:8668"
+#        depends_on:
+#          - smart-sdk-mongodb
+##          - smart-sdk-orion
+#          - crate
+#        environment:
+#          - CRATE_HOST=crate
+##           - CRATE_HOST=${CRATE_HOST:-crate}
+#          - USE_GEOCODING=True
+#        networks:
+#          - frontend
+#          - backend
+#        labels:
+#          - "traefik.frontend.rule=Host:quantum.greenroutesdk.com.mx"
+#          - "traefik.enable=true"
+#          - "traefik.port=8668"
+
+#    crate:
+#        image: crate:1.0.5
+##        image: crate:${CRATE_VERSION:-3.0.5}
+##        ports:
+##          # Admin UI
+##          - "4200:4200"
+##          # Transport protocol
+##          - "4300:4300"
+#        command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+##        command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+#        networks:
+#          - backend
+#        volumes:
+#          - crate-data:/data
+#        labels:
+#          - "traefik.frontend.rule=Host:crate.greenroutesdk.com.mx"
+#          - "traefik.enable=true"
+#          - "traefik.port=4200"
+#          - "traefik.port=4300"
+#          - "traefik.backend=crate"
+
+#    grafana:
+#        image: grafana/grafana
+###        ports:
+###          - "3000:3000"
+#        environment:
+#          - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel
+#          - GF_AUTH_ANONYMOUS_ENABLED=true
+#          - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+#          - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+#        depends_on:
+#          - crate
+#        networks:
+#          - backend
+#        labels:
+#          - "traefik.frontend.rule=Host:grafana.greenroutesdk.com.mx"
+#          - "traefik.enable=true"
+#          - "traefik.port=3000"
+
+networks:
+  backend:
+    external: true
+  frontend:
+    external: true
+#
+#volumes:
+#  mongodb-data:
+#    external: true
+#  crate-data:
+#    external: true
+
+#secrets:
+#  traefik.toml:
+#   file: traefik.toml
+#  acme.json:
+#   file: acme/acme.json
