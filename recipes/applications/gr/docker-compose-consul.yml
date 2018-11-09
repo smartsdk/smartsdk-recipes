@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
     traefik_init:
-        image: traefik:v1.7.2
+        image: traefik:v1.5
         command:
           - "storeconfig"
           - "--api"
@@ -11,7 +11,7 @@ services:
           - "--entrypoints=Name:https Address::443 TLS"
           - "--defaultentrypoints=http,https"
           - "--acme"
-          - "--acme.storage=traefik/acme/account"  #"etc/traefik/acme/acme.json" #traefik/acme/account
+          - "--acme.storage=etc/traefik/acme/acme.json" #traefik/acme/account
           - "--acme.entryPoint=https"
           - "--acme.httpChallenge.entryPoint=http"
           - "--acme.onHostRule=true"
@@ -22,10 +22,9 @@ services:
           - "--docker.domain=polifonias.com.mx"
           - "--docker.watch"
           - "--consul"
-          - "--consul.endpoint=consul:8500"
+          - "--consul.endpoint=consul.cluster:8500"
           - "--consul.prefix=traefik"
         networks:
-#           - traefik
           - frontend
           - backend
         deploy:
@@ -35,29 +34,29 @@ services:
           - consul
 
     traefik:
-        image: traefik:v1.7.2 #1.7-alpine
+        image: traefik:v1.5 #1.7-alpine
         depends_on:
           - traefik_init
           - consul
         command:
-          - "storeconfig"
-          - "--api"
-          - "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
-          - "--entrypoints=Name:https Address::443 TLS"
-          - "--defaultentrypoints=http,https"
-          - "--acme"
-          - "--acme.storage=/etc/traefik/acme/acme.json"
-          - "--acme.entryPoint=https"
-          - "--acme.httpChallenge.entryPoint=http"
-          - "--acme.onHostRule=true"
-          - "--acme.onDemand=false"
-          - "--acme.email=sam.jm1618@gmail.com"
-          - "--docker"
-          - "--docker.swarmMode"
-          - "--docker.domain=polifonias.com.mx"
-          - "--docker.watch"
+          #- "storeconfig"
+          #- "--api"
+          #- "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
+          #- "--entrypoints=Name:https Address::443 TLS"
+          #- "--defaultentrypoints=http,https"
+          #- "--acme"
+          #- "--acme.storage=etc/traefik/acme/acme.json"
+          #- "--acme.entryPoint=https"
+          #- "--acme.httpChallenge.entryPoint=http"
+          #- "--acme.onHostRule=true"
+          #- "--acme.onDemand=false"
+          #- "--acme.email=sam.jm1618@gmail.com"
+          #- "--docker"
+          #- "--docker.swarmMode"
+          #- "--docker.domain=polifonias.com.mx"
+          #- "--docker.watch"
           - "--consul"
-          - "--consul.endpoint=consul:8500"
+          - "--consul.endpoint=consul.cluster:8500"
           - "--consul.prefix=traefik"
         ports:
           - target: 80
@@ -72,8 +71,6 @@ services:
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
         networks:
-#          - webgateway
-#          - traefik
           - frontend
           - backend
         deploy:
@@ -90,8 +87,8 @@ services:
             condition: on-failure
 
     consul:
-        image: consul
-        command: agent -server -bootstrap-expect=1
+        image: consul:1.0.2
+        command: agent -server -client 0.0.0.0 -bootstrap-expect=1 -data-dir /consul/data -retry-join consul.cluster
         volumes:
           - consul-data:/consul/data
         environment:
@@ -100,19 +97,20 @@ services:
           - CONSUL_CLIENT_INTERFACE=eth0
         deploy:
           replicas: 1
+          endpoint_mode: dnsrr
           placement:
             constraints:
               - node.role==manager
           restart_policy:
             condition: on-failure
         networks:
-#           - traefik
-           - frontend
-           - backend
-#        ports:
-#           - "8400:8400"
-#           - "8500:8500"
-#           - "8600:53/udp"
+           backend:
+              aliases:
+                - consul.cluster
+        ports:
+           - target: 8500
+             published: 8500
+             mode: host
 
     smart-sdk-back:
         image: smartsdk/greenroute-backend:latest
@@ -120,13 +118,11 @@ services:
             - smart-sdk-keyrock
         environment:
             - SPRING_PROFILES_ACTIVE=production
-            - SPRING_DATA_MONGODB_URI=mongodb://mongo-rs_mongo:27017/?replicaSet=${REPLICASET_NAME:-rs}
+            - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/?replicaSet=${REPLICASET_NAME:-rs}
             - IDM_SERVERS_KEYSTONE=http://smart-sdk-keyrock:5000
             - IDM_SERVERS_ORION=http://130.206.123.34:1026
             - FRONT_URL=https://www.polifonias.com.mx/#
         networks:
-#          - traefik
-#          - webgateway
           - backend
           - frontend
         labels:
@@ -145,8 +141,6 @@ services:
           - GR_ALERTS_URL=${GR_ALERTS_URL:-https://smartsdkitesm.com}
           - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.polifonias.com.mx/}
         networks:
-#          - webgateway
-#          - traefik 
           - frontend
           - backend  # because of keyrock
         labels:
@@ -154,22 +148,6 @@ services:
           - "traefik.frontend.rule=Host:polifonias.com.mx, www.polifonias.com.mx"
           - "traefik.enable=true"
           - "traefik.port=80"
-
-#    smart-sdk-mongodb:
-#        image: mongo:3.2.6
-#        volumes:
-#          - mongodb-data:/data/db
-#        deploy:
-#          mode: global
-#          restart_policy:
-#            condition: on-failure
-#          update_config:
-#            parallelism: 1
-#            delay: 1m30s
-#        networks:
-#          - backend
-#        labels:
-#          - "traefik.enable=false"
 
     mongo-seeder:
         image: smartsdk/greenroute-mongo-seed:latest
@@ -179,7 +157,7 @@ services:
         depends_on:
           - mongo-rs_mongo
         environment:
-          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo-rs_mongo}
+          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo}
         networks:
           - backend
         labels:
@@ -227,4 +205,3 @@ networks:
 
 volumes:
   consul-data:
-#      driver: not local
