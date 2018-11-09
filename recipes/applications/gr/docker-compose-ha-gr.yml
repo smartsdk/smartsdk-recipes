@@ -16,10 +16,10 @@ services:
           - "--acme.httpChallenge.entryPoint=http"
           - "--acme.onHostRule=true"
           - "--acme.onDemand=false"
-          - "--acme.email=sam.jm1618@gmail.com"
+          - "--acme.email=${GR_DOMAIN_EMAIL:-youremail@domain.com}"
           - "--docker"
           - "--docker.swarmMode"
-          - "--docker.domain=polifonias.com.mx"
+          - "--docker.domain=${GR_DOMAIN_URL:-mydomain.com}"
           - "--docker.watch"
           - "--consul"
           - "--consul.endpoint=consul.cluster:8500"
@@ -102,31 +102,31 @@ services:
             - SPRING_PROFILES_ACTIVE=production
             - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017/?replicaSet=${REPLICASET_NAME:-rs}
             - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
-            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.greenroutesdk.com.mx}
-            - FRONT_URL=https://www.${GR_DOMAIN_URL:-greenroutesdk.com.mx}/#
+            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.mydomain.com}
+            - FRONT_URL=https://www.${GR_DOMAIN_URL:-mydomain.com}/#
         networks:
           - backend
           - frontend
         labels:
           - "traefik.backend=gr-backend"
-          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-greenroutesdk.com.mx}"
+          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-mydomain.com}"
           - "traefik.enable=true"
           - "traefik.port=8080"
 
     gr-frontend:
         image: smartsdk/greenroute-frontend:latest
         environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroutesdk.com.mx/back-sdk}
-          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroutesdk.com.mx/dashboard/db/airquality-dashboard}
-          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://smartsdkitesm.com}
-          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.greenroutesdk.com.mx/}
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.mydomain.com/dashboard/db/airquality-dashboard}
+          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.mydomain.com}
+          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.mydomain.com/}
         networks:
           - frontend
           - backend
         labels:
-          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-greenroutesdk.com.mx}, www.${GR_DOMAIN_URL:-greenroutesdk.com.mx}"
+          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-mydomain.com}, www.${GR_DOMAIN_URL:-mydomain.com}"
           - "traefik.enable=true"
-          - "traefik.port=80"
+          - "traefik.port=8"
 
     mongo-seeder:
         image: smartsdk/greenroute-mongo-seed:latest
@@ -152,12 +152,12 @@ services:
     routing-map:
         image: smartsdk/greenroute-routing-frontend:latest
         environment:
-          - BACKEND_URL=${GR_BACKEND_URL:-https://api.polifonias.com.mx/back-sdk}
-          - ORION_URL=${GR_ORION_URL:-https://orion.greenroutesdk.com.mx}
+          - BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
         networks:
           - frontend
         labels:
-          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-greenroutesdk.com.mx}"
+          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-mydomain.com}"
           - "traefik.enable=true"
           - "traefik.port=80"
 
