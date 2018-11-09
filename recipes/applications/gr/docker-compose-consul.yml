@@ -11,7 +11,7 @@ services:
           - "--entrypoints=Name:https Address::443 TLS"
           - "--defaultentrypoints=http,https"
           - "--acme"
-          - "--acme.storage=etc/traefik/acme/acme.json" #traefik/acme/account
+          - "--acme.storage=etc/traefik/acme/acme.json"
           - "--acme.entryPoint=https"
           - "--acme.httpChallenge.entryPoint=http"
           - "--acme.onHostRule=true"
@@ -34,27 +34,11 @@ services:
           - consul
 
     traefik:
-        image: traefik:v1.5 #1.7-alpine
+        image: traefik:v1.5
         depends_on:
           - traefik_init
           - consul
         command:
-          #- "storeconfig"
-          #- "--api"
-          #- "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
-          #- "--entrypoints=Name:https Address::443 TLS"
-          #- "--defaultentrypoints=http,https"
-          #- "--acme"
-          #- "--acme.storage=etc/traefik/acme/acme.json"
-          #- "--acme.entryPoint=https"
-          #- "--acme.httpChallenge.entryPoint=http"
-          #- "--acme.onHostRule=true"
-          #- "--acme.onDemand=false"
-          #- "--acme.email=sam.jm1618@gmail.com"
-          #- "--docker"
-          #- "--docker.swarmMode"
-          #- "--docker.domain=polifonias.com.mx"
-          #- "--docker.watch"
           - "--consul"
           - "--consul.endpoint=consul.cluster:8500"
           - "--consul.prefix=traefik"
@@ -74,9 +58,7 @@ services:
           - frontend
           - backend
         deploy:
-#          labels:
-#            - "traefik.enable=true"
-          mode: replicated #global #replicated
+          mode: replicated
           placement:
             constraints:
               - node.role==manager
@@ -133,8 +115,6 @@ services:
 
     smart-sdk-front:
         image: smartsdk/greenroute-frontend:latest
-#         ports:
-#           - "80:80"
         environment:
           - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.polifonias.com.mx/back-sdk}
           - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroutesdk.com.mx/dashboard/db/airquality-dashboard}
@@ -142,9 +122,8 @@ services:
           - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.polifonias.com.mx/}
         networks:
           - frontend
-          - backend  # because of keyrock
+          - backend
         labels:
-#          - "traefik.backend=smart-sdk-back"
           - "traefik.frontend.rule=Host:polifonias.com.mx, www.polifonias.com.mx"
           - "traefik.enable=true"
           - "traefik.port=80"
@@ -166,36 +145,24 @@ services:
     smart-sdk-keyrock:
         image: rodrigonievez/infotec-idm-image
         networks:
-#          - webgateway
-#          - traefik
           - backend
         labels:
           - "traefik.enable=false"
 
     routing-map:
         image: smartsdk/greenroute-routing-frontend:token-cookie
-#         ports:
-#           - "80:80"
         environment:
           - BACKEND_URL=${BACKEND_URL:-https://api.polifonias.com.mx/back-sdk}
           - ORION_URL=${ORION_URL:-https://orion.greenroutesdk.com.mx/}
         networks:
-#          - webgateway
-#          - traefik
           - frontend
-          - backend  # because of keyrock
+          - backend
         labels:
-#          - "traefik.backend=smart-sdk-back"
           - "traefik.frontend.rule=Host:map.polifonias.com.mx"
           - "traefik.enable=true"
           - "traefik.port=80"
 
 networks:
-#  webgateway:
-#    driver: overlay
-#    external: true
-#  traefik:
-#    driver: overlay
   backend:
     driver: overlay
     external: true
