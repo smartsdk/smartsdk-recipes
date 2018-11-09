@@ -1,0 +1,89 @@
+version: '3.3'
+
+services:
+
+  orion:
+    image: fiware/orion:${ORION_VERSION:-1.12.0}
+    ports:
+      - "1026:1026"
+    command: -logLevel ${ORION_LOG_LEVEL:-DEBUG} -dbhost ${MONGO_SERVICE_URI:-"mongo"} -rplSet ${REPLICASET_NAME:-rs} -dbTimeout 10000
+    deploy:
+      replicas: 2
+    networks:
+      - backend
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+
+  quantumleap:
+    image: smartsdk/quantumleap:${QL_VERSION:-latest}
+    ports:
+      - 8668:8668
+    depends_on:
+      - crate
+    environment:
+      - CRATE_HOST=${CRATE_HOST:-crate}
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m
+    networks:
+      - backend
+      - frontend
+
+  crate:
+    image: crate:${CRATE_VERSION:-2.3.6}
+    # ports:
+      # Admin UI
+    #   - 4200:4200
+      # Transport protocol
+    #   - 4300:4300
+    command: ["crate",
+        "-Clicense.enterprise=false",
+        "-Cgateway.expected_nodes=${EXPECTED_NODES:-1}",
+        "-Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}",
+        "-Cgateway.recover_after_time=5m",
+        "-Cdiscovery.zen.minimum_master_nodes=${MINIMUM_MASTER_NODES:-1}",
+        "-Cdiscovery.zen.ping.unicast.hosts=${CRATE_HOST:-crate}",
+        "-Cnetwork.host=0.0.0.0",
+        "-Ccluster.name=quantumleap",
+        "-Chttp.cors.enabled=true",
+        '-Chttp.cors.allow-origin="*"']
+    environment:
+      - MAX_MAP_COUNT=262144
+      - ES_JAVA_OPTS="-Xms1g -Xmx1g"
+      - CRATE_HEAP_SIZE=1g
+    deploy:
+      endpoint_mode: dnsrr
+      mode: global
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+    volumes:
+      - cratedata:/data
+    networks:
+      - frontend  # For the UI
+      - backend
+
+volumes:
+  # External true ensures that the volume is not re-created if already present
+  cratedata:
+
+networks:
+  # Legacy for running with docker-compose in FIWARE Lab
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+  backend:
+    driver: overlay
+    external: true
+  frontend:
+    driver: overlay
+    external: true

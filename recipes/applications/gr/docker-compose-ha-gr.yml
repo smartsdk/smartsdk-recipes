@@ -1,0 +1,173 @@
+version: '3.3'
+
+services:
+
+    traefik_init:
+        image: traefik:v1.5
+        command:
+          - "storeconfig"
+          - "--api"
+          - "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
+          - "--entrypoints=Name:https Address::443 TLS"
+          - "--defaultentrypoints=http,https"
+          - "--acme"
+          - "--acme.storage=etc/traefik/acme/acme.json"
+          - "--acme.entryPoint=https"
+          - "--acme.httpChallenge.entryPoint=http"
+          - "--acme.onHostRule=true"
+          - "--acme.onDemand=false"
+          - "--acme.email=sam.jm1618@gmail.com"
+          - "--docker"
+          - "--docker.swarmMode"
+          - "--docker.domain=polifonias.com.mx"
+          - "--docker.watch"
+          - "--consul"
+          - "--consul.endpoint=consul.cluster:8500"
+          - "--consul.prefix=traefik"
+        networks:
+          - frontend
+          - backend
+        deploy:
+          restart_policy:
+            condition: on-failure
+        depends_on:
+          - consul
+
+    traefik:
+        image: traefik:v1.5
+        depends_on:
+          - traefik_init
+          - consul
+        command:
+          - "--consul"
+          - "--consul.endpoint=consul.cluster:8500"
+          - "--consul.prefix=traefik"
+        ports:
+          - target: 80
+            published: 80
+            mode: host
+          - target: 443
+            published: 443
+            mode: host
+          - target: 8080
+            published: 8080
+            mode: host
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+          - frontend
+          - backend
+        deploy:
+          mode: replicated
+          placement:
+            constraints:
+              - node.role==manager
+          update_config:
+            parallelism: 1
+            delay: 10s
+          restart_policy:
+            condition: on-failure
+
+    consul:
+        image: consul:1.0.2
+        command: agent -server -client 0.0.0.0 -bootstrap-expect=1 -data-dir /consul/data -retry-join consul.cluster
+        volumes:
+          - consul-data:/consul/data
+        environment:
+          - CONSUL_LOCAL_CONFIG={"datacenter":"us_east2","server":true}
+          - CONSUL_BIND_INTERFACE=eth0
+          - CONSUL_CLIENT_INTERFACE=eth0
+        deploy:
+          replicas: 1
+          endpoint_mode: dnsrr
+          placement:
+            constraints:
+              - node.role==manager
+          restart_policy:
+            condition: on-failure
+        networks:
+           backend:
+              aliases:
+                - consul.cluster
+        ports:
+           - target: 8500
+             published: 8500
+             mode: host
+
+    gr-backend:
+        image: smartsdk/greenroute-backend:latest
+        depends_on:
+            - keyrock
+        environment:
+            - SPRING_PROFILES_ACTIVE=production
+            - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017/?replicaSet=${REPLICASET_NAME:-rs}
+            - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
+            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.greenroutesdk.com.mx}
+            - FRONT_URL=https://www.${GR_DOMAIN_URL:-greenroutesdk.com.mx}/#
+        networks:
+          - backend
+          - frontend
+        labels:
+          - "traefik.backend=gr-backend"
+          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-greenroutesdk.com.mx}"
+          - "traefik.enable=true"
+          - "traefik.port=8080"
+
+    gr-frontend:
+        image: smartsdk/greenroute-frontend:latest
+        environment:
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroutesdk.com.mx/back-sdk}
+          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroutesdk.com.mx/dashboard/db/airquality-dashboard}
+          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://smartsdkitesm.com}
+          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.greenroutesdk.com.mx/}
+        networks:
+          - frontend
+          - backend
+        labels:
+          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-greenroutesdk.com.mx}, www.${GR_DOMAIN_URL:-greenroutesdk.com.mx}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+    mongo-seeder:
+        image: smartsdk/greenroute-mongo-seed:latest
+        deploy:
+          restart_policy:
+            condition: on-failure
+        depends_on:
+          - mongo
+        environment:
+          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo}
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    keyrock:
+        image: rodrigonievez/infotec-idm-image
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    routing-map:
+        image: smartsdk/greenroute-routing-frontend:latest
+        environment:
+          - BACKEND_URL=${GR_BACKEND_URL:-https://api.polifonias.com.mx/back-sdk}
+          - ORION_URL=${GR_ORION_URL:-https://orion.greenroutesdk.com.mx}
+        networks:
+          - frontend
+        labels:
+          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-greenroutesdk.com.mx}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+networks:
+  backend:
+    driver: overlay
+    external: true
+  frontend:
+    driver: overlay
+    external: true
+
+volumes:
+  consul-data:

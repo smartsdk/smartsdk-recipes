@@ -1,0 +1,173 @@
+version: '3.3'
+services:
+
+    traefik:
+        image: traefik:1.7-alpine
+        command: --api --docker
+        ports:
+          - "80:80"
+          - "443:443"
+          - "8080:8080"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - $PWD/traefik.toml:/etc/traefik/traefik.toml
+          - $PWD/acme:/etc/traefik/acme
+        networks:
+          - frontend
+          - backend
+
+    gr-backend:
+        image: smartsdk/greenroute-backend:latest
+        depends_on:
+            - keyrock
+        environment:
+            - SPRING_PROFILES_ACTIVE=production
+            - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017
+            - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
+            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.mydomain.com}
+            - FRONT_URL=https://www.${GR_DOMAIN_URL:-mydomain.com}/#
+        networks:
+          - backend
+        labels:
+          - "traefik.backend=gr-backend"
+          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=8080"
+
+    gr-frontend:
+        image: smartsdk/greenroute-frontend:latest
+        environment:
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.mydomain.com/dashboard/db/airquality-dashboard}
+          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.mydomain.com}
+          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.mydomain.com/}
+        networks:
+          - frontend
+          - backend
+        labels:
+          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-mydomain.com}, www.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+    routing-map:
+        image: smartsdk/greenroute-routing-frontend:latest
+        environment:
+          - BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
+        networks:
+          - frontend
+        labels:
+          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+    mongo:
+        image: mongo:3.2.6
+        volumes:
+          - mongodb-data:/data/db
+        deploy:
+          mode: global
+          restart_policy:
+            condition: on-failure
+          update_config:
+            parallelism: 1
+            delay: 1m30s
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    mongo-seeder:
+        image: smartsdk/greenroute-mongo-seed:latest
+        deploy:
+          restart_policy:
+            condition: on-failure
+        depends_on:
+          - mongo
+        environment:
+          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo}
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    keyrock:
+        image: rodrigonievez/infotec-idm-image
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    orion:
+        image: fiware/orion:1.14.0
+        command: -dbhost mongo -corsOrigin __ALL
+        depends_on:
+          - mongo
+        healthcheck:
+          test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+          interval: 1m
+          timeout: 10s
+          retries: 3
+        networks:
+          - backend
+        labels:
+          - "traefik.backend=orion"
+          - "traefik.frontend.rule=Host:orion.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=1026"
+
+    quantumleap:
+        image: smartsdk/quantumleap:0.4
+        depends_on:
+          - mongo
+          - crate
+        environment:
+          - CRATE_HOST=crate
+          - USE_GEOCODING=True
+        networks:
+          - frontend
+          - backend
+        labels:
+          - "traefik.frontend.rule=Host:quantum.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=8668"
+
+    crate:
+        image: crate:3.0.5
+        command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+        networks:
+          - backend
+        volumes:
+          - crate-data:/data
+        labels:
+          - "traefik.frontend.rule=Host:crate.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=4200"
+
+    grafana:
+        image: grafana/grafana:5.3.1
+        environment:
+          - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel
+          - GF_AUTH_ANONYMOUS_ENABLED=true
+          - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+          - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+        depends_on:
+          - crate
+        networks:
+          - backend
+        labels:
+          - "traefik.frontend.rule=Host:grafana.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=3000"
+
+networks:
+  backend:
+    external: true
+  frontend:
+    external: true
+
+volumes:
+  mongodb-data:
+    external: true
+  crate-data:
+    external: true
