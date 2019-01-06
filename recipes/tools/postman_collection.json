@@ -7,7 +7,6 @@
 	"item": [
 		{
 			"name": "Orion",
-			"description": "",
 			"item": [
 				{
 					"name": "Orion entities",
@@ -20,13 +19,11 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default",
-								"disabled": true
+								"value": "world"
 							},
 							{
 								"key": "fiware-ServicePath",
-								"value": "/",
-								"disabled": true
+								"value": "/"
 							}
 						],
 						"body": {},
@@ -221,8 +218,7 @@
 							},
 							{
 								"key": "fiware-service",
-								"value": "default",
-								"disabled": true
+								"value": "viva"
 							},
 							{
 								"key": "fiware-ServicePath",
@@ -266,8 +262,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"disabled": true
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -315,7 +310,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"description\": \"Manual Subscription created from Postman\",\n    \"notification\": {\n        \"attrs\": [],\n        \"http\": {\n            \"url\": \"http://quantumleap:8668/v2/notify\"\n        },\n        \"metadata\": [\n            \"dateCreated\",\n            \"dateModified\"\n        ]\n    },\n    \"subject\": {\n        \"condition\": {\n            \"attrs\": []\n        },\n        \"entities\": [\n            {\n                \"idPattern\": \".*\",\n                \"type\": \"Device\"\n            }\n        ]\n    }\n}"
+							"raw": "{\n    \"description\": \"POIS orchestracities 2\",\n    \"notification\": {\n        \"attrs\": [],\n        \"http\": {\n            \"url\": \"http://orion.s.orchestracities.com/\"\n        },\n        \"metadata\": [\n            \"dateCreated\",\n            \"dateModified\"\n        ]\n    },\n    \"subject\": {\n        \"condition\": {\n            \"attrs\": []\n        },\n        \"entities\": [\n            {\n                \"idPattern\": \".*\",\n                \"type\": \"PointOfInterest\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{ORION_EP}}/v2/subscriptions",
@@ -409,7 +404,6 @@
 		},
 		{
 			"name": "Comet",
-			"description": "",
 			"item": [
 				{
 					"name": "Comet version",
@@ -536,7 +530,6 @@
 					},
 					"response": [
 						{
-							"id": "eed6ecd6-00d6-425d-84a6-9b840fd42f51",
 							"name": "Comet raw information",
 							"originalRequest": {
 								"method": "GET",
@@ -701,7 +694,6 @@
 		},
 		{
 			"name": "QuantumLeap",
-			"description": "",
 			"item": [
 				{
 					"name": "QL version",
@@ -849,6 +841,18 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "default",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "/",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {},
@@ -868,8 +872,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "AirQualityObserved",
-									"description": "COMPULSORY FOR NOW"
+									"value": "AirQualityObserved"
 								},
 								{
 									"key": "fromDate",
@@ -915,6 +918,18 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "default",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "/",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {},
@@ -932,8 +947,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "AirQualityObserved",
-									"description": "COMPULSORY FOR NOW"
+									"value": "AirQualityObserved"
 								},
 								{
 									"key": "attrs",
@@ -967,6 +981,78 @@
 									"key": "offset",
 									"value": "1",
 									"disabled": true
+								}
+							]
+						},
+						"description": "Query historical values of 1 attribute of 1 entity of 1 type."
+					},
+					"response": []
+				},
+				{
+					"name": "QL query 1TNE1A",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "default",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "/",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{QL_EP}}/v2/types/AirQualityObserved/attrs/NO2?lastN=4",
+							"protocol": "http",
+							"host": [
+								"{{QL_EP}}"
+							],
+							"path": [
+								"v2",
+								"types",
+								"AirQualityObserved",
+								"attrs",
+								"NO2"
+							],
+							"query": [
+								{
+									"key": "aggrMethod",
+									"value": "avg",
+									"disabled": true
+								},
+								{
+									"key": "fromDate",
+									"value": "2018-04-04T00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "toDate",
+									"value": "2018-04-04T00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "lastN",
+									"value": "4"
 								}
 							]
 						},

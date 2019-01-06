@@ -1,0 +1,106 @@
+version: '3.3'
+
+services:
+
+    traefik:
+        image: traefik:v1.5
+        ports:
+          - target: 80
+            published: 80
+            mode: host
+          - target: 443
+            published: 443
+            mode: host
+          - target: 8080
+            published: 8080
+            mode: host
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+          - frontend
+          - backend
+        deploy:
+          mode: replicated
+          placement:
+            constraints:
+              - node.role==manager
+          update_config:
+            parallelism: 1
+            delay: 10s
+          restart_policy:
+            condition: on-failure
+
+    gr-backend:
+        image: smartsdk/greenroute-backend:latest
+        depends_on:
+            - keyrock
+        environment:
+            - SPRING_PROFILES_ACTIVE=production
+            - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017/?replicaSet=${REPLICASET_NAME:-rs}
+            - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
+            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.mydomain.com}
+            - FRONT_URL=https://www.${GR_DOMAIN_URL:-mydomain.com}/#
+        networks:
+          - backend
+          - frontend
+        labels:
+          - "traefik.backend=gr-backend"
+          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=8080"
+
+    gr-frontend:
+        image: smartsdk/greenroute-frontend:latest
+        environment:
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.mydomain.com/dashboard/db/airquality-dashboard}
+          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.mydomain.com}
+          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.mydomain.com/}
+        networks:
+          - frontend
+          - backend
+        labels:
+          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-mydomain.com}, www.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=8"
+
+    mongo-seeder:
+        image: smartsdk/greenroute-mongo-seed:latest
+        deploy:
+          restart_policy:
+            condition: on-failure
+        depends_on:
+          - mongo
+        environment:
+          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo}
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    keyrock:
+        image: rodrigonievez/infotec-idm-image
+        networks:
+          - backend
+        labels:
+          - "traefik.enable=false"
+
+    routing-map:
+        image: smartsdk/greenroute-routing-frontend:latest
+        environment:
+          - BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
+        networks:
+          - frontend
+        labels:
+          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
+networks:
+  backend:
+    driver: overlay
+    external: true
+  frontend:
+    driver: overlay
+    external: true

@@ -1,3 +1,5 @@
+# THIS IS TODO
+# It's like docker-compose-ha.yml but with Traefik also in HA (adding Consul)
 version: '3.3'
 
 services:
