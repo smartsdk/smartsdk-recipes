@@ -2,7 +2,11 @@
 
 ## Introduction
 
-TODO
+Green Route is focused on supporting the citizen mobility in high polluted cities
+with the aim of improving the life quality of citizens and fostering 
+environmental friendly behaviors by citizens. The objective of Green Route is to help
+the final user to determine the best route to reach a destination, taking
+into account the user profile and user preferences such as transport type.
 
 ## Deployment
 
@@ -13,7 +17,23 @@ It requires that you create the usual "backend" and "frontend" overlay networks.
 See [the Creating Networks section here](../../installation.md) for more
 details.
 
-TODO: Comment here on required environment variables setting (if any).
+In order to configure the frontend and backend services, it is necessary to define a set
+of environment variables as shown below:
+
+#### gr-backend
+
+- GR_MONGO_HOST: Reference to MongoDB service (mongo:27017)
+- REPLICASET_NAME: Name of mongo replicaset (rs)
+- GR_KEYROCK_URL: Reference to Keyrock service (http://keyrock:5000)
+- GR_ORION_URL: Reference to Orion subdomain (https://orion.mydomain.com)
+- GR_DOMAIN_URL: Domain (mydomain.com)
+
+#### gr-frontend
+
+- GR_BACKEND_URL: Reference to backend subdomain (https://api.mydomain.com/back-sdk)
+- GR_GRAFANA_URL: Reference to grafana subdomain (https://grafana.mydomain.com/dashboard/db/airquality-dashboard)
+- GR_ALERTS_URL=: Reference to alerts application subdomain (https://alerts.mydomain.com)
+- GR_ROUTINGMAP_URL: Reference to map application subdomain (https://map.mydomain.com/)
 
 ### On a Single Node
 
