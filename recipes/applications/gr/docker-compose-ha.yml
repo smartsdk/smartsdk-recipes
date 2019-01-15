@@ -40,8 +40,8 @@ services:
             - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
             - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.mydomain.com}
             - FRONT_URL=https://www.${GR_DOMAIN_URL:-mydomain.com}/#
-            - SPRING_MAIL_USERNAME=mail@domain.com
-            - SPRING_MAIL_PASSWORD=password
+            - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-mail@domain.com}
+            - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-password}
         networks:
           - backend
           - frontend
