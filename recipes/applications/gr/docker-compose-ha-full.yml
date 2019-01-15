@@ -106,6 +106,8 @@ services:
             - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
             - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.mydomain.com}
             - FRONT_URL=https://www.${GR_DOMAIN_URL:-mydomain.com}/#
+            - SPRING_MAIL_USERNAME=mail@domain.com
+            - SPRING_MAIL_PASSWORD=password
         networks:
           - backend
           - frontend
@@ -122,6 +124,7 @@ services:
           - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.mydomain.com/dashboard/db/airquality-dashboard}
           - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.mydomain.com}
           - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.mydomain.com/}
+          - GR_DOMAIN_URL=${GR_DOMAIN_URL:-mydomain.com}
         networks:
           - frontend
           - backend
@@ -154,8 +157,8 @@ services:
     routing-map:
         image: smartsdk/greenroute-routing-frontend:latest
         environment:
-          - BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
-          - ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - GR_ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
         networks:
           - frontend
         labels:
