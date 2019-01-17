@@ -1,9 +1,8 @@
 version: '3.3'
-
 services:
-
     traefik:
-        image: traefik:v1.5
+        image: traefik:1.7-alpine
+        command: --api --docker --docker.swarmMode --docker.domain=traefik --docker.watch
         ports:
           - target: 80
             published: 80
@@ -16,11 +15,14 @@ services:
             mode: host
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
+          - /opt/traefik/traefik.toml:/traefik.toml
+          - /opt/traefik/acme.json:/acme.json
         networks:
           - frontend
           - backend
         deploy:
           mode: replicated
+          replicas: 1
           placement:
             constraints:
               - node.role==manager
@@ -36,36 +38,47 @@ services:
             - keyrock
         environment:
             - SPRING_PROFILES_ACTIVE=production
-            - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017/?replicaSet=${REPLICASET_NAME:-rs}
+            - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017
             - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
-            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.mydomain.com}
-            - FRONT_URL=https://www.${GR_DOMAIN_URL:-mydomain.com}/#
+            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
+            - FRONT_URL=https://www.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}/#
             - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-mail@domain.com}
             - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-password}
         networks:
           - backend
-          - frontend
         labels:
           - "traefik.backend=gr-backend"
-          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
           - "traefik.enable=true"
           - "traefik.port=8080"
 
     gr-frontend:
         image: smartsdk/greenroute-frontend:latest
         environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
-          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.mydomain.com/dashboard/db/airquality-dashboard}
-          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.mydomain.com}
-          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.mydomain.com/}
-          - GR_DOMAIN_URL=${GR_DOMAIN_URL:-mydomain.com}
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk}
+          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroute.smartsdk.eu/dashboard/db/airquality-dashboard}
+          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.greenroute.smartsdk.eu}
+          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.greenroute.smartsdk.eu/}
+          - GR_DOMAIN_URL=${GR_DOMAIN_URL:-greenroute.smartsdk.eu}
         networks:
           - frontend
           - backend
         labels:
-          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-mydomain.com}, www.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-greenroute.smartsdk.eu}, www.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
           - "traefik.enable=true"
-          - "traefik.port=8"
+          - "traefik.port=80"
+
+    routing-map:
+        image: smartsdk/greenroute-routing-frontend:latest
+        environment:
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk}/
+          - GR_ORION_URL=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
+        networks:
+          - frontend
+        labels:
+          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
 
     mongo-seeder:
         image: smartsdk/greenroute-mongo-seed:latest
@@ -82,23 +95,11 @@ services:
           - "traefik.enable=false"
 
     keyrock:
-        image: rodrigonievez/infotec-idm-image
+        image: smartsdk/keyrock
         networks:
           - backend
         labels:
           - "traefik.enable=false"
-
-    routing-map:
-        image: smartsdk/greenroute-routing-frontend:latest
-        environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}/
-          - GR_ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
-        networks:
-          - frontend
-        labels:
-          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-mydomain.com}"
-          - "traefik.enable=true"
-          - "traefik.port=80"
 
 networks:
   backend:
