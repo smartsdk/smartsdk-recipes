@@ -1,8 +1,7 @@
-logLevel = "INFO"
-defaultEntryPoints = ["http", "https"]
+debug = false
 
-[web]
-address = ":8080"
+logLevel = "INFO"
+defaultEntryPoints = ["https", "http"]
 
 [entryPoints]
   [entryPoints.http]
@@ -17,16 +16,15 @@ address = ":8080"
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-#domain = "www.domain.com"
+domain = "my.domain.com"
 watch = true
 exposedByDefault = false
 
 [acme]
 email = "email@domain.com"
-storage = "/etc/traefik/acme/acme.json"
+storage = "acme.json"
 entryPoint = "https"
 acmeLogging = true
-onDemand = false
-OnHostRule = true
+onHostRule = true
 [acme.httpChallenge]
 entryPoint = "http"

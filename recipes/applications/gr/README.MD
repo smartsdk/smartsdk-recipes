@@ -3,7 +3,7 @@
 ## Introduction
 
 Green Route is focused on supporting the citizen mobility in high polluted cities
-with the aim of improving the life quality of citizens and fostering 
+with the aim of improving the life quality of citizens and fostering
 environmental friendly behaviors by citizens. The objective of Green Route is to help
 the final user to determine the best route to reach a destination, taking
 into account the user profile and user preferences such as transport type.
@@ -55,12 +55,11 @@ Template (TODO).
 In this scenario, you first need to deploy a MongoDB replicaset. This is
 covered by the [MongoDB Recipe](../../utils/mongo-replicaset/readme.md).
 
-Then, you deploy [Orion](../../data-management/context-broker/readme.md) and [Quantumleap](../../data-management/quantumleap/readme.md)
-independently. For convenience, you can simply use the [docker-compose-ha-base.yml](.docker-compose-ha-base.yml)
+Then, you deploy the base dependencies of GreenRoute, which include [Orion](../../data-management/context-broker/readme.md) and [Quantumleap](../../data-management/quantumleap/readme.md) among others. For convenience, you can simply use the [docker-compose-ha-base.yml](.docker-compose-ha-base.yml)
 file as follows:
 
 ```bash
-docker stack deploy -c docker-compose-ha-base.yml greenroute
+docker stack deploy -c docker-compose-ha-base.yml base
 ```
 
 Finally, you need to deploy Green Route specific services.
