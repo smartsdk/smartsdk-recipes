@@ -55,7 +55,7 @@ services:
     routing-map:
         image: smartsdk/greenroute-routing-frontend:latest
         environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk}/
           - GR_ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
         networks:
           - frontend
