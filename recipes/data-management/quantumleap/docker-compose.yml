@@ -98,7 +98,6 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
-
     volumes:
       - cratedata:/data
     networks:
