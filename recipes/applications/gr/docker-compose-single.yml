@@ -1,6 +1,5 @@
 version: '3.3'
 services:
-
     traefik:
         image: traefik:1.7-alpine
         command: --api --docker
