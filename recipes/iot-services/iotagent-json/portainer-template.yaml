@@ -16,7 +16,7 @@
     stackfile: recipes/iot-services/iotagent-json/docker-compose.yml
   env:
   - name: MOSQUITTO_VERSION
-    label: Mosquitto Verions
+    label: Mosquitto Version
   - name: IOTA_VERSION
     label: IOT Agent Version
   - name: IOTA_HTTP_PORT

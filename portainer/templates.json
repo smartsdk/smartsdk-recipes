@@ -82,7 +82,7 @@
         "env": [
             {
                 "name": "QL_VERSION",
-                "label": "QuantumLeap Verions"
+                "label": "QuantumLeap Version"
             },
             {
                 "name": "CRATE_HOST",
@@ -183,7 +183,7 @@
         "env": [
             {
                 "name": "MOSQUITTO_VERSION",
-                "label": "Mosquitto Verions"
+                "label": "Mosquitto Version"
             },
             {
                 "name": "IOTA_VERSION",
