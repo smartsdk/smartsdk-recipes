@@ -106,7 +106,7 @@ services:
           - "traefik.enable=false"
 
     keyrock:
-        image: rodrigonievez/infotec-idm-image
+        image: smartsdk/keyrock
         networks:
           - backend
         labels:
