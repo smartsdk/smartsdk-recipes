@@ -1,119 +1,243 @@
+# docker-compose-ha.yml
 version: '3.3'
 services:
     traefik:
-        image: traefik:1.7-alpine
-        command: --api --docker --docker.swarmMode --docker.domain=traefik --docker.watch
-        ports:
-          - target: 80
-            published: 80
-            mode: host
-          - target: 443
-            published: 443
-            mode: host
-          - target: 8080
-            published: 8080
-            mode: host
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - /opt/traefik/traefik.toml:/traefik.toml
-          - /opt/traefik/acme.json:/acme.json
-        networks:
-          - frontend
-          - backend
-        deploy:
-          mode: replicated
-          replicas: 1
-          placement:
-            constraints:
-              - node.role==manager
-          update_config:
-            parallelism: 1
-            delay: 10s
-          restart_policy:
-            condition: on-failure
+      image: traefik:1.7-alpine
+      command:
+        --docker
+        --docker.swarmmode
+        --docker.watch
+        --docker.exposedbydefault=false
+        --defaultentrypoints="http,https"
+        --entrypoints='Name:http Address::80 Redirect.EntryPoint:https'
+        --entrypoints='Name:https Address::443 TLS'
+        --acme
+        --acme.email=${ACME_EMAIL}
+        --acme.storage=/certificates/acme.json
+        --acme.entryPoint="https"
+        --acme.httpChallenge.entryPoint=http
+        --acme.onhostrule=true
+        --acme.acmelogging=true
+        --logLevel=DEBUG
+        --accessLog
+        --api
+      ports:
+        - "80:80"
+        - "443:443"
+        - "8080:8080"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - traefikcertificates:/certificates
+      networks:
+        - frontend
+        - backend
+      deploy:
+        mode: replicated
+        replicas: 1
+        placement:
+          constraints:
+            - node.role==manager  # Safe because we know there's only 1
+        update_config:
+          parallelism: 1
+          delay: 10s
+        restart_policy:
+          condition: on-failure
+
+    grafana:
+      image: grafana/grafana:5.3.1
+      environment:
+        - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
+        - GF_AUTH_ANONYMOUS_ENABLED=true
+        - GF_AUTH_ANONYMOUS_ORG_NAME="Main Org."
+        - GF_AUTH_ANONYMOUS_ORG_ROLE="Viewer"
+      deploy:
+        replicas: 1
+      depends_on:
+        - traefik
+        - crate
+      networks:
+        - backend
+      volumes:
+        - grafanadata:/var/lib/grafana
+        - grafanaconfig:/etc/grafana
+      labels:
+        - "traefik.frontend.rule=Host:grafana.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=3000"
+
+    orion:
+      image: fiware/orion:${ORION_VERSION:-1.15.1}
+      command: -logLevel ${ORION_LOG_LEVEL:-DEBUG} -dbhost ${MONGO_SERVICE_URI:-"mongo"} -rplSet ${REPLICASET_NAME:-rs} -dbTimeout 10000 -corsOrigin __ALL
+      deploy:
+        replicas: 2
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://0.0.0.0:1026/version"]
+        interval: 1m
+        timeout: 10s
+        retries: 3
+      labels:
+        - "traefik.backend=orion"
+        - "traefik.frontend.rule=Host:orion.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=1026"
+      depends_on:
+        - traefik
+      networks:
+        - backend
+        - frontend
+
+    quantumleap:
+      image: smartsdk/quantumleap:${QL_VERSION:-0.5}
+      depends_on:
+        - traefik
+        - crate
+      environment:
+        - CRATE_HOST=${CRATE_HOST:-crate}
+        - USE_GEOCODING=True
+      deploy:
+        replicas: 2
+        restart_policy:
+          condition: on-failure
+        update_config:
+          parallelism: 1
+          delay: 1m
+      labels:
+        - "traefik.frontend.rule=Host:quantum.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=8668"
+      networks:
+        - backend
+        - frontend
+
+    crate:
+      image: crate:${CRATE_VERSION:-2.3.11}
+      command: ["crate",
+          "-Clicense.enterprise=false",
+          "-Cgateway.expected_nodes=${EXPECTED_NODES:-1}",
+          "-Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}",
+          "-Cgateway.recover_after_time=5m",
+          "-Cdiscovery.zen.minimum_master_nodes=${MINIMUM_MASTER_NODES:-1}",
+          "-Cdiscovery.zen.ping.unicast.hosts=${CRATE_HOST:-crate}",
+          "-Cnetwork.host=0.0.0.0",
+          "-Ccluster.name=quantumleap",
+          "-Chttp.cors.enabled=true",
+          '-Chttp.cors.allow-origin="*"']
+      environment:
+        - MAX_MAP_COUNT=262144
+        - ES_JAVA_OPTS="-Xms1g -Xmx1g"
+        - CRATE_HEAP_SIZE=1g
+      deploy:
+        endpoint_mode: dnsrr
+        mode: global
+        update_config:
+          parallelism: 1
+          delay: 10s
+      depends_on:
+        - traefik
+      volumes:
+        - cratedata:/data
+      networks:
+        - frontend
+        - backend
 
     gr-backend:
-        image: smartsdk/greenroute-backend:latest
-        depends_on:
-            - keyrock
-        environment:
-            - SPRING_PROFILES_ACTIVE=production
-            - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017
-            - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
-            - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
-            - FRONT_URL=https://www.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}/#
-            - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-mail@domain.com}
-            - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-password}
-        networks:
-          - backend
-        labels:
-          - "traefik.backend=gr-backend"
-          - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
-          - "traefik.enable=true"
-          - "traefik.port=8080"
+      image: smartsdk/greenroute-backend:latest
+      depends_on:
+        - traefik
+        - keyrock
+      environment:
+        - SPRING_PROFILES_ACTIVE=production
+        - SPRING_DATA_MONGODB_URI=mongodb://${GR_MONGO_HOST:-mongo}:27017
+        - IDM_SERVERS_KEYSTONE=${GR_KEYROCK_URL:-http://keyrock:5000}
+        - IDM_SERVERS_ORION=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
+        - FRONT_URL=https://www.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}/#
+        - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-mail@domain.com}
+        - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-password}
+      networks:
+        - backend
+      labels:
+        - "traefik.backend=gr-backend"
+        - "traefik.frontend.rule=Host:api.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=8080"
 
     gr-frontend:
-        image: smartsdk/greenroute-frontend:latest
-        environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk}
-          - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroute.smartsdk.eu/dashboard/db/airquality-dashboard}
-          - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.greenroute.smartsdk.eu}
-          - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.greenroute.smartsdk.eu/}
-          - GR_DOMAIN_URL=${GR_DOMAIN_URL:-greenroute.smartsdk.eu}
-        networks:
-          - frontend
-          - backend
-        labels:
-          - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-greenroute.smartsdk.eu}, www.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
-          - "traefik.enable=true"
-          - "traefik.port=80"
+      image: smartsdk/greenroute-frontend:latest
+      environment:
+        - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk}
+        - GR_GRAFANA_URL=${GR_GRAFANA_URL:-https://grafana.greenroute.smartsdk.eu/dashboard/db/airquality-dashboard}
+        - GR_ALERTS_URL=${GR_ALERTS_URL:-https://alerts.greenroute.smartsdk.eu}
+        - GR_ROUTINGMAP_URL=${GR_ROUTINGMAP_URL:-https://map.greenroute.smartsdk.eu/}
+        - GR_DOMAIN_URL=${GR_DOMAIN_URL:-greenroute.smartsdk.eu}
+      depends_on:
+        - traefik
+      networks:
+        - frontend
+        - backend
+      labels:
+        - "traefik.frontend.rule=Host:${GR_DOMAIN_URL:-greenroute.smartsdk.eu}, www.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=80"
 
     routing-map:
-        image: smartsdk/greenroute-routing-frontend:latest
-        environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk}/
-          - GR_ORION_URL=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
-        networks:
-          - frontend
-        labels:
-          - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
-          - "traefik.enable=true"
-          - "traefik.port=80"
+      image: smartsdk/greenroute-routing-frontend:latest
+      environment:
+        - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk}/
+        - GR_ORION_URL=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
+      depends_on:
+        - traefik
+      networks:
+        - frontend
+      labels:
+        - "traefik.frontend.rule=Host:map.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=80"
 
     alerts:
-        image: smartsdk/alerts-app:latest
-        environment:
-          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk/}
-          - GR_ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
-        networks:
-          - frontend
-        labels:
-          - "traefik.frontend.rule=Host:alerts.${GR_DOMAIN_URL:-mydomain.com}"
-          - "traefik.enable=true"
-          - "traefik.port=80"
+      image: smartsdk/alerts-app:latest
+      environment:
+        - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.greenroute.smartsdk.eu/back-sdk/}
+        - GR_ORION_URL=${GR_ORION_URL:-https://orion.greenroute.smartsdk.eu}
+      depends_on:
+        - traefik
+      networks:
+        - frontend
+      labels:
+        - "traefik.frontend.rule=Host:alerts.${GR_DOMAIN_URL:-greenroute.smartsdk.eu}"
+        - "traefik.enable=true"
+        - "traefik.port=80"
 
     mongo-seeder:
-        image: smartsdk/greenroute-mongo-seed:latest
-        deploy:
-          restart_policy:
-            condition: on-failure
-        depends_on:
-          - mongo
-        environment:
-          - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo}
-        networks:
-          - backend
-        labels:
-          - "traefik.enable=false"
+      image: smartsdk/greenroute-mongo-seed:latest
+      deploy:
+        restart_policy:
+          condition: on-failure
+      depends_on:
+        - mongo
+      environment:
+        - GR_MONGO_HOST=${GR_MONGO_HOST:-mongo}
+      networks:
+        - backend
+      labels:
+        - "traefik.enable=false"
 
     keyrock:
-        image: smartsdk/keyrock
-        networks:
-          - backend
-        labels:
-          - "traefik.enable=false"
+      image: smartsdk/keyrock
+      networks:
+        - backend
+      labels:
+        - "traefik.enable=false"
+
+volumes:
+  cratedata:
+  grafanadata:
+  grafanaconfig:
+  traefikcertificates:
 
 networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
   backend:
     driver: overlay
     external: true
