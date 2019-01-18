@@ -386,5 +386,62 @@
             "stackfile": "recipes/utils/mongo-replicaset/docker-compose.yml",
             "url": "https://github.com/smartsdk/smartsdk-recipes"
         }
+    },
+    {
+        "categories": [
+            "SmartSDK Applications"
+        ],
+        "title": "GreenRoute",
+        "type": "stack",
+        "note": "<b>Requires existing external networks: frontend, backend.</b><br />\nSee the <a target='_blank' href='https://smartsdk-recipes.readthedocs.io/en/latest/recipes/applications/gr/readme/'>documentation</a>.\n",
+        "platform": "linux",
+        "logo": "https://www.fiware.org/style/imgs/logo_solo.png",
+        "description": "Deploy a scalable GreenRoute application\nRequires existing external networks: frontend, backend\n",
+        "env": [
+            {
+                "name": "GR_MONGO_HOST",
+                "label": "MongoDB Host"
+            },
+            {
+                "name": "GR_KEYROCK_URL",
+                "label": "Keyrock Host"
+            },
+            {
+                "name": "GR_ORION_URL",
+                "label": "Keyrock Host"
+            },
+            {
+                "name": "GR_DOMAIN_URL",
+                "label": "URL Domain"
+            },
+            {
+                "name": "GR_BACKEND_URL",
+                "label": "Backend URL"
+            },
+            {
+                "name": "GR_GRAFANA_URL",
+                "label": "Grafana URL"
+            },
+            {
+                "name": "GR_ALERTS_URL",
+                "label": "Alerts Application URL"
+            },
+            {
+                "name": "GR_ROUTINGMAP_URL",
+                "label": "Map Application URL"
+            },
+            {
+                "name": "SPRING_MAIL_USERNAME",
+                "label": "E-mail account for SMTP"
+            },
+            {
+                "name": "SPRING_MAIL_PASSWORD",
+                "label": "E-mail password"
+            }
+        ],
+        "repository": {
+            "stackfile": "recipes/applications/gr/docker-compose-single.yml",
+            "url": "https://github.com/smartsdk/smartsdk-recipes"
+        }
     }
 ]
