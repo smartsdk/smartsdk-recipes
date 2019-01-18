@@ -166,6 +166,18 @@ services:
           - "traefik.enable=true"
           - "traefik.port=80"
 
+    alerts:
+        image: smartsdk/alerts-app:latest
+        environment:
+          - GR_BACKEND_URL=${GR_BACKEND_URL:-https://api.mydomain.com/back-sdk/}
+          - GR_ORION_URL=${GR_ORION_URL:-https://orion.mydomain.com}
+        networks:
+          - frontend
+        labels:
+          - "traefik.frontend.rule=Host:alerts.${GR_DOMAIN_URL:-mydomain.com}"
+          - "traefik.enable=true"
+          - "traefik.port=80"
+
 networks:
   backend:
     driver: overlay
