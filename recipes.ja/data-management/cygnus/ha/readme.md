@@ -136,8 +136,10 @@ cygnus デプロイメントのために別のバックエンドを試したい�
 コメントにする/コメントを外す (つまり、`#` キャラクターを残す/削除する) ように
 してください。
 
+```
     cygnus-ngsi.channels.main-channel.type = memory
     #cygnus-ngsi.channels.main-channel.type = file
+```
 
 チャネルの詳細については、公式ドキュメントの [channels considerations](https://github.com/telefonicaid/fiware-cygnus/blob/master/doc/cygnus-ngsi/installation_and_administration_guide/performance_tips.md#channel-considerations)
  をチェックしてください。
