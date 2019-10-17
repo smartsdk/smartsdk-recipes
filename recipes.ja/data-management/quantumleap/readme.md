@@ -1,3 +1,5 @@
+<hr class="core" style="display:none" />
+
 # QuantumLeap
 
 ## イントロダクション

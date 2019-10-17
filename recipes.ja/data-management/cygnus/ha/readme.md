@@ -1,3 +1,5 @@
+<hr class="core" style="display:none" />
+
 # Cygnus
 
 ## 要件
@@ -104,7 +106,7 @@
 ```
 
 Docker Swarm クラスタ上でサービスとして稼働している cygnus を持つことで、他の
- docker サービスと同様にスケーラビリティを達成できます。詳細については、 
+ docker サービスと同様にスケーラビリティを達成できます。詳細については、
 [Orionのレシピ](../../context-broker/ha/readme.md)を参照して Docker でこれを
 行う方法を参照してください。それ以外の場合は、[Docker サービスのドキュメント](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/)
 を参照してください。

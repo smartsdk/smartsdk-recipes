@@ -33,6 +33,6 @@ pages:
   - 'Contributing': 'contributing.md'
 theme: readthedocs
 markdown_extensions: [toc,fenced_code]
-extra_css: ["https://fiware.org/style/fiware_readthedocs.css"]
+extra_css: ["https://www.fiware.org/style/fiware_readthedocs.css", "https://www.fiware.org/style/fiware_readthedocs_operations.css"]
 repo_url: https://github.com/smartsdk/smartsdk-recipes
 edit_uri: edit/master/recipes/

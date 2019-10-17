@@ -1,3 +1,5 @@
+<hr class="security" style="display:none" />
+
 # Security Management
 
 Within FIWARE security is guaranteed by different services that provide the

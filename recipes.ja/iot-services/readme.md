@@ -1,3 +1,5 @@
+<hr class="iotagents" style="display:none" />
+
 # バックエンドデバイス管理 (IDAS)
 
 このチャプターの詳細については、[こちら]( https://catalogue.fiware.org/chapter/internet-things-services-enablement)を参照してください。

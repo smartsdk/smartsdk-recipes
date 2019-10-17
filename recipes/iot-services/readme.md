@@ -1,3 +1,5 @@
+<hr class="iotagents" style="display:none" />
+
 # Backend Device Management (IDAS)
 
 For more info about this Chapter, see
@@ -5,6 +7,7 @@ For more info about this Chapter, see
 
 For more info about this GE, see
 [here](https://catalogue.fiware.org/enablers/backend-device-management-idas).
+
 
 ## IoT Agents
 

@@ -1,3 +1,4 @@
+<hr class="core" style="display:none" />
 # Comet
 
 Here you can find recipes aimed at different usages of Comet, the Reference

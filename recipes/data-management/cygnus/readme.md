@@ -1,3 +1,4 @@
+<hr class="core" style="display:none" />
 # Cygnus
 
 Here you can find recipes aimed at different usages of Cygnus, in particular,

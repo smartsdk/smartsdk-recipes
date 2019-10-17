@@ -1,3 +1,4 @@
+<hr class="core" style="display:none" />
 # QuantumLeap
 
 ## Introduction
@@ -145,7 +146,7 @@ ID                  NAME                MODE                REPLICAS            
 2vbj18blsqje        ql_traefik          global              1/1                 traefik:1.3.5-alpine              *:80->80/tcp,*:443->443/tcp,*:4200->4200/tcp,*:4300->4300/tcp,*:8080->8080/tcp
 bvs32e81jcns        ql_viz              replicated          1/1                 dockersamples/visualizer:latest   *:8282->8080/tcp
 e8kyp4vylvev        ql_quantumleap      replicated          1/1                 smartsdk/quantumleap:latest       *:8668->8668/tcp
-ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5                       
+ignls7l57hzn        ql_crate            global              3/3                 crate:1.0.5
 tfszxc2fcmxx        ql_grafana          replicated          1/1                 grafana/grafana:latest            *:3000->3000/tcp
 ```
 

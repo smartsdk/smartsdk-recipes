@@ -1,3 +1,5 @@
+<hr class="core" style="display:none" />
+
 # Cygnus
 
 ここでは、Cygnus、特に cygnus-ngsi のさまざまな用途を対象としたレシピを見つける

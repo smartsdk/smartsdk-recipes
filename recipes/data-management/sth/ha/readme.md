@@ -1,3 +1,4 @@
+<hr class="core" style="display:none" />
 # HA
 
 ## Requirements

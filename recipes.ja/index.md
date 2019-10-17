@@ -1,5 +1,8 @@
 # ようこそ
 
+[![Operations](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/operations.svg)](#)
+[![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
+
 このサイトは、[SmartSDK](https://www.smartsdk.eu) が提供するレシピのドキュメン
 テーションに特化しており、 さまざまな [FIWARE Generic Enablers](https://catalogue.fiware.org/enablers)
  とそれらの組み合わせを一般的なユースケースとして紹介しています。

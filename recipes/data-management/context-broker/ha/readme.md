@@ -1,3 +1,4 @@
+<hr class="core" style="display:none" />
 # Orion in HA
 
 This recipe shows how to deploy an scalable
@@ -100,9 +101,9 @@ through the swarm running the following...
 ```
 $ docker service ps orion_orion
 ID            NAME           IMAGE               NODE         DESIRED STATE  CURRENT STATE               ERROR  PORTS
-wwgt3q6nqqg3  orion_orion.1  fiware/orion:1.3.0  ms-worker0   Running        Running 9 minutes ago          
-l1wavgqra8ry  orion_orion.2  fiware/orion:1.3.0  ms-worker1   Running        Running 9 minutes ago          
-z20v0pnym8ky  orion_orion.3  fiware/orion:1.3.0  ms-manager0  Running        Running 25 minutes ago    
+wwgt3q6nqqg3  orion_orion.1  fiware/orion:1.3.0  ms-worker0   Running        Running 9 minutes ago
+l1wavgqra8ry  orion_orion.2  fiware/orion:1.3.0  ms-worker1   Running        Running 9 minutes ago
+z20v0pnym8ky  orion_orion.3  fiware/orion:1.3.0  ms-manager0  Running        Running 25 minutes ago
 ```
 
 The good news is that, as you can see from the above output, by default docker
@@ -193,7 +194,7 @@ Orion...
 ```
 $ docker service ps orion_orion
 ID            NAME                    IMAGE               NODE         DESIRED STATE  CURRENT STATE           ERROR  PORTS
-2tibpye24o5q  orion_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago         
+2tibpye24o5q  orion_orion.2  fiware/orion:1.3.0  ms-manager0  Running        Running 11 minutes ago
 w9zmn8pp61ql  orion_orion.3  fiware/orion:1.3.0  ms-worker0   Running        Running 11 minutes ago
 ```
 

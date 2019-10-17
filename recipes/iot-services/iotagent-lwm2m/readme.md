@@ -1,3 +1,4 @@
+<hr class="iotagents" style="display:none" />
 # IoT Agent (LWM2M)
 
 Official documentation of this IoT Agent:

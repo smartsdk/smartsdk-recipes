@@ -1,6 +1,9 @@
 # SmartSDK Recipes
 
-[![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
+![](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/operations.svg)
+[![License: AGPL](https://img.shields.io/github/license/smartsdk/smartsdk-recipes.svg)](https://opensource.org/licenses/AGPL-3.0)
+[![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
+<br/>
 [![Documentation badge](https://img.shields.io/badge/docs-latest-green.svg)](https://smartsdk-recipes.readthedocs.io/en/latest/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e85601cbdbae303f88fd/maintainability)](https://codeclimate.com/github/smartsdk/smartsdk-recipes/maintainability)
 [![Build Status](https://travis-ci.org/smartsdk/smartsdk-recipes.svg?branch=master)](https://travis-ci.org/smartsdk/smartsdk-recipes)

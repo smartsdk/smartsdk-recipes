@@ -1,3 +1,4 @@
+<hr class="core" style="display:none" />
 # Orion
 
 Here you can find recipes aimed at different usages of the Orion Context Broker.

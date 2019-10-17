@@ -1,5 +1,8 @@
 # Welcome
 
+[![Operations](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/operations.svg)](#)
+[![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
+
 This site is dedicated to the documentation of the recipes brought by
 [SmartSDK](https://www.smartsdk.eu) to launch, test and experiment different
 [FIWARE Generic Enablers](https://catalogue.fiware.org/enablers) and

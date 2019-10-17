@@ -1,3 +1,5 @@
+<hr class="core" style="display:none" />
+
 # Comet
 
 ここでは、STH Generic Enabler のリファレンス実装である Comet のさまざまな使用法

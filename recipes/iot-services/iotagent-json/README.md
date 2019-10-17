@@ -1,3 +1,4 @@
+<hr class="iotagents" style="display:none" />
 # IoT Agent (JSON)
 
 Official documentation of this IoT Agent:
@@ -94,7 +95,7 @@ The deployed services will be:
      image accordingly.
 
 ```
-       docker exec -ti mosquitto_container sh -c "apk --no-cache add mosquitto-clients"    
+       docker exec -ti mosquitto_container sh -c "apk --no-cache add mosquitto-clients"
 ```
 
 ## TODO

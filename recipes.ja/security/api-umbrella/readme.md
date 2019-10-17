@@ -1,3 +1,5 @@
+<hr class="security" style="display:none" />
+
 # API Umbrella の HA 構成
 
 このレシピでは、MongoDB インスタンスのスケーラブルな[レプリカ・セット](https://github.com/telefonicaid/fiware-orion/blob/master/README.md)

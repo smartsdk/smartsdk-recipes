@@ -1,3 +1,5 @@
+<hr class="iotagents" style="display:none" />
+
 # IoT Agent (JSON)
 
 この IoT Agent の公式ドキュメントは、[ここ](http://fiware-iotagent-json.readthedocs.io/en/latest/index.html)です。
