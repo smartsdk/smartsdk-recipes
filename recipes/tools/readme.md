@@ -103,3 +103,4 @@ be eventually customized and then turned into a png file using
 ```
         $ dot compose.dot -Tpng -o compose.png
 ```
+
