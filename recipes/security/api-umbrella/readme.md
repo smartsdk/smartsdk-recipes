@@ -176,18 +176,18 @@ of API Umbrella and register your first API. For more details read
   $ docker-machine ip ms-manager0
   ```
 
-    Open the browser at the following endpoint:
-    `http://<your-cluster-manager-ip>/admin`.
+Open the browser at the following endpoint:
+`http://<your-cluster-manager-ip>/admin`.
 
-    Unless you also created certificates for your server, API Umbrella
-    will ask you to accept the connection to an insecure instance.
+Unless you also created certificates for your server, API Umbrella
+will ask you to accept the connection to an insecure instance.
 
-    In the page displayed you can enter the admin user name and the password.
+In the page displayed you can enter the admin user name and the password.
 
-    Now you are logged in and you can configure the backend APIs.
+Now you are logged in and you can configure the backend APIs.
 
-    **N.B.:** The usage of the cluster master IP is just a convention, you can
-    reach the services also at the IPs of the worker nodes.
+**N.B.:** The usage of the cluster master IP is just a convention, you can
+reach the services also at the IPs of the worker nodes.
 
 1. Retrieve `X-Admin-Auth-Token` Access and `X-Api-Key`.
     In the menu select `Users->Admin Accounts` and click on the username
